@@ -1,15 +1,115 @@
 <html>
 <head>
 <title>Quicktime Template</title>
+
+<script type="text/javascript" src="AC_QuickTime.js"></script>
+
+
+<script type="text/javascript">
+
+// define the video here
+var qtEmbed = QT_GenerateOBJECTText_XHTML(
+		'correcto.mov', //'video_placeholder.jpg',
+		'190', // width
+		'210', // height: set this to actual height + 20 (to leave space for controller)
+		'', // required blacnk field
+		'enablejavascript', 'true',
+		'obj#id', 'movie1',
+		'emb#name', 'movie1',
+		'emb#id', 'movie1_emb',
+		'postdomevents', 'true',
+		'autoplay', 'false'
+)
+
+// called from body.onload to set up listeners that will wait for quicktime
+// movie to send events
+
+function RegisterListeners()
+{
+	// when the movie loads, it will set the end time to the duration of the movie
+	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_default_end_time);
+}
+
+function set_default_end_time()
+{
+	set_end_time( document.movie1.GetDuration() );
+}
+
+function set_start_time()
+{
+	document.getElementById('start_time_units').value = playhead_position();
+	document.getElementById('start_time_display').value = format_time( playhead_position() );
+}
+
+function set_end_time(end_time)
+{
+	if(typeof(end_time) == "undefined")
+	{ 
+		end_time = playhead_position();
+	}
+	document.getElementById('end_time_units').value = end_time;
+	document.getElementById('end_time_display').value = format_time( end_time );
+}
+
+// "private" methods
+function format_time(time_in_video_units){
+	totalSec = time_in_video_units / time_scale();
+
+	hours = parseInt( totalSec / 3600 ) % 24;
+	minutes = parseInt( totalSec / 60 ) % 60;
+	seconds = parseInt( totalSec ) % 60;
+	fframes  = Math.round( ((totalSec % 60) - seconds) * 100);
+
+	result =  zero_pad(hours) + ":" + zero_pad(minutes) + ":" + zero_pad(seconds) + ":" + zero_pad(fframes);
+	return result;
+};
+
+function playhead_position() {
+	return document.movie1.GetTime();
+}
+
+function time_scale() {
+	return document.movie1.GetTimeScale();
+}
+
+function zero_pad(number)
+{
+	return (number < 10 ? "0" + number: number)
+}
+
+function myAddListener(obj, evt, handler, captures)
+{
+	if ( document.addEventListener )
+		obj.addEventListener(evt, handler, captures);
+	else
+		// IE
+		obj.attachEvent('on' + evt, handler);
+}
+
+function RegisterListener(eventName, objID, embedID, listenerFcn)
+{
+	var obj = document.getElementById(objID);
+	if ( !obj )
+		obj = document.getElementById(embedID);
+	if ( obj )
+		myAddListener(obj, eventName, listenerFcn, false);
+}
+
+</script>
+
 </head>
-<body>
+<body onload="RegisterListeners();">
 <form>
 <table>
 <tr>
 <td colspan="4" align="center">
-	<div style="height: 420px; width: 500px; border: 1px solid black; margin-bottom: 1em; padding: 6em;">
-	Quicktime Movie Here
-	</div>
+
+	<div id="movie_div"></div>
+
+	<script type="text/javascript">
+		document.getElementById('movie_div').innerHTML = qtEmbed;
+	</script>
+
 </td>
 </tr>
 <tr valign="bottom">
@@ -17,10 +117,16 @@
 <td align="center" colspan="2">End Time</td>
 </tr>
 <tr valign="top">
-<td align="right"><input type="text" value="00:00:00" size="8" /></td>
-<td align="left"><input type="submit" value="Set to Now" /></td>
-<td align="right"><input type="text" value="01:25:00" size="8" /></td>
-<td align="left"><input type="submit" value="Set to Now" /></td>
+<td align="right">
+	<input type="text" id="start_time_display" value="00:00:00" size="8" />
+	<input type="hidden" id="start_time_units" name="start_time_units" value="0" />
+</td>
+<td align="left"><input type="button" onclick="set_start_time();" value="Set to Now" /></td>
+<td align="right">
+	<input type="text" id="end_time_display" value="00:00:00" size="8" />
+	<input type="hidden" id="end_time_units" name="end_time_units" />
+</td>
+<td align="left"><input type="button" onclick="set_end_time();" value="Set to Now" /></td>
 </tr>
 <tr>
 <td colspan="4" align="center">
