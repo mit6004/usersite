@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Quicktime Template</title>
+</head>
+<body>
+<form>
+<table>
+<tr>
+<td colspan="4" align="center">
+	<div style="height: 420px; width: 500px; border: 1px solid black; margin-bottom: 1em; padding: 6em;">
+	Quicktime Movie Here
+	</div>
+</td>
+</tr>
+<tr valign="bottom">
+<td align="center" colspan="2">Start Time</td>
+<td align="center" colspan="2">End Time</td>
+</tr>
+<tr valign="top">
+<td align="right"><input type="text" value="00:00:00" size="8" /></td>
+<td align="left"><input type="submit" value="Set to Now" /></td>
+<td align="right"><input type="text" value="01:25:00" size="8" /></td>
+<td align="left"><input type="submit" value="Set to Now" /></td>
+</tr>
+<tr>
+<td colspan="4" align="center">
+<br />
+Topic: <select>
+	<option>Must choose one...</option>
+	<option>Topic Foo</option>
+</select>
+
+<input type="submit" value="Save" />
+<br />(Start and End time must be set.)</td>
+</tr>
+</table>
+</form>
+
+<p>Staff member viewing video clicks "Set to Now" button under start time.<br />
+ - Start time field value is set to playhead position via Javascript.<br />
+ - Optional: Pressing Set to Now pauses video. User must click Play again to restart.</p>
+
+<p>Staff member viewing clicks "Set to Now" button under end time (default value can be end of video).<br />
+ - End time field value is set to playhead position via Javascript.<br />
+ - ?what's the format off this offset at this time?</p>
+
+<p>User must select a topic from a dropdown<br />
+ - When start time, end time, and topic are all set, user can save</p>
+
+</body>
+</html>
