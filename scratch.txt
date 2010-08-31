@@ -1,0 +1,40 @@
+url pattern for popup player, something like:
+('^play_video/(^video_id)\d{1}/$', views.play_video)
+
+HTML for popup player:
+<object width="320" height="240"
+classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+<param name="src" value="{{file_path}}">
+<param name="autoplay" value="true">
+<param name="controller" value="false">
+<embed src="{{file_path}}" width="320" height="240"
+autoplay="true" controller="false"
+pluginspage="http://www.apple.com/quicktime/download/">
+</embed>
+</object>
+
+view:
+def play_video(video_id)
+   video = models.VideoSubmissions.get(pk=video_id)
+   template = popup_video.html
+   return render_to_response(template, {'video':video})
+
+
+Link to popup player to put into meeting_records.html:
+{% if meeting.video %}
+<a href="/play_video/{{meeting.video_id}}" onclick="var win = window.open(this.href, this.title, 'width=500,height=515,resizable=1,scrollbars=1'); win.focus(); return false;">{{os.path.basename(meeting.video.file_path}}</a>
+{% endif %}
+
+what we store in video.file_path needs to be public, not file system, so we'll need to change handle_uploaded_video
+
+in add_checkoff, instead of including settings.MEDIA_ROOT in upload_location, just include semester, athena_id, and lab_number.
+
+Then in handle_uploaded_file,
+
+public_path = os.path.join(upload_location, file.name)
+filesystem_path = os.path.join(settings.MEDIA_ROOT, public_path)
+
+destination = open(filesystem_path, 'wb+')
+
+after destination.close, return public_path

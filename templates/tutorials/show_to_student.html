@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %} testing stuff {% endblock %}
+
+{% block content %}
+
+
+{% if media.is_image  %}
+<img src="{{media.get_absolute_url}}"/>
+{% endif %}
+
+{% if media.is_video %}
+
+<object width="500" height="400"
+	classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+	codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+  <param name="src" value="{{media.get_absolute_url}}">
+  <param name="autoplay" value="true">
+  <param name="controller" value="false">
+  <embed src="{{media.get_absolute_url}}" width="500" height="400"
+	 autoplay="true" controller="false"
+	 pluginspage="http://www.apple.com/quicktime/download/">
+  </embed>
+</object>
+
+
+
+
+{% endif %}  
+
+
+{% if not media.is_video and not media.is_image %}
+<h1> The File, {{media.file_name}} is bad!!! </h1>
+ 
+{% endif %}
+
+{% endblock %}

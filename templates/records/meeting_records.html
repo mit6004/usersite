@@ -1,0 +1,49 @@
+<html>
+
+  <head>
+
+  </head>
+
+  <body>
+    {% if passed_field %}
+    <h1> Checkoff Records for {{student.first_name}} {{student.last_name}}'s {{lab_name}}</h1>
+    {% else %}
+    <h1> Lab Help Records for {{student.first_name}} {{student.last_name}}'s {{lab_name}}</h1>
+    {% endif %}
+
+    <table border="1">
+      <tr>
+	<td>Meeting Time</td>
+	<td>Staff Member</td>
+	{% if passed_field %}
+	<td>Passed?</td>
+	{% endif %}
+	<td>Recording</td>
+      </tr>
+
+    {% for meeting in meeting_list %}
+      
+      <tr>
+	<td>{{meeting.time}}</td>
+	<!-- no parens because it's evaluated without them in templates-->
+	<td>{{meeting.staff_member.get_profile.athena_id}}</td>
+	{% if passed_field %}
+	<td>{{meeting.passed}}</td>
+	{% endif %}
+	<td> 
+
+	  {% if meeting.video %}
+	  
+	  <!--
+	      <a href="/play_video/{{meeting.video.id}}" onclick="var win = window.open(this.href, this.title, 'width=500,height=515,resizable=1,scrollbars=1'); win.focus(); return false;">{{meeting.video.file_path}}</a>
+	      -->  
+	  video at {{meeting.upload_location}}/{{meeting.file_name}}
+	  <a href="/site_media/{{meeting.upload_location}}/{{meeting.file_name}}"  onclick="var win = window.open(this.href, this.title, 'width=500,height=515,resizable=1,scrollbars=1'); win.focus(); return false;">View {{meeting.file_name}}</a>
+	  {% endif %}
+
+      </tr>
+
+      {% endfor %}
+      </table>
+  </body>
+</html>

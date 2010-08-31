@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Course Media{% endblock %}
+
+{% block content %}
+
+
+
+
+    <object class="mplayer" width="810" height="450"
+	    classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+	    codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+      <param name="src" value="{{selected_video.get_absolute_url}}">
+      <param name="autoplay" value="false">
+      <param name="controller" value="true">
+      <embed src="{{selected_video.get_absolute_url}}" width="810" height="450"
+	     autoplay="false" controller="true"
+	     pluginspage="http://www.apple.com/quicktime/download/">
+      </embed>
+      
+    </object>
+
+
+    <table border="1" class="mbrowser">
+      <tr>
+	<th>Topic</th>
+	<th>Type</th>
+	<th>Author</th>
+	<th>Semester</th>
+	<th>Staff Favorites</th>
+	<th>Title</th>
+      </tr>
+      
+      <tr>
+	<form action="" method="get">
+	  <td>{{all_topic_assignments.form.topic}}</td>  
+	  <td>{{all_topic_assignments.form.video__type}}</td>
+	  <td>{{all_topic_assignments.form.video__author}}</td>	  
+	  <td>{{all_topic_assignments.form.video__semester}}</td>
+	  <td>{{staff_faves.all_topic_assignments.form.video__id}}</td>
+	  <td>
+	    <input type="hidden" name="v_id" value="{{selected_video.id}}">
+	    <input type="submit" />
+	  </td>
+	  
+	</form>
+      </tr>
+	
+      {% for ta in all_topic_assignments %}
+      <!-- a topicassignment is an annotation, and points to one topic 
+	   from the TOPIC_CHOICES list and a PublicVideo ForeignKey -->
+  
+      <tr>
+	<td>{{ta.topic}}</td>
+	<td>{{ta.video.type}}</td>
+	<td>{{ta.video.author}}</td>
+	<td>{{ta.video.semester}}</td>
+	<td>{{ta.video.staff_favorite}}</td>
+
+	<td>
+	    <a href="{{full_path}}{{start_char}}v_id={{ta.video.id}}">
+	    {% if ta.title.count %}
+	    {{ta.video.title}}
+	    {% else %}
+	    {{ta.video.file_name}}
+	    {% endif %}
+	    </a>
+	</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+
+
+
+
+<!--{{selected_video.get_absolute_url}}-->
+
+
+
+
+
+
+
+
+{% endblock %}
+
+    

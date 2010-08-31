@@ -1,0 +1,67 @@
+<html>
+
+  <head>
+
+  </head>
+
+  <body>
+    <h1> Academic Record for {{ student.first_name }} {{student.last_name}} </h1>
+
+    <h2>Lab Records</h2>
+    <table border="1">
+      <tr>
+	<td>Lab Number</td> 
+	<td>Max Points</td> 
+	<td>Due Date</td> 
+	<td>Checkoff Meeting</td> 
+	<td>Last Submission</td> 
+	<td>Current Score</td> 
+	<td>Checkoff Records</td> 
+	<td>Help Records</td>
+      </tr>
+
+      {% for record in record_list %}
+      <tr>
+	<td>{{record.lab.num}}</td> 
+	<td>{{record.lab.max_score}}</td> 
+	<td>{{record.lab.submit_due_date}}</td> 
+	<td> 
+	  {% if record.checkoffmeeting_set.count %} 
+	    Time: {{record.checkoffmeeting_set.latest}}
+	  {% else %} 
+	    Not Yet Completed 
+	  {% endif %}
+	</td>
+	<td> 
+	  {% if record.labsubmission_set.count %}
+	  Time: {{record.labsubmission_set.latest}}
+	  {% else %}
+	  Not Yet Completed
+	  {% endif %}
+	</td> 
+	<td> 
+	  {{record.labgrade_set.get.calculate_score}}
+	</td>  
+	<td> 
+	  {% if record.checkoffmeeting_set.count %}
+	  <a href="./{{record.lab.num}}/checkoff/">View</a>,  
+	  {% endif %}
+	  <a href="./{{record.lab.num}}/add_checkoff/">Add</a>
+	</td> 
+	<td> 
+	  
+	  {% if record.helpmeeting_set.count %}
+	  <a href="./{{record.lab.num}}/help/">View</a>,
+	  {% endif %}
+	  <a href="./{{record.lab.num}}/add_help/">Add</a>
+	</td>  
+      </tr>
+      {% endfor %}
+    </table>
+
+
+
+  </body>
+
+
+</html>

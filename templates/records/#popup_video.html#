@@ -1,0 +1,24 @@
+<html>
+
+  <head>
+
+  </head>
+
+  <body>
+
+    <object width="320" height="240"
+	    classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+	    codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+      <param name="src" value="media/{{video.file_path}}">
+      <param name="autoplay" value="true">
+      <param name="controller" value="false">
+      <embed src="media/{{video.file_path}}" width="320" height="240"
+       autoplay="true" controller="false"
+       pluginspage="http://www.apple.com/quicktime/download/">
+      </embed>
+    </object>
+
+
+  </body>
+
+</html>

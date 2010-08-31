@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Students{% endblock %}
+
+{% block content %}
+
+<form enctype="multipart/form-data" method="POST">
+  <fieldset>
+    <legend>
+      {% if is_checkoff %}
+      Checkoff Details
+      {% else %}
+      Help Details
+      {% endif %}
+    </legend>
+
+    <b>Student Name: </b> {{record.student.first_name}} {{record.student.last_name}} <br>
+    <b>Current Time: </b> {{time}} <br>
+
+    {{ meeting_form.as_p }}
+
+  
+  </fieldset>
+  <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

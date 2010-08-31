@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Students{% endblock %}
+
+{% block content %}
+
+<form enctype="multipart/form-data" method="POST">
+  <fieldset>
+    <legend>
+      {% if is_checkoff %}
+      Checkoff Details
+      {% else %}
+      Help Details
+      {% endif %}
+    </legend>
+
+    <b>Student Name: </b> {{student.first_name}} {{student.last_name}} <br>
+    <b>Current Time: </b> {{time}} <br>
+
+    {{ add_form.as_p }}
+
+  </fieldset>
+  <fieldset>
+
+    <legend>
+      Video Upload
+    </legend>
+    
+    {{ video_form.as_p }}
+  
+  </fieldset>
+  <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

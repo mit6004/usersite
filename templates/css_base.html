@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Title      : Emporium
+Version    : 1.0
+Released   : 20090222
+Description: A two-column, fixed-width and lightweight template ideal for 1024x768 resolutions. Suitable for blogs and small websites.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!--<title>Emporium by Free Css Templates</title>-->
+<title>Course Records and Study Materials</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="/site_media/default.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="wrapper">
+<!-- start header -->
+
+<div id="logo">
+<!--	
+	<h1><a href="#">Emporium </a></h1>
+	<h2> &raquo;&nbsp;&nbsp;&nbsp;Design by Free Css Templates</h2>
+-->
+<h1> Class Records and Study Material Collections </h1>
+
+<!--</div>-->
+<!--<div="masthead">-->
+<h1>
+  {% if user.is_authenticated %} 
+    You are currently logged in as {{user.get_full_name}}. <a href="/accounts/logout/">Sign Out</a>
+    {% else %} 
+    Welcome, new user. Please <a href="/accounts/login/">log in</a>.
+    {% endif %}
+</h1>
+</div>
+
+</div>
+<div id="header">
+  <div id="menu">
+    <ul>
+      <li class="current_page_item"><a href="#">Homepage</a></li>
+      <li><a href="#">Blogs</a></li>
+      <li><a href="#">Photos</a></li>
+      <li><a href="#">About</a></li>
+      <li class="last"><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</div>
+<!-- end header -->
+</div>
+<!-- start page -->
+
+
+<div id="page">
+	<!-- start content -->
+	
+<!--			  {% block content %} {% endblock %}-->
+				<!-- PUT STUFF HERE -->
+	
+	<!-- end content -->
+
+	<!-- start sidebar -->
+	<div id="sidebar">
+		<ul>
+			<li id="search">
+				<h2>Search</h2>
+				<form method="get" action="">
+					<fieldset>
+					<input type="text" id="s" name="s" value="" />
+					<input type="submit" id="x" value="Search" />
+					</fieldset>
+				</form>
+			</li>
+			<li>
+				<h2>Lorem Ipsum</h2>
+				<ul>
+					<li><a href="#">Fusce dui neque fringilla</a></li>
+					<li><a href="#">Eget tempor eget nonummy</a></li>
+					<li><a href="#">Magna lacus bibendum mauris</a></li>
+					<li><a href="#">Nec metus sed donec</a></li>
+					<li><a href="#">Magna lacus bibendum mauris</a></li>
+					<li><a href="#">Velit semper nisi molestie</a></li>
+					<li><a href="#">Eget tempor eget nonummy</a></li>
+				</ul>
+			</li>
+			<li>
+				<h2>Volutpat Dolore</h2>
+				<ul>
+					<li><a href="#">Nec metus sed donec</a></li>
+					<li><a href="#">Magna lacus bibendum mauris</a></li>
+					<li><a href="#">Velit semper nisi molestie</a></li>
+					<li><a href="#">Eget tempor eget nonummy</a></li>
+					<li><a href="#">Nec metus sed donec</a></li>
+					<li><a href="#">Magna lacus bibendum mauris</a></li>
+					<li><a href="#">Velit semper nisi molestie</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<!-- end sidebar -->
+	<div style="clear: both;">&nbsp;</div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
