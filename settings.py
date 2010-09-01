@@ -75,9 +75,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'usersite.urls'
 
 TEMPLATE_DIRS = (
-#    '/usr/lib/pymodules/python2.6/django/contrib/databrowse/templates/databrowse',
+    '/usr/lib/pymodules/python2.6/django/contrib/databrowse/templates',
     '/home/caitlinj/website/djcode/usersite/templates',
-    '/home/caitlinj/website/djcode/usersite/templates/records',
+#    '/home/caitlinj/website/djcode/usersite/templates/records',
     '/home/caitlinj/website/djcode/usersite/templates/tutorials',
 
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -94,11 +94,11 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-#    'django.contrib.databrowse',
-    'usersite.records',
+    'django.contrib.databrowse',
+#    'usersite.records',
     'usersite.tutorials',
     'django.contrib.admin',
     'usersite.django_filters',
     'south',
-    'oembed',
+#    'oembed',
 )

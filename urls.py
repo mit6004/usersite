@@ -37,7 +37,7 @@ urlpatterns = patterns('',
                        # admin portal
                        (r'^admin/', include(admin.site.urls)),
                        # trying out databrowse app
-                       (r'^databrowse/(,*)', databrowse.site.root),
+                       (r'^databrowse/(.*)', databrowse.site.root),
                        
                        (r'^accounts/login/$', login),
                        (r'^accounts/logout/$', logout_then_login),
