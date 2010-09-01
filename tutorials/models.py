@@ -1,4 +1,4 @@
-
+from django.contrib import databrowse
 from django.contrib.auth.models import User
 ## Using the django admin user model
 from django.db import models
@@ -304,6 +304,8 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.athena_id
 
+## -- SIGNAL UTILS -- ##
+
 ## a signal is sent when a User object is being saved.
 ## Immediately after the User is saved, we want to ensure
 ## that there is a corresponding UserProfile object created
@@ -322,7 +324,15 @@ def make_profile(sender, instance, **kwargs):
         profile.save()
     instance.is_active=True
     ## set is_active=True at time of creation. Can be manually reset. Default,
+
+def databrowse_register(sender, **kwargs):
+    databrowse.site.register(sender)
+
+
+# --- SIGNALS --- ##
 models.signals.post_save.connect(make_profile, sender=User)
+models.signals.class_prepared.connect(databrowse_register)
+
 
 
 #class StaffMember(User):

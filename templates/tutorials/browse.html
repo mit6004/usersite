@@ -11,8 +11,8 @@
   // define the video here
   var qtEmbed = QT_GenerateOBJECTText_XHTML(
   		'{{selected_ta.video.get_absolute_url}}', //'video_placeholder.jpg',
-  		'50', // width
-  		'50', // height: set this to actual height + 20 (to leave space for controller)
+  		'800', // width
+  		'500', // height: set this to actual height + 20 (to leave space for controller)
   		'', // required blank field
   		'enablejavascript', 'true',
   		'obj#id', 'movie1',
@@ -37,7 +37,7 @@
   function set_times_and_play_movie()
   {
     var start_time = {{selected_ta.start_time}};
-    var end_time   = {{selected_ta.end_time}};
+    var end_time   = {{selected_ta.stop_time}};
     
     if(typeof(start_time) == "undefined")
     {
@@ -133,7 +133,7 @@
       </tr>
       {% endfor %}
     </table>
-o
+
 
 
 
