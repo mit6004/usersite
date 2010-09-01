@@ -35,8 +35,14 @@ function set_display_area_to_fit_movie()
 		var height = 0;
 	}
 
-	document.getElementById('video_height').value = width;
-	document.getElementById('video_width').value = height;
+  height_field = document.getElementById('video_height')
+  width_field  = document.getElementById('video_width')
+  
+  if (height_field)
+	  document.getElementById('video_height').value = height;
+
+	if (width_field_
+	  document.getElementById('video_width').value = width;
 
 	obj.width = width;
 	obj.height = height + 16;

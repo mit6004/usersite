@@ -36,12 +36,9 @@
   
   function set_times_and_play_movie()
   {
-    set_start_and_end_times({{selected_ta.start_time}}, {{selected_ta.end_time}});
-    document.movie1.Play();
-  }
-  
-  function set_start_and_end_times(start_time, end_time)
-  {
+    var start_time = {{selected_ta.start_time}};
+    var end_time   = {{selected_ta.end_time}};
+    
     if(typeof(start_time) == "undefined")
     {
       start_time = 0;
@@ -50,6 +47,14 @@
     {
       end_time = document.movie1.GetDuration();
     } 
+        
+    set_start_and_end_times(start_time, end_time);
+    document.movie1.Play();
+  }
+  
+  function set_start_and_end_times(start_time, end_time)
+  {
+
     
     document.movie1.SetStartTime(start_time)
     document.movie1.SetEndTime(end_time)
