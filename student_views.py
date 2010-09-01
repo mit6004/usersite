@@ -16,7 +16,7 @@ import datetime, os, re
 def qt_test(request):
     video = PublicVideo.objects.get(pk=1)
     dict={'test_video': video}
-    template="quicktime_mockup.html"
+    template="moview_preview.html"
     return render_to_response(template, dict)
 
 
@@ -87,7 +87,7 @@ def preview_and_set_topic(request, video_id):
     dict = {
         'test_video':video,
         }
-    template="quicktime_mockup.html"
+    template="moview_preview.html"
     return render_to_response(template, dict)
 
 
