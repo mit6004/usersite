@@ -95,61 +95,6 @@ def student_portal(request):
                               RequestContext(request, processors=[get_student_favorites]))
 
 
-def media_browser(request):
-    all_videos = PublicVideo.objects.all()
-    v_id=3
-    # for now, this is "Timothy Leary's Calenday App - one of the smaller ones.
-    print "vid is %d" %(v_id)
-    all_topic_assignments = TopicAssignment.objects.all()
-
-    staff_faves={}
-    all_faves={}
-
-    # -- stuff to keep the right video-topic thing selected when 
-    # -- the filter list is modified 
-    query_string=request.META['QUERY_STRING']
-    print "query_string = %s\n" %(query_string)
-    v_id_field = 'v_id' in request.GET.keys()
-    start_char=u'?'
-    full_path=''
-    if v_id_field:
-        v_id=request.GET['v_id']
-    full_path=re.sub("\?*v_id=[^&]*", '', request.get_full_path())
-    if 'topic' in request.GET.keys():
-        full_path=re.sub("\&*v_id=[^&]*", '', request.get_full_path())
-        start_char=u'&'
-    # -- end silly query string processing stuff
-    
-    selected_video = all_videos.get(pk=v_id)
-    print "full_path = %s\n" %(full_path)
-    
-    for k in request.GET.keys():
-        print "request.GET[%s] = %s\n" %(k, request.GET[k])
-            
-    for video in all_videos:
-        favoriter_set = video.userprofile_set.all()
-        staff_faves[video.id]=favoriter_set.filter(user__is_staff=True).count()
-        all_faves[video.id]=favoriter_set.count()
-    
-    filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
-
-    dict={
-        'full_path':full_path,
-        'start_char': start_char,
-        'all_topic_assignments':filterset,
-        'selected_video':selected_video,
-        'staff_faves':staff_faves,
-        'all_faves':all_faves,
-        }
-
-    template="browse.html"
-    response = render_to_response(template, dict)
-    print "the outgoing response is %s\n" %(response.content)
-    return response
-
-#                              context_instance=
-#                              RequestContext(request, processors=[get_student_info]))
-
 
 def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
 
@@ -209,7 +154,7 @@ def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
 
 
 
-
+## not used. for testing.
 
 @login_required
 def show_media(request, public_video_id):
@@ -219,3 +164,59 @@ def show_media(request, public_video_id):
 
     return render_to_response(template, this_dict,
                               context_instance = RequestContext(request)) 
+
+
+def media_browser(request):
+    all_videos = PublicVideo.objects.all()
+    v_id=3
+    # for now, this is "Timothy Leary's Calenday App - one of the smaller ones.
+    print "vid is %d" %(v_id)
+    all_topic_assignments = TopicAssignment.objects.all()
+
+    staff_faves={}
+    all_faves={}
+
+    # -- stuff to keep the right video-topic thing selected when 
+    # -- the filter list is modified 
+    query_string=request.META['QUERY_STRING']
+    print "query_string = %s\n" %(query_string)
+    v_id_field = 'v_id' in request.GET.keys()
+    start_char=u'?'
+    full_path=''
+    if v_id_field:
+        v_id=request.GET['v_id']
+    full_path=re.sub("\?*v_id=[^&]*", '', request.get_full_path())
+    if 'topic' in request.GET.keys():
+        full_path=re.sub("\&*v_id=[^&]*", '', request.get_full_path())
+        start_char=u'&'
+    # -- end silly query string processing stuff
+    
+    selected_video = all_videos.get(pk=v_id)
+    print "full_path = %s\n" %(full_path)
+    
+    for k in request.GET.keys():
+        print "request.GET[%s] = %s\n" %(k, request.GET[k])
+            
+    for video in all_videos:
+        favoriter_set = video.userprofile_set.all()
+        staff_faves[video.id]=favoriter_set.filter(user__is_staff=True).count()
+        all_faves[video.id]=favoriter_set.count()
+    
+    filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
+
+    dict={
+        'full_path':full_path,
+        'start_char': start_char,
+        'all_topic_assignments':filterset,
+        'selected_video':selected_video,
+        'staff_faves':staff_faves,
+        'all_faves':all_faves,
+        }
+
+    template="browse.html"
+    response = render_to_response(template, dict)
+    print "the outgoing response is %s\n" %(response.content)
+    return response
+
+#                              context_instance=
+#                              RequestContext(request, processors=[get_student_info]))

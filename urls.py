@@ -25,6 +25,11 @@ student_detail_info = {
     'template_object_name': 'student',
 }
 
+databrowse.site.register(PublicVideo)
+#databrowse.site.register(TopicAssignment)
+#databrowse.site.register(User)
+
+
 
 urlpatterns = patterns('',
                        # all students
