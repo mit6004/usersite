@@ -13,6 +13,9 @@
       <param name="src" value="{{selected_ta.video.get_absolute_url}}">
       <param name="autoplay" value="false">
       <param name="controller" value="true">
+
+      <param name="
+
       <embed src="{{selected_ta.video.get_absolute_url}}" width="810" height="450"
 	     autoplay="false" controller="true"
 	     pluginspage="http://www.apple.com/quicktime/download/">

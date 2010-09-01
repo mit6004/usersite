@@ -113,9 +113,6 @@ class LabEvent(MediaSubmission):
             print "writing %s upload_location: %s" %(self.file_name, self.upload_location)
             super(LabEvent, self).save()
 
-
-
-
 class CheckoffMeeting(LabEvent):
     passed = models.BooleanField()
     staff_member = models.ForeignKey(User)

@@ -40,7 +40,7 @@ urlpatterns = patterns('',
                        (r'^accounts/profile/$', student_views.browse),
 
                        # staff editing and topic assigning page
-                       (r'^topic_assign/(?P<video_id>\d+)/$', student_views.preview_and_set_topic),
+                       (r'^topic_assign/(?P<video_id>\d+)/$', staff_views.preview_and_set_topic),
                        (r'^upload_video/$', staff_views.upload_video),
 
                        # dynamic student detail

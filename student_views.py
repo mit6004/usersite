@@ -194,7 +194,7 @@ def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
         'is_favorite':is_favorite,
         'all_videos':all_videos,
         'all_topic_assignments':filterset,
-        'selected_video':selected_video,
+        'selected_ta':selected_ta,
         }
 
     template="browse.html"

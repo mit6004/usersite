@@ -10,8 +10,8 @@
 // define the video here
 var qtEmbed = QT_GenerateOBJECTText_XHTML(
 		'{{video.get_absolute_url}}', //'video_placeholder.jpg',
-		'500', // width
-		'830', // height: set this to actual height + 20 (to leave space for controller)
+		'968', // width
+		'764', // height: set this to actual height + 20 (to leave space for controller)
 		'', // required blank field
 		'enablejavascript', 'true',
 		'obj#id', 'movie1',
@@ -181,7 +181,10 @@ function RegisterListener(eventName, objID, embedID, listenerFcn)
 
 Topic: <select name="topic_name">
 	<option value="">Must choose one...</option>
-	<option value="topic_1_val">Topic 1</option>
+	{% for topic in topic_choices %}
+	<!-- first part of the tuple is the topic and second is verbose -->
+	<option value="{{topic.0}}">{{topic.1}}topic</option>
+	{% endfor %}
 </select>
 
 <input type="submit" value="Save" />

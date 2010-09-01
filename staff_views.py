@@ -12,19 +12,48 @@ def check_staff(request):
         return HttpResponseRedirect('accounts/login/')
     if not request.user.is_staff:
         return HttpResponseRedirect('accounts/login/')
-    pass
+    
 
 @login_required
 def preview_and_set_topic(request, video_id):
     for item in request.POST.keys():
         print "request.POST[%s] = %s\n" %(item, request.POST[item])
-    check_staff(request)
+    #check_staff(request)
 
-
+    topic_choices = [ [topic[0], topic[1]] for topic in TOPIC_CHOICES]
 
     video_id=int(video_id)
     video = PublicVideo.objects.get(pk=video_id)
-    dict = {'video':video,}
+
+    if request.method=="POST":
+        print "post!"
+
+        if 'start_time_units' in request.POST.keys():
+            start_time_units = request.POST['start_time_units']
+        else: start_time_units = 0
+
+        if 'stop_time_units' in request.POST.keys(): 
+            stop_time_units = request.POST['stop_time_units']
+        else: stop_time_units = 0
+
+        if 'topic_name' in request.POST.keys(): 
+            topic = request.POST['topic_name']
+        else: topic=''
+        print "topic is %s\n" %(topic)
+        
+        ta = TopicAssignment(video = video, 
+                             start_time = start_time_units, 
+                             stop_time = stop_time_units,
+                             topic = topic)
+        ta.save()
+        return HttpResponseRedirect('/upload_video/')
+    else:
+        ta = TopicAssignment(video=video)
+
+    dict = {
+        'video': video,
+        'topic_choices': topic_choices,
+            }
     template="movie_preview.html"
     return render_to_response(template, dict)
 
