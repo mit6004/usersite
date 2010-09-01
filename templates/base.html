@@ -76,27 +76,11 @@ position:relative;
 font-size:100%;
 display:block;
 }
-
-
-
 </style>
 
-
+	  {% block header %} {% endblock %}
   
     <title>{% block title %}Course Records and Study Materials{% endblock %}</title>
-    <div="masthead">
-      {% if user.is_authenticated %}
-      <p> 
-	<h3> Currently Logged in as {{ user.get_full_name }}. <a href="/accounts/logout/">Sign Out</a>. </h3>
-      </p>
-      {% else %}
-      <p>
-	<h2> Welcome. Please <a href="/accounts/login">Sign In</a> to access all features of this site.</h2>
-      </p>
-      {% endif %}
-
-</div>
-
 
 <!--
 <div="nav" class="nav_tabs">
@@ -117,8 +101,14 @@ display:block;
 </head>
 
 
-<body>
-
+<body {% block body_attributes %}{% endblock %}>
+	<div id="masthead">
+		{% if user.is_authenticated %}
+			<h3>Currently Logged in as {{ user.get_full_name }}. <a href="/accounts/logout/">Sign Out</a>. </h3>
+		{% else %}
+			<h2> Welcome. Please <a href="/accounts/login">Sign In</a> to access all features of this site.</h2>
+    {% endif %}
+	</div>
 
 
 <span>

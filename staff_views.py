@@ -25,7 +25,7 @@ def preview_and_set_topic(request, video_id):
     video_id=int(video_id)
     video = PublicVideo.objects.get(pk=video_id)
     dict = {'video':video,}
-    template="quicktime_mockup.html"
+    template="movie_preview.html"
     return render_to_response(template, dict)
 
 

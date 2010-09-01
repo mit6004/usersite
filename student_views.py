@@ -13,6 +13,7 @@ import datetime, os, re
 
 
 
+
 def get_student_info(request):
     if request.user.is_authenticated():
         print "user %s is authenticated \n" %(request.user.username)
@@ -79,7 +80,7 @@ def preview_and_set_topic(request, video_id):
     dict = {
         'video':video,
         }
-    template="quicktime_mockup.html"
+    template="movie_preview.html"
     return render_to_response(template, dict)
 
 
