@@ -2,26 +2,25 @@
 <head>
 <title>Quicktime Template</title>
 
-<script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
+<script type="text/javascript" src="AC_QuickTime.js"></script>
 
 
 <script type="text/javascript">
 
 // define the video here
 var qtEmbed = QT_GenerateOBJECTText_XHTML(
-		'{{test_video.get_absolute_url}}', //'video_placeholder.jpg',
-		'500', // width
-		'830', // height: set this to actual height + 20 (to leave space for controller)
-		'', // required blank field
+		'correcto.mov', //'video_placeholder.jpg',
+		'190', // width
+		'210', // height: set this to actual height + 20 (to leave space for controller)
+		'', // required blacnk field
 		'enablejavascript', 'true',
 		'obj#id', 'movie1',
 		'emb#name', 'movie1',
 		'emb#id', 'movie1_emb',
 		'postdomevents', 'true',
-		'autoplay', 'false',
-		'controller', 'true',
-		'scale', 'aspect'
+		'autoplay', 'false'
 )
+
 
 // called from body.onload to set up listeners that will wait for quicktime
 // movie to send events
@@ -29,13 +28,13 @@ var qtEmbed = QT_GenerateOBJECTText_XHTML(
 function RegisterListeners()
 {
 	// when the movie loads, it will set the end time to the duration of the movie
-	RegisterListener('qt_load', 'movie1', 'movie1_emb', setup_movie);
+	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_default_end_time);
 }
 
-function setup_movie()
+function set_default_end_time()
 {
-	set_display_area_to_fit_movie()
-	set_default_end_time();
+	resize_to_fit_movie();
+	set_end_time( document.movie1.GetDuration() );
 }
 
 function set_start_time()
@@ -54,8 +53,7 @@ function set_end_time(end_time)
 	document.getElementById('end_time_display').value = format_time( end_time );
 }
 
-// "private" methods
-function set_display_area_to_fit_movie()
+function resize_to_fit_movie()
 {
 	var obj = document.movie1;
 	var rectangle = obj.GetRectangle();
@@ -84,6 +82,7 @@ function set_display_area_to_fit_movie()
 	obj.SetControllerVisible(true);
 }
 
+// "private" methods
 function format_time(time_in_video_units){
 	totalSec = time_in_video_units / time_scale();
 
@@ -95,11 +94,6 @@ function format_time(time_in_video_units){
 	result =  zero_pad(hours) + ":" + zero_pad(minutes) + ":" + zero_pad(seconds) + ":" + zero_pad(fframes);
 	return result;
 };
-
-function set_default_end_time()
-{
-	set_end_time( document.movie1.GetDuration() );
-}
 
 function playhead_position() {
 	return document.movie1.GetTime();
@@ -141,12 +135,11 @@ function RegisterListener(eventName, objID, embedID, listenerFcn)
 <tr>
 <td colspan="4" align="center">
 
-  <div id="movie_div"></div>
+	<div id="movie_div"></div>
 
-	  <script type="text/javascript">
-	    document.getElementById('movie_div').innerHTML = qtEmbed;
-	  </script>
-
+	<script type="text/javascript">
+		document.getElementById('movie_div').innerHTML = qtEmbed;
+	</script>
 
 </td>
 </tr>
