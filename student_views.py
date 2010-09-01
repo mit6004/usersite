@@ -13,13 +13,6 @@ import datetime, os, re
 
 
 
-def qt_test(request):
-    video = PublicVideo.objects.get(pk=1)
-    dict={'test_video': video}
-    template="quicktime_mockup.html"
-    return render_to_response(template, dict)
-
-
 def get_student_info(request):
     if request.user.is_authenticated():
         print "user %s is authenticated \n" %(request.user.username)
@@ -29,8 +22,7 @@ def get_student_info(request):
     else:
         print "user is NOT authenticated\n"
         return {}
-    
-
+ 
 
 def get_public_videos(request):
     MAX_DISPLAY=5
@@ -70,8 +62,6 @@ def get_student_favorites(request):
 @login_required
 def preview_and_set_topic(request, video_id):
 
-
-
     for item in request.POST.keys():
         print "request.POST[%s] = %s\n" %(item, request.POST[item])
 
@@ -82,10 +72,12 @@ def preview_and_set_topic(request, video_id):
         html = "<h2> Error: you are not <a href=\"accounts/login.html\">logged in as staff.</a></h2>"
         return render_to_response(html, {})
 
+    
+
     video_id=int(video_id)
     video = PublicVideo.objects.get(pk=video_id)
     dict = {
-        'test_video':video,
+        'video':video,
         }
     template="quicktime_mockup.html"
     return render_to_response(template, dict)

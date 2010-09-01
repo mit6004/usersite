@@ -4,6 +4,62 @@ from django.contrib.auth.models import User
 from django.core.files import File
 import os, fnmatch, re
 from django.conf import settings
+from models import PublicVideo
+
+
+
+def fs_location(auth, type, term):
+    return os.path.join(settings.MEDIA_ROOT, auth, type, term)
+
+def is_video(file_name):
+    extension=os.path.splitext(file_name)[1]
+    for type in VIDEO_TYPE_LIST:
+        if extension==type:
+            return True
+        return False
+    
+def remove_dupes(directory, file):
+    #print "(remove_dupes) file: %s" %(file)
+    for extension in VIDEO_TYPE_LIST:
+        stem = os.path.splitext(os.path.split(file)[1])[0]
+        for other_file in os.listdir(directory):
+            other_name=os.path.split(other_file)[1]
+            [other_stem, other_extension]=os.path.splitext(other_name)[0:2]
+            if re.match(stem, other_stem):
+                if other_stem[-1]=='_' and other_extension==extension:
+                    #parts=re.split('_+.', other_file)
+                    # split around the underscores indicating dupes
+                    #if parts[0]==stem and parts[1]==extension:
+                    print "(remove_dupes) removing %s\n" %(other_file)
+                    os.remove(os.path.join(directory, other_file))
+                    return True    
+        
+def already_there(author, type, semester, file):
+    authors = PublicVideo.objects.filter(author=author)
+    types = authors.filter(type=type)
+    semesters = types.filter(semester=semester)
+    return semesters.filter(file_name=file).count()
+
+def load_video(author, type, semester, video_path):        
+    video_name=os.path.split(video_path)[1]
+    if not already_there(author, type, semester, video_name):
+        ## get the user object with this username to assign it
+        user_obj = staff_list.get(username=author)
+        vid = PublicVideo(author=user_obj, type=type, semester=semester, file_name=video_name)
+#       print "file_path in loader is %s \n" %(video_path)
+        fil = File(open(video_path, 'rb'))
+        vid.file_name=video_name
+        #print "(make_video) vid.file_name=%s  and fil=%s\n" %(vid.file_name, fil)
+        vid.file.save(vid.file_name, fil, save=False)
+        #print "(make_video) vid.file = %s \n" %(vid.file)
+        vid.save()
+        return vid
+
+
+
+
+
+
 def make():
 
 
@@ -81,53 +137,6 @@ def make():
     usernames=[user.username for user in staff_list]
     print "semesters: %s" %(semesters)
     print "usernames: %s" %(usernames)
-
-    def fs_location(auth, type, term):
-        return os.path.join(settings.MEDIA_ROOT, auth, type, term)
-
-    def is_video(file_name):
-        extension=os.path.splitext(file_name)[1]
-        for type in VIDEO_TYPE_LIST:
-            if extension==type:
-                return True
-        return False
-
-    def remove_dupes(directory, file):
-#        print "(remove_dupes) file: %s" %(file)
-        for extension in VIDEO_TYPE_LIST:
-            stem = os.path.splitext(os.path.split(file)[1])[0]
-            for other_file in os.listdir(directory):
-                other_name=os.path.split(other_file)[1]
-                [other_stem, other_extension]=os.path.splitext(other_name)[0:2]
-                if re.match(stem, other_stem):
-                    if other_stem[-1]=='_' and other_extension==extension:
-#                    parts=re.split('_+.', other_file)
-            # split around the underscores indicating dupes
-#                    if parts[0]==stem and parts[1]==extension:
-                        print "(remove_dupes) removing %s\n" %(other_file)
-                        os.remove(os.path.join(directory, other_file))
-                        return True    
-        
-    def already_there(author, type, semester, file):
-        authors = PublicVideo.objects.filter(author=author)
-        types = authors.filter(type=type)
-        semesters = types.filter(semester=semester)
-        return semesters.filter(file_name=file).count()
-
-    def load_video(author, type, semester, video_path):        
-        video_name=os.path.split(video_path)[1]
-        if not already_there(author, type, semester, video_name):
-            ## get the user object with this username to assign it
-            user_obj = staff_list.get(username=author)
-            vid = PublicVideo(author=user_obj, type=type, semester=semester, file_name=video_name)
-#            print "file_path in loader is %s \n" %(video_path)
-            fil = File(open(video_path, 'rb'))
-            vid.file_name=video_name
-            #print "(make_video) vid.file_name=%s  and fil=%s\n" %(vid.file_name, fil)
-            vid.file.save(vid.file_name, fil, save=False)
-            #print "(make_video) vid.file = %s \n" %(vid.file)
-            vid.save()
-            return vid
                   
 
     ## look by staff/type/semester

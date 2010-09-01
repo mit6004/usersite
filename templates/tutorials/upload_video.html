@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} Upload a Public Video{% endblock %}
+
+{% block content %}
+<form action="" enctype="multipart/form-data" method="POST">
+  <fieldset>
+    <legend>
+      Welcome {{user.username}}. Please Select a File to upload and fill out the relevant fields. 
+      You will then be directed to a page where you can set topic segments. 
+    </legend>
+
+    {{video_form.as_p}}
+  </fieldset>
+  <input type="submit" value="Save and Proceed to Topic Assignment"/>
+</form>
+
+{% endblock %}

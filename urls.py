@@ -4,7 +4,7 @@ from django.contrib import databrowse
 #from usersite.templates import list_detail 
 from django.contrib.auth.views import login, logout, logout_then_login
 from usersite.records.models import *
-from usersite import views, student_views
+from usersite import views, student_views, staff_views
 
 #from usersite.student_info import student_info
 
@@ -38,11 +38,10 @@ urlpatterns = patterns('',
                        (r'^accounts/logout/$', logout_then_login),
 
                        (r'^accounts/profile/$', student_views.browse),
-                       (r'^qt_test/$', student_views.qt_test),
 
                        # staff editing and topic assigning page
                        (r'^topic_assign/(?P<video_id>\d+)/$', student_views.preview_and_set_topic),
-                       
+                       (r'^upload_video/$', staff_views.upload_video),
 
                        # dynamic student detail
                        (r'^students/(?P<athena_id>\w+)/$', views.student_detail),

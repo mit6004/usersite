@@ -5,7 +5,6 @@ from django.db import models
 from django.conf import settings
 import datetime, os
 
-
 QUIZ_CHOICES = (
     (1, 'Quiz 1'),
     (2, 'Quiz 2'),
@@ -195,8 +194,11 @@ class PublicVideo(MediaSubmission):
                 # specified. otherwise you can't override it!
                 self.file_name=self.file.name
             upload_location = get_upload_location(self, self.file_name)
-#            print "(publicVideo.save) writing %s upload_location: %s" %(self.file_name, upload_location)
+#   
+            print "(publicVideo.save) writing %s upload_location: %s" %(self.file_name, upload_location)
             super(PublicVideo, self).save()
+        
+    
     
     def _is_video(self):
         return os.path.splitext(self.file_name)[1] in VIDEO_TYPE_LIST
