@@ -29,7 +29,7 @@ var qtEmbed = QT_GenerateOBJECTText_XHTML(
 function RegisterListeners()
 {
 	// when the movie loads, it will set the end time to the duration of the movie
-	RegisterListener('qt_load', 'movie1', 'movie1_emb', setup_movie);
+	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', setup_movie);
 }
 
 function setup_movie()
@@ -136,7 +136,7 @@ function RegisterListener(eventName, objID, embedID, listenerFcn)
 
 </head>
 <body onload="RegisterListeners();">
-<form>
+<form action="" method="post">
 <table>
 <tr>
 <td colspan="4" align="center">

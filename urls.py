@@ -37,8 +37,11 @@ urlpatterns = patterns('',
                        (r'^accounts/login/$', login),
                        (r'^accounts/logout/$', logout_then_login),
 
-                       (r'^accounts/profile/$', student_views.student_portal),
+                       (r'^accounts/profile/$', student_views.browse),
                        (r'^qt_test/$', student_views.qt_test),
+
+                       # staff editing and topic assigning page
+                       (r'^topic_assign/(?P<video_id>\d+)/$', student_views.preview_and_set_topic),
                        
 
                        # dynamic student detail
