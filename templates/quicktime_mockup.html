@@ -78,6 +78,9 @@ function set_display_area_to_fit_movie()
 		var height = 0;
 	}
 
+	document.getElementById('video_height').value = width;
+	document.getElementById('video_width').value = height;
+
 	obj.width = width;
 	obj.height = height + 16;
 
@@ -162,6 +165,7 @@ function RegisterListener(eventName, objID, embedID, listenerFcn)
 <td align="left"><input type="button" onclick="set_start_time();" value="Set to Now" /></td>
 <td align="right">
 	<input type="text" id="end_time_display" value="00:00:00" size="8" />
+	
 	<input type="hidden" id="end_time_units" name="end_time_units" />
 </td>
 <td align="left"><input type="button" onclick="set_end_time();" value="Set to Now" /></td>
@@ -169,9 +173,13 @@ function RegisterListener(eventName, objID, embedID, listenerFcn)
 <tr>
 <td colspan="4" align="center">
 <br />
-Topic: <select>
-	<option>Must choose one...</option>
-	<option>Topic Foo</option>
+
+<input type="hidden" id="video_height" name="video_height" value="0" />
+<input type="hidden" id="video_width" name="video_width"  value="0" />
+
+Topic: <select name="topic_name">
+	<option value="">Must choose one...</option>
+	<option value="topic_1_val">Topic 1</option>
 </select>
 
 <input type="submit" value="Save" />

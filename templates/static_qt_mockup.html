@@ -28,7 +28,7 @@ var qtEmbed = QT_GenerateOBJECTText_XHTML(
 function RegisterListeners()
 {
 	// when the movie loads, it will set the end time to the duration of the movie
-	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_default_end_time);
+	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', set_default_end_time);
 }
 
 function set_default_end_time()
@@ -75,6 +75,9 @@ function resize_to_fit_movie()
 		var width = 200;
 		var height = 0;
 	}
+
+	document.getElementById('video_height').value = width;
+	document.getElementById('video_width').value = height;
 
 	obj.width = width;
 	obj.height = height + 16;
@@ -166,8 +169,9 @@ Topic: <select>
 	<option>Must choose one...</option>
 	<option>Topic Foo</option>
 </select>
-
-<input type="submit" value="Save" />
+<input type="hidden" id="video_height" name="video_height" value="0" />
+<input type="hidden" id="video_width" name="video_width"  value="0" />
+<input type="submit" value="Save" onclick="alert(document.getElementById('video_height').value); alert(document.getElementById('video_width').value); return false;" />
 <br />(Start and End time must be set.)</td>
 </tr>
 </table>
