@@ -9,8 +9,6 @@ function time_scale() {
 }
 
 
-
-
 // internal methods
 function set_display_area_to_fit_movie()
 {
@@ -35,8 +33,8 @@ function set_display_area_to_fit_movie()
 		var height = 0;
 	}
 
-  height_field = document.getElementById('video_height')
-  width_field  = document.getElementById('video_width')
+  height_field = document.getElementById('video_height');
+  width_field  = document.getElementById('video_width');
   
   if (height_field)
 	  document.getElementById('video_height').value = height;
