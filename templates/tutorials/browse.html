@@ -70,14 +70,26 @@
 
 {% block content %}
 
-  <div id="movie_div"></div>
+
+  <div id="movie_div" style="float:left;align:left"></div>
 
   <script type="text/javascript">
     document.getElementById('movie_div').innerHTML = qtEmbed;
   </script>
 
 
-    <table border="1" class="mbrowser">
+
+
+<table border="0" style="display:block;float:left">
+  <tr>
+    <td> 
+      <h3>User Panel area for {{user.username}}</h3> 
+    </td>
+  </tr>
+</table>
+
+<div>
+    <table border="1" class="mbrowser" style="display:block">
       <tr>
 	<th>Topic</th>
 	<th>Type</th>
@@ -128,7 +140,7 @@
       </tr>
       {% endfor %}
     </table>
-
+</div>
 
 
 

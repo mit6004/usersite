@@ -28,10 +28,11 @@ def get_student_info(request):
 def get_public_videos(request):
     MAX_DISPLAY=5
 #    lab_records = Student.labrecord_set.order_by('lab__num')
-    quizzes = PublicVideo.objects.filter(type='OldQuiz')[:MAX_DISPLAY]
-    labs = PublicVideo.objects.filter(type='LabHint')[:MAX_DISPLAY]
-    concepts = PublicVideo.objects.filter(type='Concept')[:MAX_DISPLAY]
-    tutprobs = PublicVideo.objects.filter(type='TutProb')[:MAX_DISPLAY]
+    quizzes = TopicAssignment.objects.filter(video__type='OldQuiz')
+    labs = TopicAssignment.objects.filter(video__type='LabHint')
+    concepts = TopicAssignment.objects.filter(video__type='Concept')
+    tutprobs = TopicAssignment.objects.filter(video__type='TutProb')
+    all_vids = TopicAssignment.objects.all()
 # located in views.py
 
     dict = {
@@ -39,23 +40,29 @@ def get_public_videos(request):
         'labs':labs,
         'concepts': concepts,
         'tutprobs': tutprobs,
+        'all_vids':all_vids,
         }
+    for key in dict.keys():
+        print "dict[%s] : %s\n" %(key, dict[key])
+
+    
     return dict
 
 def get_student_favorites(request):
     MAX_DISPLAY=5
     student_dict= get_student_info(request)
     profile = student_dict['profile']
-    fav_quizzes = profile.favorites.filter(type='OldQuiz')[:MAX_DISPLAY]
-    fav_labs = profile.favorites.filter(type='LabHint')[:MAX_DISPLAY]
-    fav_concepts = profile.favorites.filter(type='Concept')[:MAX_DISPLAY]
-    fav_tutprobs = profile.favorites.filter(type='TutProb')[:MAX_DISPLAY]
-    
+    fav_quizzes = profile.favorites.filter(video__type='OldQuiz')
+    fav_labs = profile.favorites.filter(video__type='LabHint')
+    fav_concepts = profile.favorites.filter(video__type='Concept')
+    fav_tutprobs = profile.favorites.filter(video__type='TutProb')
+    faves = profile.favorites.all()
     dict = {
         'fav_quizzes': fav_quizzes,
         'fav_labs': fav_labs,
         'fav_concepts': fav_concepts,
         'fav_tutprobs': fav_tutprobs,
+        'faves':faves,
         }  
     dict.update(student_dict)
     return dict
@@ -73,8 +80,6 @@ def preview_and_set_topic(request, video_id):
         html = "<h2> Error: you are not <a href=\"accounts/login.html\">logged in as staff.</a></h2>"
         return render_to_response(html, {})
 
-    
-
     video_id=int(video_id)
     video = PublicVideo.objects.get(pk=video_id)
     dict = {
@@ -86,15 +91,43 @@ def preview_and_set_topic(request, video_id):
 
 ## use built in decorator to limit access to logged in users
 @login_required
-def student_portal(request):
-    public_dict = get_public_videos(request)
-    favorite_dict = get_student_favorites(request)
-    template = "student_portal.html"
-    return render_to_response(template, public_dict, 
+def student_portal(request, topic_snippet_id=1, is_favorite='False', query_string=''):
+    public_ta_dict = get_public_videos(request)
+    favorite_ta_dict = get_student_favorites(request)
+    
+    ta_id = int(topic_snippet_id)
+    all_topic_assignments=public_ta_dict['all_vids']
+    selected_ta = all_topic_assignments.get(pk=ta_id)
+
+    favorite_bool=False
+    if is_favorite=='True':
+        favorite_bool=True
+
+    if 'QUERY_STRING' in request.META.keys():
+        query_string='?'+request.META['QUERY_STRING']   
+    query=query_string
+     
+    is_favorite=u'False'
+    
+    if favorite_ta_dict['faves'].filter(pk=ta_id):
+        is_favorite=u'True'
+                
+    filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
+    dict={
+        'query_string':query,
+        'is_favorite':is_favorite,
+        'all_topic_assignments':filterset,
+        'selected_ta':selected_ta,
+        }
+
+    template="browse.html"
+#    response = render_to_response(template, dict)
+#    print "the outgoing response is %s\n" %(response.content)
+#    return response
+    
+    return render_to_response(template, dict, 
                               context_instance=
                               RequestContext(request, processors=[get_student_favorites]))
-
-
 
 def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
 

@@ -42,7 +42,7 @@ urlpatterns = patterns('',
                        (r'^accounts/login/$', login),
                        (r'^accounts/logout/$', logout_then_login),
 
-                       (r'^accounts/profile/$', student_views.browse),
+                       (r'^accounts/profile/$', student_views.student_portal),
 
                        # staff editing and topic assigning page
                        (r'^topic_assign/(?P<video_id>\d+)/$', staff_views.preview_and_set_topic),
