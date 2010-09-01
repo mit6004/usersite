@@ -38,7 +38,7 @@ urlpatterns = patterns('',
                        (r'^accounts/logout/$', logout_then_login),
 
                        (r'^accounts/profile/$', student_views.student_portal),
-
+                       (r'^qt_test/$', student_views.qt_test),
                        
 
                        # dynamic student detail
@@ -58,8 +58,10 @@ urlpatterns = patterns('',
                        (r'^portals/(?P<athena_id>\w+)/$', student_views.student_portal),
 
                        #public browser
-                       (r'^$', student_views.media_browser),
-                       (r'^(?P<public_video_id>\d+)/$', student_views.media_browser),
+                       (r'^$', student_views.browse),
+                       (r'^vid\=(?P<topic_snippet_id>\d+)/fav\=(?P<is_favorite>\w+)/$', student_views.browse),
+                       (r'^vid\=(?P<topic_snippet_id>\d+)/fav\=(?P<is_favorite>\w+)/(?P<query_string>\w+)/$', student_views.browse),
+
 
                        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
                         {'document_root': '/home/caitlinj/website/djcode/usersite/media/'}),

@@ -166,6 +166,43 @@ def make():
 
 ## ------ Topics ------ ##
 
+    titles = {
+        'L03.mov':'Lecture 3',
+        'L04.mov':'Lecture 4',
+        'L05.mov':'Lecture 5',
+        'L06.mov':'Lecture 6',
+        'L07.mov':'Lecture 7',
+        'L08.mov':'Lecture 8',
+        'L09.mov':'Lecture 9',
+        'L10.mov':'Lecture 10',
+        'L11.mov':'Lecture 11',
+        'L14.mov':'Lecture 14',
+        'L15.mov':'Lecture 15',
+        'L16.mov':'Lecture 16',
+        'L17.mov':'Lecture 17',
+        'L18.mov':'Lecture 18',
+        'L19.mov':'Lecture 19',
+        'L20.mov':'Lecture 20',
+        'L21.mov':'Lecture 21',
+        'L22.mov':'Lecture 22',
+        'L23.mov':'Lecture 23',
+        'L24.mov':'Lecture 24',
+        'S10_Q1_P3.mov': 'Static Discipline',
+        'S10_Q1_P2.mov': 'Timothy Leary\'s Calendar App',
+        'S10_S1_P4.mov': 'Deja Vu',
+        'S10_Q2_P2-2.mov': 'Timothy Leary\'s Calendar App (continued)',
+        }
+
+    def assign_titles():
+        videos = PublicVideo.objects.all()
+        for video in videos:
+            if video.title == '':
+                if video.file_name in titles.keys():
+                    video.title = titles[video.file_name]
+                    #print "assigning %s as title for file with file_name %s\n" %(titles[video.file_name], video.file_name)
+        
+    assign_titles()
+
  
     ## temp topic matcher for testing and development
     topic_assignments = {
@@ -189,6 +226,10 @@ def make():
         'L22.mov':['PipelinedBeta'],
         'L23.mov':['PipelinedBeta', 'Pipelining'],
         'L24.mov':['ProgrammableMachines'],
+        'S10_Q1_P3.mov': ['TheDigitalAbstraction', 'CMOSTechnology'],
+        'S10_Q1_P2.mov': ['BasicsOfInformation'],
+        'S10_S1_P4.mov': ['TheDigitalAbstraction', 'GatesAndBooleanLogic'],
+        'S10_Q2_P2-2.mov': ['BasicsOfInformation'],
         }
 
     def match_topics():

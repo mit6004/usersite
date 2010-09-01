@@ -13,6 +13,12 @@ import datetime, os, re
 
 
 
+def qt_test(request):
+    video = PublicVideo.objects.get(pk=1)
+    dict={'test_video': video}
+    template="quicktime_mockup.html"
+    return render_to_response(template, dict)
+
 
 def get_student_info(request):
     if request.user.is_authenticated():
@@ -73,7 +79,6 @@ def student_portal(request):
                               RequestContext(request, processors=[get_student_favorites]))
 
 
-
 def media_browser(request):
     all_videos = PublicVideo.objects.all()
     v_id=3
@@ -84,23 +89,20 @@ def media_browser(request):
     staff_faves={}
     all_faves={}
 
+    # -- stuff to keep the right video-topic thing selected when 
+    # -- the filter list is modified 
     query_string=request.META['QUERY_STRING']
     print "query_string = %s\n" %(query_string)
     v_id_field = 'v_id' in request.GET.keys()
-
-
-
-        #then we know the other form has been submitted before.
-
     start_char=u'?'
     full_path=''
     if v_id_field:
         v_id=request.GET['v_id']
-    
     full_path=re.sub("\?*v_id=[^&]*", '', request.get_full_path())
     if 'topic' in request.GET.keys():
         full_path=re.sub("\&*v_id=[^&]*", '', request.get_full_path())
         start_char=u'&'
+    # -- end silly query string processing stuff
     
     selected_video = all_videos.get(pk=v_id)
     print "full_path = %s\n" %(full_path)
@@ -113,18 +115,7 @@ def media_browser(request):
         staff_faves[video.id]=favoriter_set.filter(user__is_staff=True).count()
         all_faves[video.id]=favoriter_set.count()
     
-    prefiltered=TopicAssignment.objects.all()
-
-##    if not topic=='':
-##        prefiltered=prefiltered.filter(topic=topic)
-##    if not author=='':
-##        prefiltered=prefiltered.filter(video__author=author)
-##    if not type=='':
-##        prefiltered=prefiltered.filter(video__type=type)
-##    if not semester=='':
-##        prefiltered=prefiltered.filter(video__semester=semester)
-    
-    filterset=TopicAssignmentFilterSet(request.GET, queryset=prefiltered)
+    filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
 
     dict={
         'full_path':full_path,
@@ -134,15 +125,74 @@ def media_browser(request):
         'staff_faves':staff_faves,
         'all_faves':all_faves,
         }
-    
+
     template="browse.html"
-    return render_to_response(template, dict)
-
-
-
+    response = render_to_response(template, dict)
+    print "the outgoing response is %s\n" %(response.content)
+    return response
 
 #                              context_instance=
 #                              RequestContext(request, processors=[get_student_info]))
+
+
+def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
+
+    all_topic_assignments = TopicAssignment.objects.all()
+
+    ta_id = int(topic_snippet_id)
+    print "ta_id = %d\n" %(ta_id)
+    selected_ta = all_topic_assignments.get(pk=ta_id)
+    selected_video = selected_ta.video
+    v_id = selected_video.id
+
+    favorite_bool=False
+    if is_favorite=='True':
+        favorite_bool=True
+
+    all_videos=PublicVideo.objects.all()
+    selected_video = all_videos.get(pk=v_id)
+    print "vid is %d" %(v_id)
+
+    if 'QUERY_STRING' in request.META.keys():
+        query_string='?'+request.META['QUERY_STRING']   
+    query=query_string
+    print "full_path = %s\n" %(query)
+ 
+    favoriter_set = selected_ta.userprofile_set.all()   
+    if request.user:
+        if request.user.is_authenticated():
+            if favoriter_set.filter(user=request.user).count():
+                favorite_bool=True
+                
+    filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
+
+    print "favorite_bool= %s and is_favorite=%s \n" %(favorite_bool, is_favorite)
+
+    if favorite_bool:
+        is_favorite=u'True'
+    else:
+        is_favorite=u'False'
+
+    dict={
+        'query_string':query,
+        'is_favorite':is_favorite,
+        'all_videos':all_videos,
+        'all_topic_assignments':filterset,
+        'selected_video':selected_video,
+        }
+
+    template="browse.html"
+    response = render_to_response(template, dict)
+#    print "the outgoing response is %s\n" %(response.content)
+    return response
+    
+                                           
+
+
+
+
+
+
 
 
 @login_required

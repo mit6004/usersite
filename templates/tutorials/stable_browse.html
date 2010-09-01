@@ -38,7 +38,7 @@
 	  <td>{{all_topic_assignments.form.video__type}}</td>
 	  <td>{{all_topic_assignments.form.video__author}}</td>	  
 	  <td>{{all_topic_assignments.form.video__semester}}</td>
-	  <td>{{all_topic_assignments.form.num_staff_favorites}}</td>
+	  <td>{{staff_faves.all_topic_assignments.form.video__id}}</td>
 	  <td>
 	    <input type="submit" value="filter"/>
 	  </td>
@@ -55,11 +55,11 @@
 	<td>{{ta.video.type}}</td>
 	<td>{{ta.video.author}}</td>
 	<td>{{ta.video.semester}}</td>
-	<td>{{ta.get_num_staff_favorites}}</td>
+	<td>{{ta.video.staff_favorite}}</td>
 
 	<td>
 	  
-	  <a href="/vid={{ta.video.id}}/fav={{is_favorite}}/{{query_string}}" >
+	  <a href="{{full_path}}{{start_char}}v_id={{ta.video.id}}">
 	    {% if ta.title.count %}
 	    {{ta.video.id}}
 	    {{ta.video.title}}

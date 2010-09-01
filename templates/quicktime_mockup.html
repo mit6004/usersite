@@ -2,23 +2,26 @@
 <head>
 <title>Quicktime Template</title>
 
-<script type="text/javascript" src="AC_QuickTime.js"></script>
+<script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
 
 
 <script type="text/javascript">
 
 // define the video here
 var qtEmbed = QT_GenerateOBJECTText_XHTML(
-		'correcto.mov', //'video_placeholder.jpg',
-		'190', // width
-		'210', // height: set this to actual height + 20 (to leave space for controller)
-		'', // required blacnk field
+		'{{test_video.get_absolute_url}}', //'video_placeholder.jpg',
+		'500', // width
+		'830', // height: set this to actual height + 20 (to leave space for controller)
+		'', // required blank field
 		'enablejavascript', 'true',
 		'obj#id', 'movie1',
 		'emb#name', 'movie1',
 		'emb#id', 'movie1_emb',
 		'postdomevents', 'true',
-		'autoplay', 'false'
+		'autoplay', 'false',
+                'controller', 'true',
+                'scale', 'aspect'
+
 )
 
 // called from body.onload to set up listeners that will wait for quicktime
@@ -33,6 +36,7 @@ function RegisterListeners()
 function set_default_end_time()
 {
 	set_end_time( document.movie1.GetDuration() );
+        alert(document.movie1.GetRectangle());
 }
 
 function set_start_time()
@@ -104,11 +108,12 @@ function RegisterListener(eventName, objID, embedID, listenerFcn)
 <tr>
 <td colspan="4" align="center">
 
-	<div id="movie_div"></div>
+  <div id="movie_div"></div>
 
-	<script type="text/javascript">
-		document.getElementById('movie_div').innerHTML = qtEmbed;
-	</script>
+	  <script type="text/javascript">
+	    document.getElementById('movie_div').innerHTML = qtEmbed;
+	  </script>
+
 
 </td>
 </tr>

@@ -166,7 +166,6 @@ class PublicVideo(MediaSubmission):
     ## the way it's being "served" which, for development purposes,
     ## is through "static.media.serve
     def get_absolute_url(self):
-        print "running get_absolute_url"
         return 'http://128.30.65.41:8000/site_media/%s' %(self.upload_location)
 
     def _get_upload_location(self):
@@ -270,23 +269,14 @@ class TopicAssignment(Annotation):
     def _get_video_semester(self):
         return self.video.semester
     semester=property(_get_video_semester)
-    
-    num_staff_favorites=models.IntegerField(default=0)
 
+    @property
+    def num_staff_favorites(self, obj):
+        return obj.userprofile_set.filter(user__is_staff=True).count()
 
-    def set_num_staff_favorites(self, value):
-        self.num_staff_favorites=value
-    
-    def set_num_student_favorites(self, value):
-        self.num_student_favorites=value
-
-    def get_num_staff_favorites(self):
-        return self.userprofile_set.filter(user__is_staff=True).count()
-#    num_staff_favorites=property(get_num_staff_favorites)
-
-    def get_num_student_favorites(self):
-        return self.userprofile_set.filter(user__is_staff=False).count()
-#    num_student_favorites=property(get_num_student_favorites)
+    @property
+    def num_student_favorites(self, obj):
+        return obj.userprofile_set.filter(user__is_staff=False).count()
 
 ## ------- USER STUFF ------ ##
 
