@@ -56,14 +56,14 @@
   {
 
     
-    document.movie1.SetStartTime(start_time)
-    document.movie1.SetEndTime(end_time)
+    document.movie1.SetStartTime(start_time);
+    document.movie1.SetEndTime(end_time);
   }
 
   
   function setup_movie()
   {
-  	set_display_area_to_fit_movie()
+  	set_display_area_to_fit_movie();
   	
   }
 
@@ -76,7 +76,7 @@
 {% block content %}
 
 
-  <div id="movie_div" style="float:left;align:left"></div>
+  <div id="movie_div" style="float:left;align:left;width:50%"></div>
 
   <script type="text/javascript">
     document.getElementById('movie_div').innerHTML = qtEmbed;
@@ -85,16 +85,45 @@
 
 
 
-<table border="0" style="display:block;float:left">
+<table border="1" style="float:left;width:50%">
   <tr>
-    <td> 
+    <td style="colspan:4"> 
       <h3>User Panel area for {{user.username}}</h3> 
     </td>
+
   </tr>
+
+  <tr>
+    <th style="colspan:1">
+      Topics
+    </th>
+    <th style="colspan:3">
+      Popular Videos
+    </th>
+  </tr>
+  <!--
+  {% for verbose_topic in verbose_topics %}
+  <tr>
+  <td>
+    {{verbose_topic}}
+  
+  </td>
+  
+  
+  {{faves_by_topic.verbose_topic}}
+  </tr>
+   {% endfor %}
+  
+-->
+
 </table>
 
+
+
+
+
 <div>
-    <table border="1" class="mbrowser" style="display:block">
+    <table border="1" class="mbrowser" style="display:block;clear:both">
       <tr>
 	<th>Topic</th>
 	<th>Type</th>
@@ -134,10 +163,10 @@
 	  
 	  <a href="/vid={{ta.id}}/fav={{is_favorite}}/{{query_string}}" >
 	    {% if ta.video.title %}
-	    ({{ta.video.id}}) - 
+	    ({{ta.id}}) - 
 	    {{ta.video.title}}
 	    {% else %}
-	    ({{ta.video.id}}) - 
+	    ({{ta.id}}) - 
 	    {{ta.video.file_name}}
 	    {% endif %}
 	  </a>  

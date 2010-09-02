@@ -67,6 +67,32 @@ def get_student_favorites(request):
     dict.update(student_dict)
     return dict
 
+
+def get_faves_by_topic(request):
+    student_dict=get_student_info(request)
+    student_faves = student_dict['profile'].favorites.all()
+    topic_choices = [ [topic[0], topic[1]] for topic in TOPIC_CHOICES]
+                
+    faves_by_topic={}
+    
+    for topic_tuple in topic_choices:
+        topic_faves = student_faves.filter(topic=topic_tuple[0])
+        ## get all TopicAssigned video clips that match the exact topic part
+
+        entry=''
+        for topic_fave in topic_faves:
+            entry = '%s <td><a href=\"%s\">%s</a></td>' %(entry, 
+                                                     topic_fave.video.get_absolute_url(), 
+                                                     topic_fave.video.file_name)
+
+        faves_by_topic[topic_tuple[1]]=entry
+        print "faves_by_topic[%s]: %s\n" %(topic_tuple[1], faves_by_topic[topic_tuple[1]])
+    return faves_by_topic
+
+
+
+
+
 @login_required
 def preview_and_set_topic(request, video_id):
 
@@ -94,7 +120,8 @@ def preview_and_set_topic(request, video_id):
 def student_portal(request, topic_snippet_id=1, is_favorite='False', query_string=''):
     public_ta_dict = get_public_videos(request)
     favorite_ta_dict = get_student_favorites(request)
-    
+    faves_by_topic = get_faves_by_topic(request)
+
     ta_id = int(topic_snippet_id)
     all_topic_assignments=public_ta_dict['all_vids']
     selected_ta = all_topic_assignments.get(pk=ta_id)
@@ -111,15 +138,19 @@ def student_portal(request, topic_snippet_id=1, is_favorite='False', query_strin
     
     if favorite_ta_dict['faves'].filter(pk=ta_id):
         is_favorite=u'True'
-                
+    verbose_topics = [ topic[1] for topic in TOPIC_CHOICES ]
     filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
     dict={
         'query_string':query,
         'is_favorite':is_favorite,
         'all_topic_assignments':filterset,
         'selected_ta':selected_ta,
+        'verbose_topics':verbose_topics,
+        'faves_by_topic':faves_by_topic,
         }
 
+    for key in dict.keys():
+        print "dict[%s] : %s\n" %(key, dict[key])
     template="browse.html"
 #    response = render_to_response(template, dict)
 #    print "the outgoing response is %s\n" %(response.content)

@@ -17,7 +17,7 @@ function set_display_area_to_fit_movie()
 
 	if (rectangle)
 	{
-		rectangle = rectangle.split(',')
+	    rectangle = rectangle.split(',');
 		var x1 = parseInt(rectangle[0]);
 		var x2 = parseInt(rectangle[2]);
 		var y1 = parseInt(rectangle[1]);
@@ -39,7 +39,7 @@ function set_display_area_to_fit_movie()
   if (height_field)
 	  document.getElementById('video_height').value = height;
 
-	if (width_field_
+  if (width_field)
 	  document.getElementById('video_width').value = width;
 
 	obj.width = width;
