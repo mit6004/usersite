@@ -10,7 +10,7 @@
 
   // define the video here
   var qtEmbed = QT_GenerateOBJECTText_XHTML(
-  		'{{selected_ta.video.get_absolute_url}}', //'video_placeholder.jpg',
+  		'{{ta.video.get_absolute_url}}', //'video_placeholder.jpg',
   		'800', // width
   		'500', // height: set this to actual height + 20 (to leave space for controller)
   		'', // required blank field
@@ -82,112 +82,39 @@
     document.getElementById('movie_div').innerHTML = qtEmbed;
   </script>
 
-
-
-
-<table border="1" style="float:left;padding:20px">
-  <tr>
-    <td style="colspan:4"> 
-      <h3>User Panel area for {{user.username}}</h3> 
-    </td>
-
-  </tr>
-
-  <tr>
-    <th style="colspan:1">
-      Topics
-    </th>
-    <th style="colspan:3">
-      Popular Videos
-    </th>
-  </tr>
-  <!--
-  {% for verbose_topic in verbose_topics %}
-  <tr>
-  <td>
-    {{verbose_topic}}
-  
-  </td>
-  
-  
-  {{faves_by_topic.verbose_topic}}
-  </tr>
-   {% endfor %}
-  
--->
-
-</table>
-
-
-
-
-
-<div>
-    <table border="1" class="mbrowser" style="display:block;clear:both">
+  <div>
+    <table border="0" style="align:center;display:block">
       <tr>
-	<th>Topic</th>
-	<th>Type</th>
-	<th>Author</th>
-	<th>Semester</th>
-	<th>Staff Favorites</th>
-	<th>Title</th>
+	<th>
+	</th>
+	<th>
+	</th>
+	<th>
+	</th>
+	<th>
+	</th>
       </tr>
-      
-
       <tr>
-	<form action="" method="get">
-	  <td>{{all_topic_assignments.form.topic}}</td>  
-	  <td>{{all_topic_assignments.form.video__type}}</td>
-	  <td>{{all_topic_assignments.form.video__author}}</td>	  
-	  <td>{{all_topic_assignments.form.video__semester}}</td>
-	  <td>{{all_topic_assignments.form.num_staff_favorites}}</td>
-	  <td>
-	    <input type="submit" value="filter"/>
-	  </td>
-	  
-	</form>
-      </tr>
-      
-      {% for ta in all_topic_assignments %}
-      <!-- a topicassignment is an annotation, and points to one topic 
-	   from the TOPIC_CHOICES list and a PublicVideo ForeignKey -->
-  
-      <tr>
-	<td>{{ta.topic}}</td>
-	<td>{{ta.video.type}}</td>
-	<td>{{ta.video.author}}</td>
-	<td>{{ta.video.semester}}</td>
-	<td>{{ta.get_num_staff_favorites}}</td>
-
-	<td>
-	  
-	  <a href="/vid={{ta.id}}/fav={{is_favorite}}/{{query_string}}" >
-	    {% if ta.video.title %}
-	    ({{ta.id}}) - 
-	    {{ta.video.title}}
-	    {% else %}
-	    ({{ta.id}}) - 
-	    {{ta.video.file_name}}
-	    {% endif %}
-	  </a>  
+	<td colspan="4">
+	  <h2>View more Videos with the same:</h2>
 	</td>
       </tr>
-      {% endfor %}
+      <tr>
+	<th>
+	  <a href="/web/show_for_topic/{{ta.topic}}/">Topic</a>
+	</th>
+	<th>
+	  <a href="/web/show_for_author/{{ta.video.author.username}}/">Author</a>
+	</th>
+	<th>
+	  <a href="/web/show_for_semester/{{ta.video.semester}}/">Semester</a>
+	</th>
+	<th>
+	  <a href="/web/show_for_type/{{ta.video.type}}/">Type</a>
+	</th>
+      </tr>
     </table>
-</div>
-
-
-
-
-<!--{{selected_video.get_absolute_url}}-->
-
-
-
-
-
-
-
-
-{% endblock %}
-
+  </div>
     
+    
+    {% endblock %}

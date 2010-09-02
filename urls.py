@@ -25,7 +25,7 @@ student_detail_info = {
     'template_object_name': 'student',
 }
 
-databrowse.site.register(PublicVideo)
+#databrowse.site.register(PublicVideo)
 #databrowse.site.register(TopicAssignment)
 #databrowse.site.register(User)
 
@@ -33,7 +33,7 @@ databrowse.site.register(PublicVideo)
 
 urlpatterns = patterns('',
                        # all students
-                       (r'^students/$', views.student_list),
+                       #(r'^students/$', views.student_list),
                        # admin portal
                        (r'^admin/', include(admin.site.urls)),
                        # trying out databrowse app
@@ -48,18 +48,26 @@ urlpatterns = patterns('',
                        (r'^topic_assign/(?P<video_id>\d+)/$', staff_views.preview_and_set_topic),
                        (r'^upload_video/$', staff_views.upload_video),
 
-                       # dynamic student detail
-                       (r'^students/(?P<athena_id>\w+)/$', views.student_detail),
-                       (r'^accounts/records/$', views.student_record),
+                       # web of links
+                       (r'^web/show_media/(?P<ta_id>\d+)/$', views.show_media),
+                       (r'^web/show_for_topic/(?P<topic>\w+)/$', views.show_by_topic),
+                       (r'^web/show_for_author/(?P<author_username>\w+)/$', views.show_by_author),
+                       (r'^web/show_for_topic/(?P<semester>\w+)/$', views.show_by_semester),
+                       (r'^web/show_for_topic/(?P<type>\w+)/$', views.show_by_type),
+                       
 
+
+                       # dynamic student detail
+                       #(r'^students/(?P<athena_id>\w+)/$', views.student_detail),
+                       #(r'^accounts/records/$', views.student_record),
                        # dynamic student single-lab checkoff record set
-                       (r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/checkoff/$', views.checkoff_records),
+                       #(r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/checkoff/$', views.checkoff_records),
                        # dynamic student single-lab help record set
-                       (r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/help/$', views.help_records),
+                       #(r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/help/$', views.help_records),
                        # add-form for uploading new interactive content
-                       (r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/add_checkoff/$', views.add_checkoff),
+                       #(r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/add_checkoff/$', views.add_checkoff),
                        # add-form for uploading new interactive content
-                       (r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/add_help/$', views.add_help),
+                       #(r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/add_help/$', views.add_help),
 
                        #student portal TEST
                        (r'^portals/(?P<athena_id>\w+)/$', student_views.student_portal),

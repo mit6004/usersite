@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} List of Snippets {% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+
+
+<table border="1">
+  <tr>
+    <th>
+      Video
+    </th>
+    <th>
+      # of Staff Faves
+    </th>
+    <th>
+      # of Student Faves
+    </th>
+  </tr>
+
+  {% for ta in ta_query_set %}
+  <tr>
+    <td>
+      <a href="/web/show_media/{{ta.id}}/">
+      {% if ta.video.title %}
+      {{ta.video.title}} 
+      {% else %}
+      {{ta.video.file_name}}
+      {% endif %}
+      </a>
+    </td>
+    <td>
+      {{ta.get_num_staff_favorites}}
+    </td>
+    <td>
+      {{ta.get_num_student_favorites}}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}      
