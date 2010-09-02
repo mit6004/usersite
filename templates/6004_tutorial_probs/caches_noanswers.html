@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Caches</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+<br/><img src="caches05.gif"/>
+
+<p/>The diagram above illustrates a blocked, direct-mapped cache for a
+computer that uses 32-bit data words and 32-bit byte addresses.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is the maximum number words of data from main memory that can be
+stored in the cache at any one time?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How many bits of the address are used to select which line of the
+cache is accessed?
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How many bits wide is the tag field?
+
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Briefly explain the purpose of the one-bit V field associated with each cache line.
+
+
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Assume that memory location 0x2045C was present in the cache.  Using
+the row and column labels from the figure, in what cache location(s)
+could we find the data from that memory location?  What would the
+value(s) of the tag field(s) have to be for the cache row(s) in which
+the data appears?
+
+
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Can data from locations 0x12368 and 0x322FF8 be present in the cache
+at the same time?  What about data from locations 0x2536038 and
+0x1034?  Explain.
+
+
+</li></ol></div>
+
+    <div id="question1G" class="question">
+    <ol type="A" start="7"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+When an access causes a cache miss, how many words need to be fetched
+from memory to fill the appropriate cache location(s) and satisfy the
+request?
+
+
+</li></ol></div>
+</div>
+
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+The following four cache designs C1 through C4, are proposed for the
+Beta.  All use LRU replacement where applicable (e.g. within each set
+of a set associative cache).
+
+<p/><img src="caches10.gif"/>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which cache would you expect to take the most chip area (hence cost) ?
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which cache is likely to perform worst in a benchmark involving
+repeated cycling through an array of 6K integers ?  Explain.
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+It is observed that one of the caches performs very poorly in a
+particular benchmark which repeatedly copies one 1000-word array to
+another.  Moving one of the arrays seems to cure the problem.  Which
+cache is most likely to exhibit this behavior ?  Explain.
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Recall that we say cache A dominates cache B if for every input
+pattern, A caches every location cached by B.  Identify every pair (A,
+B) of caches from the above list where A dominates B.  Explain your
+reasoning.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+The data-sheet for a particular byte-addressable 32-bit microprocessor
+reads as follows:
+
+<p/>The CPU produces a 32-bit virtual address for both data and
+instruction fetches.  There are two caches: one is used when fetching
+instructions; the other is used for data accesses.  Both caches are
+virtually addressed.  The instruction cache is two-way set-associative
+with a total of 2<sup>12</sup> bytes of data storage, with 32-byte blocks. The
+data cache is two-way set-associative with a total of 2<sup>13</sup> bytes of
+data storage, with 32-byte blocks
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+How many bits long is the tag field in each line of the
+instruction cache?
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+How many address bits are used to choose which line is accessed
+in the data cache?
+
+
+</li></ol></div>
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+Which of the following instruction addresses would never
+collide in the instruction cache with an instruction stored at
+location 0x0ACE6004?<br/><br/>
+
+(A) 0x0BAD6004&nbsp;&nbsp;&nbsp;&nbsp;(D) 0x0ACE6838<br/>
+(B) 0x0C81C81C&nbsp;&nbsp;&nbsp;&nbsp;(E) 0xFACE6004<br/>
+(C) 0x00000004&nbsp;&nbsp;&nbsp;&nbsp;(F) 0x0CEDE008
+
+
+</li></ol></div>
+
+    <div id="question3D" class="question">
+    <ol type="A" start="4"><li>
+    
+What is the number of instructions in the largest instruction
+loop that could be executed with a 100% instruction cache hit rate
+during all but the first time through the loop?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+The following questions ask you to evaluate alternative cache
+designs using patterns of memory references taken from running
+programs.  <b>Each of the caches under consideration has a total capacity
+of 8 (4-byte) words</b>, with one word stored in each cache line.  The
+cache designs under consideration are:
+
+<ul>
+DM: a direct-mapped cache.
+
+<p/>S2: a 2-way set-associative cache with a least-recently-used
+replacement policy.
+
+<p/>FA: a fully-associative cache with a least-recently-used
+replacement policy.
+
+</ul>
+
+<p/>The questions below present a sequence of addresses for memory
+reads.  <b>You should assume the sequences repeat from the start whenever
+you see "...".</b>  Keep in mind that byte addressing is used; addresses
+of consecutive words in memory differ by 4.  Each question asks which
+cache(s) give the best hit rate for the sequence.  Answer by
+considering the steady-state hit rate, i.e., the percentage of memory
+references that hit in the cache after the sequence has been repeated
+many times.
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which cache(s) have the best hit rate for the
+sequence 0, 16, 4, 36, ...
+
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which cache(s) have the best hit rate for the sequence 0, 4, 8,
+12, 16, 20, 24, 28, 32, ...
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which cache(s) have the best hit rate for the sequence 0, 4, 8,
+12, 16, 20, 24, 28, 32, 28, 24, 20, 16, 12, 8, 4, ...
+
+
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which cache(s) have the best hit rate for the sequence 0, 4, 8,
+12, 32, 36, 40, 44, 16, ..
+
+
+</li></ol></div>
+
+    <div id="question4E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Assume that a cache access takes 1 cycle and a memory access
+takes 4 cycles. If a memory access is initiated only after the cache has
+missed, what is the maximum miss rate we can tolerate before use of
+the cache actually slows down accesses?
+ 
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+Ben Bitdiddle has been exploring various cache designs for use with
+the Beta processor. He is considering only caches with one word (4
+bytes) per line. He is interested in the following cache designs:
+
+<ul>
+C1: 2-way set associative, LRU replacement, 256 total data words (128
+sets of 2 words each).
+
+<p/>C2: 2-way set associative, random replacement, 256 total data words
+(128 sets of 2 words each).
+
+<p/>C3: 2-way set associative, LRU replacement, 512 total data words
+(256 sets of 2 words each).
+
+<p/>C4: 4-way set associative, LRU replacement, 512 total data words
+(128 sets of 4 words each).
+
+<p/>C5: Fully associative, LRU replacement, 512 total data words.
+</ul>
+
+<p/>In order to help her analysis, Ben is trying to identify cases
+where one cache dominates another in terms of cache hits.  Ben
+considers that cache A dominates cache B if, given identical strings
+of memory references, every memory reference that gives a cache hit
+using B is also a hit using A. Thus if A dominates B, A will give at
+least as high a hit rate as B for every program.
+
+<p/>In each of the following pairs of caches, deduce whether the first
+dominates the second:
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+C1 dominates C2
+
+
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+C2 dominates C1
+
+
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+C3 dominates C1
+
+
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+C3 dominates C2
+
+
+</li></ol></div>
+
+    <div id="question5E" class="question">
+    <ol type="A" start="5"><li>
+    
+C4 dominates C3
+
+
+</li></ol></div>
+
+    <div id="question5F" class="question">
+    <ol type="A" start="6"><li>
+    
+C4 dominates C2
+
+
+</li></ol></div>
+
+    <div id="question5G" class="question">
+    <ol type="A" start="7"><li>
+    
+C5 dominates C1
+
+
+</li></ol></div>
+
+    <div id="question5H" class="question">
+    <ol type="A" start="8"><li>
+    
+Averaged over a wide range of typical application programs,
+which of the above caches would you expect to yield the highest hit
+rate?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+Adverbs Unlimited is considering a computer system based loosely on
+the Beta.  Five designs have been proposed, each of them similar to
+the Beta except for a cache between the 32-bit processor data bus and
+the main-memory subsystem.  Like the Beta, each machine deals with
+32-bit main-memory addresses, for a total address space of 2<sup>32</sup>
+bytes.  The machines' caches differ only in the parameters of
+associativity, size, and writeback.  The block size for each cache
+1 word (4 bytes).
+
+<p/><table border="1" cellpadding="2">
+<tr><th>Model</th><th>Associativity</th><th>Total data size (bytes)</th><th>Write-</th></tr>
+<tr><td>DEFINATELY</td><td>four-way</td><td>2<sup>16</sup></td><td>back</td></tr>
+<tr><td>CERTAINLY</td><td>direct-mapped</td><td>2<sup>16</sup></td><td>back</td></tr>
+<tr><td>HOPEFULLY</td><td>4-way</td><td>2<sup>10</sup></td><td>through</td></tr>
+<tr><td>PERHAPS</td><td>2-way</td><td>2<sup>10</sup></td><td>back</td></tr>
+<tr><td>DOUBTFULLY</td><td>direct-mapped</td><td>2<sup>10</sup></td><td>back</td></tr>
+</table>
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+How many bits are required for the <i>tag</i> portion of each
+cache line for each of the architectures?  How bits of comparitor are needed?
+How many bits of SRAM altogether (including tag fields, valid and dirty bits).
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+Address lines from the CPU are designated A31, ..., A1, A0,
+where A0 is the low-order address bit.  Which of these CPU address
+lines are used as address inputs to the SRAMs of the cache in the
+PERHAPS model?
+
+
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+Suppose that address lines A2 and A9 were inadvertently
+interchanged in the cable between the DOUBTFULLY CPU and its cache.
+Which, if any, of the following statements best describes the
+effect(s) of this change, assuming that other hardware and software
+remain unmodified?
+<ol type="A">
+<li>The machine would no longer work.</li>
+<li>The machine would continue to work as before.</li>
+<li>The machine would continue to work, but at a reduced performance level.</li>
+<li>The machine would continue to work, at an improved performance level.</li>
+</ol>
+
+
+</li></ol></div>
+</div>
+
+
+</body></html>

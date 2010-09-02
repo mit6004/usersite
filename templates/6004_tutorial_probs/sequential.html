@@ -1,0 +1,614 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><head><script language="JavaScript1.2" src="tutprobs.js"></script></head><body style="margin-top:5px">
+	<noscript><table width=100%% border="1" cellpadding="8" bgcolor="yellow"><tr><td>
+        You need to have Javascript enabled to view this page
+        properly.  If your browser does not support Javascript
+        or you have chosen not to enable it, please return to
+        the previous page and use the appropriate link to view
+        non-script versions of this tutorial page.
+        </td></tr></table></noscript><h3>Sequential logic and memory components</h3>
+        <a href="\#" onClick="showall(); return false"><img border="0" src="showall.gif"/></a>
+        &nbsp;
+        <a href="\#" onClick="hideall(); return false"><img border="0" src="hideall.gif"/></a>
+        <p/><img src="star.gif" alt="Discussed in section"/>
+        indicates problems that have been selected for discussion
+        in section, time permitting.
+        
+
+
+
+
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+Consider the following diagram of a simple sequential circuit:
+
+<p/><img src="state02.gif"/>
+
+<p/>The components labeled CL1 and CL2 are combinational; R1 and R2 are
+edge-triggered flip flops.  Timing parameters for each component are
+as noted.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Write the timing specifications (tS, tH, tCD, tPD, tCLK) for the
+system as a whole using the timing specifications for the internal
+components that are given in the figure.
+
+<div id="control1A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1A'); return false">
+          <img name="ctl1A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1A" class="answer" style="display:none"><font color="blue">
+It's a good idea to check if the circuit will work for any clock
+period.  We check this by checking if the total contamination delay
+from R1 to R2 is long enough to cover the hold time of R2.  In other
+words,
+
+<p/><ul>
+tH,R2 &lt;= tCD,R1 + tCD,CL2<br/>
+2 &lt;= 1 + 1<br/>
+2 &lt;= 2
+</ul>
+
+<p/>The inequality is satisfied, so we can determine the timing
+specifications of the system.
+	
+<p/>The setup time and hold time of the system is determined by the
+setup time and hold time required for the signal IN, which is the
+input to CL1.  Thus,
+<p/><ul>
+tS = tPD,CL1 + tS,R1 = 6, and<br/>
+tH = tH,R1 - tCD,CL1 = 1.
+</ul>
+
+<p/>The contamination and propagation delay of the system is determined
+by the contamination and propagation delay of the signal OUT, which is
+the output of register R2.  Thus, 
+
+<p/><ul>
+tCD = tCD,R2 = 2, and<br/>
+tPD = tPD,R2 = 8.
+</ul>
+
+<p/>The clock period for the system is determined by adding all the
+propagation delays from R1 to R2, and the setup time for R2.
+
+<p/><ul>
+tCLK &gt;= tPD,R1 + tPD,CL2 + tS,R2<br/>
+tCLK &gt;= 2 + 5 + 4<br/>
+tCLK &gt;= 11
+</ul>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Suppose you had available a faster version of CL2 having a propagation
+delay of 3 and a contamination delay of zero.  Could you substitute
+the faster CL2 for the one shown in the diagram?  Explain.
+
+<div id="control1B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1B'); return false">
+          <img name="ctl1B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1B" class="answer" style="display:none"><font color="blue">
+You could not substitute the faster CL2 because our hold time
+constraint for R2 would not be met.  The sum of the contamination
+delays between R1 and R2 must be greater than the hold time of R2.
+Using the faster CL2 would reduce the contamination delay sum to 1
+which is not greater than the hold time, 2, of R2.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+We've been treating wires as idealized components that introduce no
+delay of their own.  In the real world, wires have resistance,
+capacitance and inductance that will cause different frequencies to
+propagate along the wire at different rates.  This means that wires
+will delay the arrival of sharp rising and falling transitions (which
+you'll remember from Fourier analysis have signal components at many
+different frequencies).  This effect is particularly bothersome in
+connection with clock signals since the clock may arrive at separate
+parts of the circuit at slightly different times.  This difference in
+arrival times of the clock is called <b>clock skew</b>, which we'll model in
+our simple circuit above as explicit delays along each clock path:
+
+<p/><img src="state03.gif"/>
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+Rewrite the timing specifications for the system as a whole taking
+into account d1 and d2.  Don't make any assumption about the
+relative sizes of the two delays.
+
+<div id="control1D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1D'); return false">
+          <img name="ctl1D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1D" class="answer" style="display:none"><font color="blue">
+The delay d1 causes all timing specifications associated with register
+R1 to be shifted later in time by d1.  Likewise the delay d2 causes
+all timing specifications associated with register R2 to be shifted
+later in time by d2.  Note that we still use the original clock signal
+as our reference for the system, so the setup times for the registers
+R1 and R2 become shorter by d1 and d2, respectively, and the hold
+times for R1 and R2 become longer by d1 and d2.
+
+<p/>The timing specifications of the system, taking d1 and d2 into account, are:
+	
+<p/><ul>
+tS = tPD,CL1 + tS,R1 - d1 = 6 - d1<br/>
+tH = tH,R1 - tCD,CL1 + d1 = 1 + d1<br/>
+tCD = tCD,R2 + d2 = 2 + d2<br/>
+tPD = tPD,R2 + d2 = 8 + d2<br/>
+</ul>
+
+<p/>Finally,
+
+<p/><ul>
+tCLK &gt;= tPD,R1 + tPD,CL2 + tS,R2<br/>
+tCLK &gt;= 2 + d1 + 5 + 4 - d2<br/>
+tCLK &gt;= 11 + d1 - d2
+</ul>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+The relative clock skew (d2 - d1) between two registers connected in
+a "pipeline" - where the output of the first register is connected,
+usually through logic, to the input of the second register - can also
+affect the design of a circuit.  Explain how relative clock skew
+affects the maximum clock frequency of the circuit shown above.
+Remember that the relative skew might be positive or negative.
+
+<div id="control1E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1E'); return false">
+          <img name="ctl1E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1E" class="answer" style="display:none"><font color="blue">
+As shown in part (C), tCLK &gt;= 11 - (d2 - d1), rewritten to show the
+relative clock skew term.
+
+<p/>One can see that as the relative clock skew becomes positive, the
+maximum clock frequency increases.  Conversely, as the relative clock
+skew becomes negative, the maximum clock frequency decreases.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+[Why clock skew keeps integrated circuit designers awake at night.] If
+d2 &gt; d1, the circuit shown above will not operate correctly.
+Explain why.  Will changing the frequency of CLK solve the problem?
+Why or why not?
+
+<div id="control1F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1F'); return false">
+          <img name="ctl1F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1F" class="answer" style="display:none"><font color="blue">
+Let's revisit the constraint that the contamination delay from R1 to
+R2 must cover the hold time of R2:
+
+<p/><ul>
+tH,R2 &lt;= tCD,R1 + tCD,logic<br/>
+2 + d2 &lt;= 1 + d1 + 1<br/>
+d2 &lt;= d1
+</ul>
+
+<p/>Thus, if d2 > d1, then the hold time of R2 is no longer being
+satisfied.  Lengthening the clock period doesn't change the fact that
+the hold time constraint isn't met.  The clock period doesn't even
+enter our equations above.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1G" class="question">
+    <ol type="A" start="7"><li>
+    
+Suggest a way for the designer to change his circuit to guarantee
+correct operation given an upper bound, tskew > abs(d2 - d1), on the
+maximum relative clock skew. Assume that the timing parameters of the
+registers cannot be adjusted.
+
+<div id="control1G" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1G'); return false">
+          <img name="ctl1G" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1G" class="answer" style="display:none"><font color="blue">
+Adding additional contamination delay, such as a buffer between R1 and
+R2, will work.  This leads to a circuit which has a larger clock period
+overall.
+
+</font><div>
+</li></ol></div>
+</div>
+
+
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+The following circuit diagram implements a sequential circuit with two state bits,
+S0 and S1:
+ 
+<p/><center><img src="state17.gif"/></center>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is the smallest clock period for which the circuit still
+operates correctly?
+
+<div id="control2A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2A'); return false">
+          <img name="ctl2A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2A" class="answer" style="display:none"><font color="blue">
+There are two contraints to check:
+<p/><ul>
+tPD,REG + tPD,INV + tPD,INV + tS,REG &lt;= tCLK<br/>
+tPD,REG + tPD,NOR2 + tS,REG &lt;= tCLK
+</ul>
+<p/>The first constraint requires tCLK &gt;= 9ns.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+A sharp-eyed student suggests optimizing the circuit by
+removing the pair of inverters and connecting the Q output of the left
+register directly to the D input of the right register.
+If the clock period could be adjusted appropriately, would the optimized
+circuit operate correctly?  If yes, explain the adjustment to the clock
+period that would be needed.
+
+<div id="control2B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2B'); return false">
+          <img name="ctl2B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2B" class="answer" style="display:none"><font color="blue">
+No, the circuit won't operate correctly since tCD,REG &lt; tHOLD,REG,
+i.e., the output of the left register doesn't meet the required
+hold time when connected directly to the input of the right register.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+When the RESET signal is set to "1" for several cycles, what
+values are S0 and S1 set to?
+
+<div id="control2C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2C'); return false">
+          <img name="ctl2C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2C" class="answer" style="display:none"><font color="blue">
+S0 = 0, S1 = 0.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the RESET signal has been set to "0" and will stay
+that way, what is the state following S0=1 and S1=1?
+
+<div id="control2D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2D'); return false">
+          <img name="ctl2D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2D" class="answer" style="display:none"><font color="blue">
+S0 = 1, S1 = 0.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Now suppose there is <i>skew</i> in the CLK signal such that the
+rising edge of CLK always arrives at the left register exactly 1ns
+before it arrives at the right register.  What is the smallest clock
+period for which the circuit still operates correctly?
+
+<div id="control2E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2E'); return false">
+          <img name="ctl2E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2E" class="answer" style="display:none"><font color="blue">
+Fortunately the skew doesn't introduce any hold time problems
+with the input to the right register.  tCLK can now be as small
+as 8ns (both paths between registers fit exactly).
+
+</font><div>
+</li></ol></div>
+</div>
+
+
+
+
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+A possible implementation of a sequential circuit
+with one input and one output is shown below.
+ 
+<p/><center><img src="state16.gif"/></center>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+What is the smallest value for the ROM's contamination delay
+that ensures the necessary timing specifications are met?
+
+<div id="control3A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3A'); return false">
+          <img name="ctl3A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3A" class="answer" style="display:none"><font color="blue">
+tCD,REG + tCD,ROM &gt;= tH,REG, so tCD,ROM &gt;= 0.75ns.
+
+</font><div>
+</li></ol></div>
+
+
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+Assume that the ROM's tCD = 3ns.  What is the smallest clock
+period that ensures that the necessary timing specifications are met.
+
+<div id="control3B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3B'); return false">
+          <img name="ctl3B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3B" class="answer" style="display:none"><font color="blue">
+tPD,REG + tPD,ROM + tS,REG = 2 + 5 + 1 = 8ns.
+
+</font><div>
+</li></ol></div>
+
+
+
+
+
+
+<q:question>
+The following schematic has two flip-flops and two blocks of
+combinational logic with the indicated timing specifications.  Assume
+that the flip-flops are identical and that the clock has zero rise and
+fall time.
+
+<p/><img src="state18.gif"/>
+
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+Assuming that the clock period is 25ns, what is the maximum setup
+time for the flip-flops for which this circuit will operate correctly?
+
+<div id="control3C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3C'); return false">
+          <img name="ctl3C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3C" class="answer" style="display:none"><font color="blue">
+tS &lt;= tCLK - tPD,REG - tPD,LOGIC = 25 - 6 - max(11,9) = 8ns.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question3D" class="question">
+    <ol type="A" start="4"><li>
+    
+Assuming that the clock period is 25ns, what is the maximum hold
+time for the flip-flops for which this circuit will operate correctly?
+
+<div id="control3D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3D'); return false">
+          <img name="ctl3D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3D" class="answer" style="display:none"><font color="blue">
+tH &lt;= tCD,REG + tCD,LOGIC = 2 + min(4,5) = 6ns.
+
+</font><div>
+</li></ol></div>
+</div>
+
+
+
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+In lecture, you saw a static latch constructed from a 2-input lenient
+MUX as shown in the diagram below.
+
+<p/><img src="state01.gif"/>
+
+<p/>Recall that the MUX selects the Q output when G=0, and the D input
+when G=1.  The plan is that when G=1, the Q output will follow D after
+a short delay; when G=0, the current Q output will be "latched" via
+the feedback path.  In this problem we explore assumptions necessary
+to construct an informal proof that the latch behaves as proposed.
+Assume, in each of the following, that the MUX is a well-behaved
+lenient combinational device with a propagation delay of tpd.
+
+<p/>Recall that the lenience of the MUX allows us to assume that if any
+two of its inputs sufficient to determine its output are stable and
+valid for at least tpd, then the MUX output will be stable and valid.
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+Specify constraints on the two data inputs of the MUX sufficient to
+guarantee that its output will be stable and valid independently of
+the value on the select input.
+
+<div id="control4A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4A'); return false">
+          <img name="ctl4A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4A" class="answer" style="display:none"><font color="blue">
+When both data inputs are equal, valid and stable for tpd, the output
+is valid and stable independent of the select signal.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+Specify constraints on a single data input and the select input of the
+MUX sufficient to guarantee stable and valid output independently of
+the value on the remaining data input.
+
+<div id="control4B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4B'); return false">
+          <img name="ctl4B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4B" class="answer" style="display:none"><font color="blue">
+When G is 0 and both G and Q are stable and valid for tpd or when G is 1
+and both G and D are stable and valid for tpd, the MUX will have a valid
+and stable output indenpedent of the other data input.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+Now we explore the scenario where G=1 and D has been stable and valid
+for ts seconds prior to a 1-to-0 transition on G, and remains stable
+and valid until th seconds after the transition on G.  Our goal is to
+establish that, for sufficiently large values of ts and th, the latch
+behaves as advertised.
+
+<p/>Consider the initial interval in the above scenario where G=1. At
+what point is Q=D guaranteed?  Explain why in a sentence or two.
+
+<div id="control4C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4C'); return false">
+          <img name="ctl4C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4C" class="answer" style="display:none"><font color="blue">
+After G and D have been stable and valid for tpd, the output Q will
+equal the data input D.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+Explain why, for sufficiently large values of tS the output Q remains
+stable despite invalid voltages on G.  What is the setup time required
+to guarantee output validity during the transition on G?
+
+<div id="control4D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4D'); return false">
+          <img name="ctl4D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4D" class="answer" style="display:none"><font color="blue">
+Part C tells us that Q will equal D tpd after D becomes valid.  According
+to the leniency requirement, the output will be guaranteed valid and
+stable tpd after the inputs necessary to determine the output become
+valid and stable.  In this case, both Q and D must be valid and stable
+tpd in order to ensure Q remains stable and valid independent of
+transitions on G.  Thus tS must be greater than 2*tpd.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4E" class="question">
+    <ol type="A" start="5"><li>
+    
+Now assume that D changes tH seconds after the transition on G.
+Explain why, for a sufficiently large value of tH, the Q output will
+remain stable independently of D.
+
+<div id="control4E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4E'); return false">
+          <img name="ctl4E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4E" class="answer" style="display:none"><font color="blue">
+In order to ensure the Q remains stable and valid independent of D,
+G must be set to a valid logic "0" for tpd before D transitions.
+Thus, tH must be greater than tpd.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4F" class="question">
+    <ol type="A" start="6"><li>
+    
+Identify which of your previous answers is dependent on the MUX being
+lenient, giving a single-sentence description of the dependence.
+
+<div id="control4F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4F'); return false">
+          <img name="ctl4F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4F" class="answer" style="display:none"><font color="blue">
+All of the previous answers are dependent on the MUX being lenient.
+In each case we discuss the necessity for two inputs to be valid and
+stable for tpd in order to ensure the output is valid and stable.
+If the MUX were not lenient, all three inputs would have to be valid
+and stable for tpd in order for the output to be guaranteed valid
+and stable.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4G" class="question">
+    <ol type="A" start="7"><li>
+    
+Does the operation of the above latch depend on the contamination
+delay of the MUX?  Explain.
+
+<div id="control4G" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4G'); return false">
+          <img name="ctl4G" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4G" class="answer" style="display:none"><font color="blue">
+The latch does not depend on contamination delay. It only depends
+on the leniency of the MUX and that tS and tH requirements are met.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4H" class="question">
+    <ol type="A" start="8"><li>
+    
+Your analysis has established setup and hold time requirements
+necessary to guarantee proper operation of the latch.  Suppose, in the
+above scenario, the setup or hold time requirement is violated?  What
+can you say about the value on Q?
+
+<div id="control4H" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4H'); return false">
+          <img name="ctl4H" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4H" class="answer" style="display:none"><font color="blue">
+If the setup and hold times are violated, the value of the output
+cannot be determined.
+
+</font><div>
+</li></ol></div>
+</div>
+</body></html>

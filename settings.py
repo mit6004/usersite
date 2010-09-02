@@ -79,6 +79,7 @@ TEMPLATE_DIRS = (
     '/home/caitlinj/website/djcode/usersite/templates',
     '/home/caitlinj/website/djcode/usersite/templates/records',
     '/home/caitlinj/website/djcode/usersite/templates/tutorials',
+    '/home/caitlinj/website/djcode/usersite/templates/6004_tutorial_probs',
 
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -94,11 +95,11 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-#    'django.contrib.databrowse',
+    'django.contrib.databrowse',
     'usersite.records',
     'usersite.tutorials',
     'django.contrib.admin',
     'usersite.django_filters',
     'south',
-    'oembed',
+#    'oembed',
 )

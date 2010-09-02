@@ -25,9 +25,9 @@ class CheckoffMeetingAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(LabRecord, LabRecordAdmin)
-admin.site.register(QuizGrade)
-admin.site.register(CheckoffMeeting, CheckoffMeetingAdmin)
-admin.site.register(HelpMeeting)
-admin.site.register(LabSubmission)
+#admin.site.register(LabRecord, LabRecordAdmin)
+#admin.site.register(QuizGrade)
+#admin.site.register(CheckoffMeeting, CheckoffMeetingAdmin)
+#admin.site.register(HelpMeeting)
+#admin.site.register(LabSubmission)
 

@@ -1,0 +1,570 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><head><script language="JavaScript1.2" src="tutprobs.js"></script></head><body style="margin-top:5px">
+	<noscript><table width=100%% border="1" cellpadding="8" bgcolor="yellow"><tr><td>
+        You need to have Javascript enabled to view this page
+        properly.  If your browser does not support Javascript
+        or you have chosen not to enable it, please return to
+        the previous page and use the appropriate link to view
+        non-script versions of this tutorial page.
+        </td></tr></table></noscript><h3>Programmable machines</h3>
+        <a href="\#" onClick="showall(); return false"><img border="0" src="showall.gif"/></a>
+        &nbsp;
+        <a href="\#" onClick="hideall(); return false"><img border="0" src="hideall.gif"/></a>
+        <p/><img src="star.gif" alt="Discussed in section"/>
+        indicates problems that have been selected for discussion
+        in section, time permitting.
+        
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+
+Consider the following circuit:
+
+<p/><img src="progmach01.gif"/>
+
+<p/>The heavy lines represent busses, which are many signals grouped
+together, e.g., an eight-bit bus is eight separate signal wires that
+are treated as a group.  When a bus connects to one or more
+components, it's just shorthand for drawing the individual signal
+wires between those components.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+The components with triangular schematic symbols are tristate drivers
+that operate like buffers except that they have an additional control
+input called an enable.  When the enable is high, the buffer is on and
+the input value is driven onto the output.  When the enable is low,
+the buffer is off and doesn't drive anything onto its output (i.e.,
+the output pin is in a high-impedance state).  What rules should the
+designer follow when designing the logic that generates DRA, DRB and
+DRALU in order to ensure that the DBUS signals always have legitimate
+values?
+
+<div id="control1A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1A'); return false">
+          <img name="ctl1A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1A" class="answer" style="display:none"><font color="blue">
+The designer should have at most one of the signals DRA, DRB, or DRALU
+asserted during any clock cycle. While these signals are being
+computed, it is possible that more than one might be asserted
+simultaneously due to logic glitches or computation paths of different
+length. The designer should take care to eliminate or at least
+minimize this occurrence.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Draw a schematic showing how a tristate driver might
+be implemented using mosfets.  Hint: The following schematic shows one
+way of implementing a tristate driver.
+
+<p/><img src="progmach03.gif"/>
+
+<p/>You just have to fill in the logic inside each of the clouds-think
+about for what values of DATA, ENABLE you want the pullup to be on and
+replace the upper cloud with one or more logic gates that implement
+that equation.  Ditto for the pulldown and lower cloud.
+
+<div id="control1B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1B'); return false">
+          <img name="ctl1B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1B" class="answer" style="display:none"><font color="blue">
+<img src="progmach02.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+The register-like symbols labeled "Reg A" and "Reg B" also have an
+additional enable input and are called load-enabled registers.  When
+the enable is high, the register will be loaded from the incoming
+data.  When the enable is low, the register reloads itself with its
+previous value.  Show how to implement a load-enabled register from a
+regular D-register and a 2-way multiplexer.
+
+<div id="control1C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1C'); return false">
+          <img name="ctl1C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1C" class="answer" style="display:none"><font color="blue">
+Just add the mux before the register to clock in either the
+old value or the new value
+
+<p/><img src="progmach04.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+It's considered bad practice to control the loading of a register by
+"gating" its clock, i.e., by adding some logic that controls whether
+or not the register sees a rising clock edge.  Briefly explain why
+"gating the clock" is discouraged.  Hint: consider the effects of
+clock skew and logic hazards.
+
+<div id="control1D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1D'); return false">
+          <img name="ctl1D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1D" class="answer" style="display:none"><font color="blue">
+"Gating" the clock is not good practice for 2 reasons:
+
+<p/>(1) <i>The possibility of glitches in the load enable signal.</i>
+Combinational logic often controls the load enable signal, so there
+may be periods of time when the load enable momentarily changes value.
+If load enable is supposed to remain low, but changes to a high value
+while CLK has a high value, then the register will see a rising clock
+edge and sample its inputs.  This unwanted sampling of its inputs may
+cause the register to remember incorrect values, or even worse, enter
+a metastable state if the inputs are changing.
+
+<p/>(2) <i>Clock skew.</i>
+Placing a logic gate in front of the CLK input of a register
+introduces delay, as the logic gate has intrinsic delay.  This delay
+skews the clock signal, and as we have seen, clock skew can require
+slower clocking of the circuit or could cause hold time requirements
+to be violated.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+The arithmetic-logic unit (ALU) has two data inputs (A and B) and, in
+this circuit, can perform only two operations, based on the single
+control signal FN:
+
+<ul>
+when FN = 0, the ALU output is A-B<br/>
+when FN = 1, the ALU output is B-A
+</ul>
+
+<p/>The ALU also generates two condition codes which give us some
+additional information about the ALU output:
+
+<ul>
+Z = 1 when the ALU output is the number "0"<br/>
+N = 1 when the ALU output is a negative number
+</ul>
+
+<p/> Assuming that we have 8-bit data values and use a two's complement
+representation for the data values processed by the ALU, draw
+gate-level schematics for the logic that generates the Z and N signals
+from the ALU output value.
+
+<div id="control1E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1E'); return false">
+          <img name="ctl1E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1E" class="answer" style="display:none"><font color="blue">
+<img src="progmach05.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Your job is to build a controller that will cause the circuit above to
+execute the following algorithm which computes the greatest common
+divisor of two inputs:
+
+<pre>
+	while (a != b)
+		if (a > b) a = a - b;
+	 	else b = b - a;
+</pre>
+
+The controller will be a state machine that takes 2 bits of input (Z
+and N) and produces control signals for the data paths (DRA, DRB,
+DRALU, LDA, LDB, FN).
+
+<p/>Draw a state diagram for the controller.  Outputs from your FSM
+should depend only on the current state.  Indicate which are the
+initial and final states of your FSM on the diagram.
+
+<div id="control1F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1F'); return false">
+          <img name="ctl1F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1F" class="answer" style="display:none"><font color="blue">
+<img src="progmach06.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1G" class="question">
+    <ol type="A" start="7"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Supply a truth table for the logic that generates the control signals.
+
+<div id="control1G" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1G'); return false">
+          <img name="ctl1G" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1G" class="answer" style="display:none"><font color="blue">
+<img src="progmach07.gif"/>
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+<b>The material in this question will not covered by any quizzes</b>.
+It's presented here as an extended example of a programmable datapath.
+
+<p/>The following diagram shows the datapath and control circuitry for
+a nifty little microprogrammed architecture the students used to
+build in the 6.004 lab:
+
+<p/><img src="progmach08.gif"/>
+
+<p/>Some features of the MAYBE:
+
+<ul>
+<li>The datapath is 8 bits wide.  All the subsystems connect to a
+common 8-bit bus which routes data between the subsystems.  In
+a particular cycle, one of the subsystems is selected to drive data
+onto the bus (chosen by the DR signals) which can then be loaded into
+the selected destination (chosen by the LD signals).</li>
+
+<p/><li>The Control ROM is programmed as a nanointerpreter that
+executes one of 256 microinstructions selected by the contents of the
+OP register.  Each microinstruction consists of up to 16 nanoinstruction;
+the nanoPC is generated by the PHASE counter which is reset to 0 each
+time the OP register is loaded.</li>
+
+<p/><li>The Control ROM is programmed using the following template:</li>
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>********</td><td>****</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>Opcode = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<p/>"*" is used to match either "0" or "1" on the corresponding address
+line.  The template above initializes every nanoinstruction in the Control ROM to
+an operation that reads the next byte from the UROM (DRSEL = 001),
+places it in the OP register (LDSEL = 000), and then increments the
+ADRHI/ADRLO registes (ADR+ = 1).
+
+<p/><li>The UROM contains a microprogram that is executed by the
+nanointerpreter.  Each microinstruction in the UROM begins with an
+8-bit opcode; microinstruction execution begins by loading the opcode
+into the OP register.  As the nanointerpreter executes the nanocode
+associated with that opcode, additional operand bytes may be fetched
+from the UROM.  The final step in executing a microinstruction is to
+load the OP register with the opcode of the next microinstruction.</li>
+
+<p/><li>The ADRHI/ADRLO registers form a 16-bit program counter
+for the UROM program.  These registers can be loaded from the
+data bus (eg, when doing a branch) or simply incremented by
+asserting ADR+.  Note that the ADRHI/ADRLO registers are incremented
+at the end of the cycle after they have been used as the address
+for the UROM in the current cycle.</li>
+
+</ul>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+If we inadvertently switch connections on two of the wires that
+run from the MAR register to the address inputs of the SRAM will
+operation be affected?  Is your answer the same if we switch two
+wires running between ADRHI/ADRLO and the address inputs to the
+UROM?  If the answers are not the same, what constitutes the
+difference between the SRAM and UROM?
+
+<div id="control2A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2A'); return false">
+          <img name="ctl2A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2A" class="answer" style="display:none"><font color="blue">
+Reordering connections between the MAR and the address inputs
+of the SRAM won't have any observable effect since there will
+still be a unique location for each possible MAR value (the
+actual location in SRAM will change but who could tell?).
+
+<p/>Switching the ADRHI/ADRLO connections could be detected since
+after the switch incrementing the registers would not fetch the
+immediately adjacent location.  If we also permuted the contents
+of the UROM to match the change in address wiring, the switch
+would not be detectable.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+What, if anything, prevents two drivers from putting conflicting
+data on the data bus of the MAYBE (ignore transients during propagation
+delays of the control circuitry)?  Can such conflicts happen if there
+are programming errors in the Control ROM?
+
+<div id="control2B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2B'); return false">
+          <img name="ctl2B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2B" class="answer" style="display:none"><font color="blue">
+The data bus drivers are controlled by a 3-to-8 decoder.
+For any given 3-bit input, this device asserts only one of its
+outputs, so no conflicts are possible.  Programming errors
+might result in the wrong value being driven onto the bus, but
+never multiple values at the same time.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+Given a big enough Control ROM, could the LDSEL and DRSEL
+decoders be eliminated (producing the load and drive signals directly
+as Control ROM outputs)?  If so, what advantage might this have?
+
+<div id="control2C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2C'); return false">
+          <img name="ctl2C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2C" class="answer" style="display:none"><font color="blue">
+Yes, simply replace each 3-bit control value that drives the
+decoder with an 8-bit value that connects directly to the LDxx
+or DRxx control signals.   Now each signal could be asserted
+independently, perhaps in concert with other signals.  This isn't
+useful for the DRxx signals (see answer to previous question),
+but would allow several registers to be loaded with the same
+data bus value simultaneously.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+Execution of a nanoprogram can be influenced by information
+for the datapath?  Explain how a nanoprogram can make data-dependent
+decisions.
+
+<div id="control2D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2D'); return false">
+          <img name="ctl2D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2D" class="answer" style="display:none"><font color="blue">
+The low-order control ROM address bit comes from a shift register that
+is loaded with condition codes from the ALU.  Non-data-dependent
+nanoinstructions are loaded twice into consecutive even/odd locations
+of the control ROM, so the address bit from the shift register will
+select the same instruction regardless of whether it's is 0 or 1.
+However if different instructions are loaded into the even/odd
+locations, the nanoprogram will execute differently depending on
+the output of the shift register.
+
+<p/>By shifting the shift register before executing the data-dependent
+nanoinstruction, it's possible to use any of the latched condition
+codes.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+Given a big enough Control ROM, could the condition shift register
+be eliminated (using the condition bits directly as Control ROM inputs)?
+If so, what advantage might this have?  How many more (or fewer) outputs
+and inputs would the Control ROM need to have to implement this?  What
+would be the size (in bits) of the Control ROM?
+
+<div id="control2E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2E'); return false">
+          <img name="ctl2E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2E" class="answer" style="display:none"><font color="blue">
+In theory if we used the 7 condition code signals as additional
+address signals, we could test all 7 bits at the same time and
+execute one of 128 different instructions as a result.  We might
+want to add a latch-enabled register to capture the signals on
+some specific cycle and save them for testing at some later cycle
+(the current design does this using the CONDCTL signals).
+
+<p/>With 7 additional address inputs the control rom would
+grow from 2<sup>13</sup> locations to 2<sup>19</sup> locations.
+Assuming we need to control a latch-enabled register to capture
+the signal values, the number of control outputs would decrease
+by 1 (CONDCTL would go from 2 bits to 1).
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2F" class="question">
+    <ol type="A" start="6"><li>
+    
+The nanoinstruction shown above selects the UROM as the data source
+and asserts ADR+ during the same clock cycle.  How does this work, i.e.,
+is the original or incremented address used when accessing the UROM?
+
+<div id="control2F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2F'); return false">
+          <img name="ctl2F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2F" class="answer" style="display:none"><font color="blue">
+The increment happens at the <i>end</i> of the clock cycle (ie, at
+the next rising edge of the clock), so for this current clock cycle
+the original address is used.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2G" class="question">
+    <ol type="A" start="7"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00001010</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001010</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>010</td><td>A = SRAM</td></tr>
+<tr><td>00001010</td><td>0010</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001010</td><td>0011</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>011</td><td>B = SRAM</td></tr>
+<tr><td>00001010</td><td>0100</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001010</td><td>0101</td><td>*</td><td>=</td><td>0</td><td>100110</td><td>00</td><td>010</td><td>100</td><td>SRAM = A + B; latch CCs</td></tr>
+<tr><td>00001010</td><td>0110</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<div id="control2G" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2G'); return false">
+          <img name="ctl2G" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2G" class="answer" style="display:none"><font color="blue">
+Implements the "ADD(X,Y,Z)" microprogram instruction which stores
+the sum of SRAM locations X and Y into SRAM location Z.
+ADD has an opcode of 00001010 and takes 7 cycles to execute.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2H" class="question">
+    <ol type="A" start="8"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00001011</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00001011</td><td>0001</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001011</td><td>0010</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>011</td><td>B = SRAM</td></tr>
+<tr><td>00001011</td><td>0011</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001011</td><td>0100</td><td>*</td><td>=</td><td>0</td><td>100110</td><td>00</td><td>010</td><td>100</td><td>SRAM = A + B; latch CCs</td></tr>
+<tr><td>00001011</td><td>0101</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<div id="control2H" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2H'); return false">
+          <img name="ctl2H" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2H" class="answer" style="display:none"><font color="blue">
+Implements the "CADD(CX,Y,Z)" microprogram instruction which stores
+the sum of the constant CX and SRAM location Y into SRAM location Z.
+CADD has an opcode of 00001011 and takes 6 cycles to execute.
+
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2I" class="question">
+    <ol type="A" start="9"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00001100</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00001100</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>001</td><td>001</td><td>ADR = uROM</td></tr>
+<tr><td>00001100</td><td>0010</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>010</td><td>001</td><td>ADR = A</td></tr>
+<tr><td>00001100</td><td>0011</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<div id="control2I" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2I'); return false">
+          <img name="ctl2I" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2I" class="answer" style="display:none"><font color="blue">
+Implements the "JMP(addrlo,adrhi)" microprogram instruction which
+changes the microcode program counter to the specified address.
+JMP has an opcode of 00001100 and takes 4 cycles to execute.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2J" class="question">
+    <ol type="A" start="10"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00010111</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00010111</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>01</td><td>010</td><td>010</td><td>Shift CC's</td></tr>
+<tr><td>00010111</td><td>0010</td><td>1</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>001</td><td>001</td><td>ADR = uROM</td></tr>
+<tr><td>00010111</td><td>0011</td><td>1</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>010</td><td>001</td><td>ADR = A</td></tr>
+<tr><td>00010111</td><td>0100</td><td>1</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+<tr><td>00010111</td><td>0010</td><td>0</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00010111</td><td>0011</td><td>0</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<div id="control2J" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2J'); return false">
+          <img name="ctl2J" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2J" class="answer" style="display:none"><font color="blue">
+Implements the "JNC(addrlo,adrhi)" microprogram instruction which
+changes the microcode program counter to the specified address
+if the carry bit (captured from the ALU by some previous microinstruction)
+is not set.
+JNC has an opcode of 00010111 and takes 4 cycles to execute if the
+branch is not taken and 5 cycles to execute if the branch is taken.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2K" class="question">
+    <ol type="A" start="11"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00000011</td><td>0000</td><td>*</td><td>=</td><td>0</td><td>110011</td><td>11</td><td>010</td><td>101</td><td>MAR = 11111111</td></tr>
+<tr><td>00000011</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>010</td><td>A = SRAM</td></tr>
+<tr><td>00000011</td><td>0010</td><td>*</td><td>=</td><td>0</td><td>111110</td><td>11</td><td>010</td><td>100</td><td>SRAM = A - 1</td></tr>
+<tr><td>00000011</td><td>0011</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00000011</td><td>0100</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>011</td><td>B = SRAM</td></tr>
+<tr><td>00000011</td><td>0101</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>010</td><td>101</td><td>MAR = A</td></tr>
+<tr><td>00000011</td><td>0110</td><td>*</td><td>=</td><td>0</td><td>101011</td><td>11</td><td>010</td><td>100</td><td>SRAM = B</td></tr>
+<tr><td>00000011</td><td>0111</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<div id="control2K" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2K'); return false">
+          <img name="ctl2K" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2K" class="answer" style="display:none"><font color="blue">
+Implements the "PUSH(x)" microprogram instruction which decrements
+the microstack pointer (stored in SRAM location 255 = 0xFF) and
+then stores the contents of SRAM location x in the SRAM location
+pointed to by the microstack pointer.
+PUSH has an opcode of 00000011 and takes 8 cycles to execute.
+</font><div>
+</li></ol></div>
+</div>
+</body></html>

@@ -8,54 +8,6 @@ from models import PublicVideo
 
 
 
-def fs_location(auth, type, term):
-    return os.path.join(settings.MEDIA_ROOT, auth, type, term)
-
-def is_video(file_name):
-    extension=os.path.splitext(file_name)[1]
-    for type in VIDEO_TYPE_LIST:
-        if extension==type:
-            return True
-        return False
-    
-def remove_dupes(directory, file):
-    #print "(remove_dupes) file: %s" %(file)
-    for extension in VIDEO_TYPE_LIST:
-        stem = os.path.splitext(os.path.split(file)[1])[0]
-        for other_file in os.listdir(directory):
-            other_name=os.path.split(other_file)[1]
-            [other_stem, other_extension]=os.path.splitext(other_name)[0:2]
-            if re.match(stem, other_stem):
-                if other_stem[-1]=='_' and other_extension==extension:
-                    #parts=re.split('_+.', other_file)
-                    # split around the underscores indicating dupes
-                    #if parts[0]==stem and parts[1]==extension:
-                    print "(remove_dupes) removing %s\n" %(other_file)
-                    os.remove(os.path.join(directory, other_file))
-                    return True    
-        
-def already_there(author, type, semester, file):
-    authors = PublicVideo.objects.filter(author=author)
-    types = authors.filter(type=type)
-    semesters = types.filter(semester=semester)
-    return semesters.filter(file_name=file).count()
-
-def load_video(author, type, semester, video_path):        
-    video_name=os.path.split(video_path)[1]
-    if not already_there(author, type, semester, video_name):
-        ## get the user object with this username to assign it
-        user_obj = staff_list.get(username=author)
-        vid = PublicVideo(author=user_obj, type=type, semester=semester, file_name=video_name)
-#       print "file_path in loader is %s \n" %(video_path)
-        fil = File(open(video_path, 'rb'))
-        vid.file_name=video_name
-        #print "(make_video) vid.file_name=%s  and fil=%s\n" %(vid.file_name, fil)
-        vid.file.save(vid.file_name, fil, save=False)
-        #print "(make_video) vid.file = %s \n" %(vid.file)
-        vid.save()
-        return vid
-
-
 
 
 
@@ -137,7 +89,57 @@ def make():
     usernames=[user.username for user in staff_list]
     print "semesters: %s" %(semesters)
     print "usernames: %s" %(usernames)
-                  
+
+
+
+    def fs_location(auth, type, term):
+        return os.path.join(settings.MEDIA_ROOT, auth, type, term)
+
+    def is_video(file_name):
+        extension=os.path.splitext(file_name)[1]
+        for type in VIDEO_TYPE_LIST:
+            if extension==type:
+                return True
+        return False
+        
+    def remove_dupes(directory, file):
+    #print "(remove_dupes) file: %s" %(file)
+        for extension in VIDEO_TYPE_LIST:
+            stem = os.path.splitext(os.path.split(file)[1])[0]
+            for other_file in os.listdir(directory):
+                other_name=os.path.split(other_file)[1]
+                [other_stem, other_extension]=os.path.splitext(other_name)[0:2]
+                if re.match(stem, other_stem):
+                    if other_stem[-1]=='_' and other_extension==extension:
+                    #parts=re.split('_+.', other_file)
+                        # split around the underscores indicating dupes
+                    #if parts[0]==stem and parts[1]==extension:
+                        #print "(remove_dupes) removing %s\n" %(other_file)
+                        os.remove(os.path.join(directory, other_file))
+                        return True    
+        
+    def already_there(author, type, semester, file):
+        authors = PublicVideo.objects.filter(author=author)
+        types = authors.filter(type=type)
+        semesters = types.filter(semester=semester)
+        return semesters.filter(file_name=file).count()
+
+    def load_video(author, type, semester, video_path):        
+        video_name=os.path.split(video_path)[1]
+        if not already_there(author, type, semester, video_name):
+        ## get the user object with this username to assign it
+            user_obj = staff_list.get(username=author)
+            vid = PublicVideo(author=user_obj, type=type, semester=semester, file_name=video_name)
+        #       print "file_path in loader is %s \n" %(video_path)
+            fil = File(open(video_path, 'rb'))
+            vid.file_name=video_name
+        #print "(make_video) vid.file_name=%s  and fil=%s\n" %(vid.file_name, fil)
+            vid.file.save(vid.file_name, fil, save=False)
+        #print "(make_video) vid.file = %s \n" %(vid.file)
+            vid.save()
+            return vid
+
+                 
 
     ## look by staff/type/semester
     def find_media():
@@ -218,11 +220,11 @@ def make():
         'L03.mov':['CMOSTechnology'],
         'L04.mov':['SynthesisOfCombinationalLogic'],
         'L05.mov':['SequentialLogic'],
-        'L06.mov':['FMSs'],
+        'L06.mov':['FSMs'],
         'L07.mov':['SynchronizationAndMetastability'],
         'L08.mov':['Pipelining'],
         'L09.mov':['Pipelining', 'ModelsOfComputation'],
-        'L10.mov':['Programmability'],
+        'L10.mov':['ProgrammableMachines'],
         'L11.mov':['MachineLanguage'],
         'L14.mov':['BuildingTheBeta'],
         'L15.mov':['MemoryHierarchy'],
@@ -242,6 +244,7 @@ def make():
         }
 
     def match_topics():
+        base_url = "http://6004.csail.mit.edu/currentsemester/tutprobs/"
         videos = PublicVideo.objects.all()
         for video in videos:
 #            print "(match_topics) working on video: %s" %(video.file_name)
@@ -252,6 +255,15 @@ def make():
                     ta = TopicAssignment(video=video, topic=topic)
                 #                print "(match_topics) associating %s with %s\n" %(name, topic)
                     ta.save()
+                    lp_string = u'%s' %(topic)
+                    #print "lp_string = %s\n" %(lp_string)
+                    lp_leaf=TUTORIAL_PROBLEM_URLS[lp_string]
+                    #print "lp_leaf = %s\n" %(lp_leaf)
+                    lp_url=u'%s%s' %(base_url, lp_leaf)
+                    lp = LinkedWebPage(name=topic, url=lp_url)
+                    lp.topic_assignment=ta
+                    lp.save()
+                    print "making a linkedWebPage with name=%s and url=%s\n" %(lp.name, lp.url)
     
     print "Matching Topics"
     match_topics()

@@ -1,0 +1,575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Basics of information</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+<b>Measuring information</b>
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Someone picks a name out of a hat known to contain the names of 5
+women and 3 men, and tells you a man has been selected.
+How much information have they given you about the selection?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+You're given a standard deck of 52 playing cards that you start to
+turn face up, card by card.  So far as you know, they're in completely
+random order. How many new bits of information do you get when the
+first card is flipped over?  The fifth card?  The last card?
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+X is an unknown N-bit binary number (N > 3).  You are told that the first
+three bits of X are 011.  How many bits of information about X have
+you been given?
+
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+X is an unknown 8-bit binary number.  You are given another
+8-bit binary number, Y, and told that the Hamming distance
+between X and Y is one.  How many bits of information about
+X have you been given?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+<b>Variable length encoding &amp; compression</b>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+Huffman and other coding schemes tend to devote more bits
+to the coding of
+<ul>
+(A) symbols carrying the most information<br/>
+(B) symbols carrying the least information<br/>
+(C) symbols that are likely to be repeated consecutively<br/>
+(D) symbols containing redundant information
+</ul>
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+Consider the following two Huffman decoding tress for a
+variable-length code involving 5 symbols: A, B, C, D and E.
+
+<p/><center><img src="info01.gif"/></center>
+
+<p/>Using Tree #1, decode the following encoded message:
+"01000111101".
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Suppose we were encoding messages that the following probabilities
+for each of the 5 symbols:
+<ul>
+p(A) = 0.5<br/>
+p(B) = p(C) = p(D) = p(E) = 0.125
+</ul>
+Which of the two encodings above (Tree #1 or Tree #2) would yield
+the shortest encoded messages averaged over many messages?
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Using the probabilities for A, B, C, D and E given above,
+construct a variable-length binary decoding tree using a simple
+greedy algorithm as follows:
+
+<p/><ol>
+
+<li>Begin with the set S of symbols to be encoded as binary strings,
+together with the probability P(x) for each symbol x.  The
+probabilities sum to 1, and measure the frequencies with which each
+symbol appears in the input stream.  In the example from lecture, the
+initial set S contains the four symbols and associated probabilities
+in the above table.</li>
+
+<li>Repeat the following steps until there is only 1 symbol left in S:
+
+<ol type="A">
+
+<li>Choose the two members of S having lowest probabilities.  Choose
+arbitrarily to resolve ties.  In the example above, D and E
+might be the first nodes chosen.</li>
+
+<li>Remove the selected symbols from S, and create a new node of the
+decoding tree whose children (sub-nodes) are the symbols you've
+removed.  Label the left branch with a "0", and the right branch with
+a "1".  In the first iteration of the example above, the bottom-most
+internal node (leading to D and E) would be created.</li>
+
+<li>Add to S a new symbol (e.g., "DE" in our example) that
+represents this new node.  Assign this new symbol a probability equal
+to the sum of the probabilities of the two nodes it replaces.</li>
+
+</ol>
+</li>
+</ol>
+
+
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+Huffman coding is used to compactly encode the species of fish
+tagged by a game warden.  If 50% of the fish are bass and the
+rest are evenly distributed among 15 other species, how many
+bits would be used to encode the species of a bass?
+
+
+</li></ol></div>
+
+    <div id="question2F" class="question">
+    <ol type="A" start="6"><li>
+    
+Consider the sum of two six-sided dice.  Even when the dice are "fair"
+the amount information conveyed by a single sum depends on what the
+sum is since some sums are more likely than others, as shown in the
+following figure:
+
+<p/><center><img src="info02.gif"/></center>
+
+<p/>What is the average number of bits of information provided by the
+sum of 2 dice?  Suppose we want to transmit the sums resulting from
+rolling the dice 1000 times.  How many bits should we expect that
+transmission to take?
+
+
+</li></ol></div>
+
+    <div id="question2G" class="question">
+    <ol type="A" start="7"><li>
+    
+Suppose we want to transmit the sums resulting from rolling the dice
+1000 times.  If we use 4 bits to encode each sum, we'll need 4000 bits
+to transmit the result of 1000 rolls.  If we use a variable-length
+binary code which uses shorter sequences to encode more likely sums
+then the expected number of bits need to encode 1000 sums should be
+less than 4000.  Construct a variable-length encoding for the sum of
+two dice whose expected number of bits per sum is less than 3.5.
+(Hint: It's possible to find an encoding for the sum of two dice with
+an expected number of bits = 3.306.)
+
+
+</li></ol></div>
+
+    <div id="question2H" class="question">
+    <ol type="A" start="8"><li>
+    
+Okay, so can we make an encoding for transmitting 1000 sums that
+has an expected length smaller than 3306 bits?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+<b>Variable-length encoding</b>
+
+<p/>After spending the afternoon in the dentist's chair, Ben Bitdiddle
+has invented a new language called DDS made up entirely of vowels (the
+only sounds he could make with someone's hand in his mouth).  The DDS
+alphabet consists of the five letters "A", "E", "I", "O", and "U"
+which occur in messages with the following probabilities:
+
+<p/><center><table border="1">
+<tr><th>Letter</th><th>Probability of occurrence</th></tr>
+<tr><td>A</td><td>p(A) = 0.15</td></tr>
+<tr><td>E</td><td>p(E) = 0.4</td></tr>
+<tr><td>I</td><td>p(I) = 0.15</td></tr>
+<tr><td>O</td><td>p(O) = 0.15</td></tr>
+<tr><td>U</td><td>p(U) = 0.15</td></tr>
+</table></center>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If you are told that the first letter of a message is "A", give an
+expression for the number of bits of information have you received.
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Ben is trying to invent a fixed-length binary encoding for DDS that
+permits detection and correction of single bit errors.  Briefly
+describe the constraints on Ben's choice of encodings for each letter
+that will ensure that single-bit error detection and correction is
+possible.  (Hint: think about Hamming distance.)
+
+
+</li></ol></div>
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Giving up on error detection and correction, Ben turns his attention
+to transmitting DDS messages using as few bits as possible.  Assume
+that each letter will be separately encoded for transmission.  Help
+him out by creating a variable-length encoding that minimizes the
+average number of bits transmitted for each letter of the message.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+<b>Modular arithmetic and 2's complement representation</b>
+
+<p/>Most computers choose a particular word length (measured in bits)
+for representing integers and provide hardware that performs various
+arithmetic operations on word-size operands.  The current generation
+of processors have word lengths of 32 bits; restricting the size of
+the operands and the result to a single word means that the arithmetic
+operations are actually performing arithmetic modulo 2<sup>32</sup>.
+
+<p/>Almost all computers use a 2's complement representation for
+integers since the 2's complement addition operation is the same for
+both positive and negative numbers.  In 2's complement notation, one
+negates a number by forming the 1's complement (i.e., for each bit,
+changing a 0 to 1 and vice versa) representation of the number and
+then adding 1.  By convention, we write 2's complement integers with
+the most-significant bit (MSB) on the left and the least-significant
+bit (LSB) on the right.  Also by convention, if the MSB is 1, the
+number is negative; otherwise it's non-negative.
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+How many different values can be encoded in a 32-bit word?
+
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+Please use a 32-bit 2's complement representation to answer the
+following questions.  What are the representations for
+<ul>
+zero<br/>
+the most positive integer that can be represented<br/>
+the most negative integer that can be represented
+</ul>
+What are the decimal values for the most positive and most negative integers?
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+Since writing a string of 32 bits gets tedious, it's often convenient
+to use hexadecimal notation where a single digit in the range 0-9 or
+A-F is used to represent groups of 4 bits using the following
+encoding:
+
+<pre>
+	hex bits        hex bits        hex bits        hex bits
+	 0  0000         4  0100         8  1000         C  1100
+	 1  0001         5  0101         9  1001         D  1101
+	 2  0010         6  0110         A  1010         E  1110
+	 3  0011         7  0111         B  1011         F  1111
+</pre>
+
+Give the 8-digit hexadecimal equivalent of the following decimal and
+binary numbers: 37<sub>10</sub>, -32768<sub>10</sub>, 11011110101011011011111011101111<sub>2</sub>.
+	
+
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Calculate the following using 6-bit 2's complement arithmetic (which
+is just a fancy way of saying to do ordinary addition in base 2
+keeping only 6 bits of your answer).  Show your work using binary
+(base 2) notation.  Remember that subtraction can be performed by
+negating the second operand and then adding it to the first operand.
+<pre>
+	13 + 10  
+	15 - 18
+	27 - 6
+	-6 - 15
+	21 + (-21)
+	31 + 12
+</pre>
+Explain what happened in the last addition and in what sense your
+answer is "right".
+	
+
+</li></ol></div>
+
+    <div id="question4E" class="question">
+    <ol type="A" start="5"><li>
+    
+At first blush "Complement and add 1" doesn't seem to an obvious way
+to negate a two's complement number.  By manipulating the expression
+A+(-A)=0, show that "complement and add 1" does produce the correct
+representation for the negative of a two's complement number.
+Hint: express 0 as (-1+1) and rearrange terms to get -A on one
+side and XXX+1 on the other and then think about how the expression
+XXX is related to A using only logical operations (AND, OR, NOT).
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+<b>Error detection and correction</b>
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+To protect stored or transmitted information one can add check bits to
+the data to facilitate error detection and correction.  One scheme for
+detecting single-bit errors is to add a parity bit:
+
+<p/><ul>
+b<sub>0</sub> b<sub>1</sub> b<sub>2</sub>  b<sub>N-1</sub> p
+</ul>
+
+<p/>When using even parity, p is chosen so that the number of "1" bits
+in the protected field (including the p bit itself) is even; when
+using odd parity, p is chosen so that the number of "1" bits is odd.
+In the remainder of this problem assume that even parity is used.
+
+<p/>To check parity-protected information to see if an error has occurred,
+simply compute the parity of information (including the parity bit)
+and see if the result is correct.  For example, if even parity was
+used to compute the parity bit, you would check if the number of "1"
+bits was even.
+ 
+<p/>If an error changes one of the bits in the parity-protected
+information (including the parity bit itself), the parity will be
+wrong, i.e., the number of "1" bits will be odd instead of even.
+Which of the following parity-protected bit strings has a detectable
+error assuming even parity?
+
+<p/><ul><tt>
+(1) 11101101111011011<br/>
+(2) 11011110101011110<br/>
+(3) 10111110111011110<br/>
+(4) 00000000000000000
+</tt></ul>
+
+
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+Detecting errors is useful, but it would also be nice to correct them!
+To build an error correcting code (ECC) we'll use additional check
+bits to help pinpoint where the error occurred.  There are many such
+codes; a particularly simple one for detecting and correcting
+single-bit errors arranges the data into rows and columns and then
+adds (even) parity bits for each row and column.  The following
+arrangement protects nine data bits:
+
+<pre>
+b0,0	b0,1	b0,2	prow0
+b1,0	b1,1	b1,2	prow1
+b2,0	b2,1	b2,2	prow2
+pcol0	pcol1	pcol2
+</pre>
+
+A single-bit error in one of the data bits (b<sub>I,J</sub>) will generate two
+parity errors, one in row I and one in column J.  A single-bit error
+in one of the parity bits will generate just a single parity error for
+the corresponding row or column.  So after computing the parity of
+each row and column, if both a row and a column parity error are
+detected, inverting the listed value for the appropriate data bit will
+produce the corrected data.  If only a single parity error is
+detected, the data is correct (the error was one of the parity bits).
+
+<p/>Give the correct data for each of the following data blocks
+protected with the row/column ECC shown above.
+
+<pre>
+(1)  1011    (2) 1100    (3) 000    (4) 0111
+     0110        0000        111        1001
+     0011        0101        10         0110
+     011         100                    100
+</pre>
+
+
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+The row/column ECC can also detect many double-bit errors (i.e., two
+of the data or check bits have been changed).  Characterize the sort
+of double-bit errors the code does not detect.
+
+
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+In the days of punch cards, decimal digits were represented with a special
+encoding called <i>2-out-of-5 code</i>.  As the name implies two out of
+five positions were filled with 1's as shown in the table below:
+
+<p/><center><table border="1" cellpadding="2">
+<tr><th>Code</th><th>Decimal</th></tr>
+<tr><td>11000</td><td>1</td></tr>
+<tr><td>10100</td><td>2</td></tr>
+<tr><td>01100</td><td>3</td></tr>
+<tr><td>10010</td><td>4</td></tr>
+<tr><td>01010</td><td>5</td></tr>
+<tr><td>00110</td><td>6</td></tr>
+<tr><td>10001</td><td>7</td></tr>
+<tr><td>01001</td><td>8</td></tr>
+<tr><td>00101</td><td>9</td></tr>
+<tr><td>00011</td><td>0</td></tr>
+</table></center>
+
+<p/>What is the smallest Hamming distance between any two encodings
+in <i>2-out-of-5 code</i>?
+
+
+</li></ol></div>
+
+    <div id="question5E" class="question">
+    <ol type="A" start="5"><li>
+    
+Characterize the types of errors (eg, 1- and 2-bit errors) that can
+be reliably detected in a <i>2-out-of-5 code</i>?
+
+
+</li></ol></div>
+
+    <div id="question5F" class="question">
+    <ol type="A" start="6"><li>
+    
+We know that <i>even parity</i> is another scheme for detecting
+errors.  If we change from a 2-out-of-5 code to a 5-bit code
+that includes an even parity bit, how many <i>additional</i>
+data encodings become available?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+<b>Hamming single-error-correcting-code</b>
+
+<p/>The Hamming single-error-correcting code requires approximately
+log2(N) check bits to correct single-bit errors.  Start by renumbering
+the data bits with indices that aren't powers of two:
+
+<ul>
+Indices for 16 data bits = 3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21
+</ul>
+
+<p/>The idea is to compute the check bits choosing subsets of the data
+in such a way that a single-bit error will produce a set of parity
+errors that uniquely indicate the index of the faulty bit:
+
+<ul>
+p0 = even parity for data bits 3, 5, 7, 9, 11, 13, 15, 17, 19, 21<br/>
+p1 = even parity for data bits 3, 6, 7, 10, 11, 14, 15, 18, 19<br/>
+p2 = even parity for data bits 5, 6, 7, 12, 13, 14, 15, 20, 21<br/>
+p3 = even parity for data bits 9, 10, 11, 12, 13, 14, 15<br/>
+p4 = even parity for data bits 17, 18, 19, 20, 21<br/>
+</ul>
+
+<p/>Note that each data bit appears in at least two of the parity
+calculations, so a single-bit error in a data bit will produce at
+least two parity errors.  When checking a protected data field, if the
+number of parity errors is zero or one, the data bits are okay
+(exactly one parity error indicates that one of the parity bits was
+corrupted).  If two or more parity errors are detected then the errors
+identify exactly which bit was corrupted.
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+What is the relationship between the index of a particular data bit
+and the check subsets in which it appears?  Hint: consider the binary
+representation of the index.
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+If the parity calculations involving p0, p2 and p3 fail, assuming a
+single-bit error what is the index of the faulty data bit? 
+
+
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+The Hamming SECC doesn't detect all double-bit errors.  Characterize
+the types of double-bit errors that will not be detected.  Suggest a
+simple addition to the Hamming SECC that allows detection of all
+double-bit errors.
+
+
+</li></ol></div>
+</div>
+</body></html>

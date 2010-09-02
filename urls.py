@@ -56,6 +56,25 @@ urlpatterns = patterns('',
                        (r'^web/show_for_topic/(?P<type>\w+)/$', views.show_by_type),
                        
 
+                       #student portal TEST
+                       (r'^portals/(?P<athena_id>\w+)/$', student_views.student_portal),
+
+                       #public browser
+                       (r'^$', student_views.browse),
+                       (r'^vid\=(?P<topic_snippet_id>\d+)/fav\=(?P<is_favorite>\w+)/$', student_views.browse),
+                       (r'^vid\=(?P<topic_snippet_id>\d+)/fav\=(?P<is_favorite>\w+)/(?P<query_string>\w+)/$', student_views.browse),
+
+
+                       (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
+                        {'document_root': '/home/caitlinj/website/djcode/usersite/media/'}),
+
+
+                       # tutorial problems
+                       (r'^tutprobs/(?P<topic>\w+)/$', views.tutorial_by_topic),
+                       (r'^tutprobs/(?P<topic>\w+)/(?P<linked_problem_id>\d+)/$', views.tutorial_by_id),
+                       
+
+
 
                        # dynamic student detail
                        #(r'^students/(?P<athena_id>\w+)/$', views.student_detail),
@@ -68,18 +87,6 @@ urlpatterns = patterns('',
                        #(r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/add_checkoff/$', views.add_checkoff),
                        # add-form for uploading new interactive content
                        #(r'^students/(?P<athena_id>\w+)/(?P<lab_number>\d{1})/add_help/$', views.add_help),
-
-                       #student portal TEST
-                       (r'^portals/(?P<athena_id>\w+)/$', student_views.student_portal),
-
-                       #public browser
-                       (r'^$', student_views.browse),
-                       (r'^vid\=(?P<topic_snippet_id>\d+)/fav\=(?P<is_favorite>\w+)/$', student_views.browse),
-                       (r'^vid\=(?P<topic_snippet_id>\d+)/fav\=(?P<is_favorite>\w+)/(?P<query_string>\w+)/$', student_views.browse),
-
-
-                       (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', 
-                        {'document_root': '/home/caitlinj/website/djcode/usersite/media/'}),
 
    # Example:
     # (r'^usersite/', include('usersite.foo.urls')),

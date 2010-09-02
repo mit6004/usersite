@@ -115,6 +115,13 @@
       </tr>
     </table>
   </div>
-    
-    
+
+  <div id="linked_problems">
+    <ul>
+    {% for linked_problem in linked_problems %}
+    <li>
+      <a href="/tutprobs/{{topic_number}}/{{linked_problem.id}}/">{{linked_problem.name}}</a>
+    </li>
+    {% endfor %}
+    </ul>
     {% endblock %}

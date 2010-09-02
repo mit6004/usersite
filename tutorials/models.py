@@ -1,87 +1,10 @@
-from django.contrib import databrowse
+from django.contrib import databrowse, admin
 from django.contrib.auth.models import User
 ## Using the django admin user model
 from django.db import models
 from django.conf import settings
+from tutorials.enums import *
 import datetime, os
-
-QUIZ_CHOICES = (
-    (1, 'Quiz 1'),
-    (2, 'Quiz 2'),
-    (3, 'Quiz 3'),
-    (4, 'Quiz 4'),
-    (5, 'Quiz 5'),
-    )
-
-STAFF_CHOICES = (
-    ('LA', 'Undergraduate Lab Assistant'),
-    ('TA', 'Graduate Teaching Assistant'),
-    ('Head TA', 'Head Teaching Assistant'),
-    ('Lecturer', 'Lecturer'),
-    ('Admin', 'Administrative Assistant'),
-    )
-
-SEMESTER_CHOICES = (
-    ('', '--All Terms--'), 
-    ('S10', 'Spring 2010'),
-    ('F09', 'Fall 2009'),
-    ('S09', 'Spring 2009'),
-    ('F08', 'Fall 2008'),
-    ('S08', 'Spring 2008'),
-    ('F07', 'Fall 2007'),
-    ('S07', 'Spring 2007'),
-    ('F06', 'Fall 2006'),
-    ('S06', 'Spring 2006'),
-    ('F05', 'Fall 2005'),
-    )
-
-LAB_CHOICES = (
-    (1, 'Lab 1'),
-    (2, 'Lab 2'),
-    (3, 'Lab 3'),
-    (4, 'Lab 4'),
-    (5, 'Lab 5'),
-    (6, 'Lab 6'),
-    (7, 'Lab 7'),
-    (8, 'Lab 8'),
-    (9, 'Design Project'),
-    )
-
-VIDEO_CHOICES = (
-    ('', '-- All Video Types --'),
-    ('Lecture', 'Lectures'),
-    ('Section', 'Recitations'),
-    ('OldQuiz', 'Past Quiz Problems'),
-    ('LabHint', 'Lab Hints'),
-    ('TutProb', 'Tutorial Problems'),
-    ('Concept', 'Conceptual Reviews'),
-    )
-
-TOPIC_CHOICES = (
-    ('', '-- All Topics --'),
-    ('BasicsOfInformation', 'Basics of Information'),
-    ('TheDigitalAbstraction', 'The Digital Abstraction'),
-    ('CMOSTechnology', 'CMOS Technology'),
-    ('GatesAndBooleanLogic', 'Gates And Boolean Logic'),
-    ('SynthesisOfCombinationalLogic', 'Synthesis of Combinational Logic'),
-    ('SequentialLogic', 'Sequential Logic'),
-    ('FSMs', 'FSMs'),
-    ('SynchronizationAndMetastability', 'Synchronization and Metastability'),
-    ('Pipelining', 'Pipelining'),
-    ('ModelsOfComputation','Models of Computation'),
-    ('ProgrammableMachines', 'Programmable Machines'),
-    ('MachineLanguage','Machine Language'),
-    ('StacksAndProcedures','Stacks and Procedures'),
-    ('BuildingTheBeta', 'Building the Beta'),
-    ('MemoryHierarchy', 'Memory Hierarchy'),
-    ('Caches','Caches'),
-    ('VirtualMemory','Virtual Memory'),
-    ('VirtualMachines','Virtual Machines and OS Issues'),
-    ('DevicesInterruptsAndRealTime', 'Devices Interrupts and Real Time'),
-    ('Semaphores','Semaphores'),
-    ('PipelinedBeta','Pipelined Beta'),
-    )
-    
 
 
 IMAGE_TYPE_LIST=['.jpg', '.gif', '.png', ]
@@ -131,6 +54,7 @@ class MediaSubmission(models.Model):
     class Meta:
         abstract = True
         ## want to be able to use this for PublicDocument too
+
 
 def get_upload_location(instance, filename):
     #return '%sMisc/%s' %(settings.MEDIA_ROOT, self.semester)
@@ -290,6 +214,17 @@ class TopicAssignment(Annotation):
         return self.userprofile_set.filter(user__is_staff=False).count()
 #    num_student_favorites=property(get_num_student_favorites)
 
+
+
+class LinkedWebPage(models.Model):
+    name=models.CharField(max_length=50, default="")
+    url=models.URLField(default="http://6004.csail.mit.edu/currentsemester/")
+    topic_assignment = models.ForeignKey(TopicAssignment)
+    pointer_on_page=models.CharField(max_length=50, default="")
+
+
+
+
 ## ------- USER STUFF ------ ##
 
 class UserProfile(models.Model):
@@ -329,9 +264,14 @@ def databrowse_register(sender, **kwargs):
     databrowse.site.register(sender)
 
 
+def admin_register(sender, **kwargs):
+    admin.site.register(sender)
+
+
 # --- SIGNALS --- ##
 models.signals.post_save.connect(make_profile, sender=User)
 models.signals.class_prepared.connect(databrowse_register)
+
 
 
 

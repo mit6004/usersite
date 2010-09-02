@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>CMOS technology</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+The following diagram shows a schematic for the
+pulldown circuitry for a particular CMOS gate:
+
+<p/><center><img src="cmos01.gif"/></center>
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is the correct schematic for the pullup
+circuitry?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the pullup circuitry is designed correctly, what is
+the logic function implemented this gate?
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the pullup circuitry is designed
+correctly, when the output of the CMOS gate above
+is a logic "0", in the steady state what would we
+expect the voltage of the output terminal to be?
+What would be the voltage if the output were a
+logic "1"?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+
+The following diagram shows a schematic for the pullup circuitry for a
+particular CMOS gate:
+
+<p/><center><img src="cmos03.gif"/></center>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Draw a schematic for the pulldown circuitry for this CMOS gate. 
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the pulldown circuitry is designed correctly, give an expression
+for the logic function implemented by this gate.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+Consider the following circuit built from nfets
+and pfets:
+
+<p/><center><img src="cmos02.gif"/></center>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Can this circuit be used as a CMOS gate?  If not,
+explain why.  If so, what function does it compute?
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If we wanted the output voltage to change more
+quickly when going from a logic "0" to a logic "1",
+what changes would we make to the fets?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+Consider the 4-input Boolean function
+Y = (A*B) + (C*D) where "*" is AND and "+" is OR.
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Implement the function with a single 4-input CMOS gate and an inverter.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+Anna Logue, a circuit designer who missed several early 6.004
+lectures, is struggling to design her first CMOS logic gate.  She has
+implemented the following circuit:
+
+<p/><center><img src="cmos04.gif"/></center>
+
+Anna has fabricated 100 test chips containing this circuit, and has a
+simple testing circuit which allows her to try out her proposed gate
+statically for various combinations of the A and B inputs.  She has
+burned out 97 of her chips, and needs your help before destroying the
+remaining three.  She is certain she is applying only valid input
+voltages, and expects to find a valid output at terminal C.  Anna also
+keeps noticing a very faint smell of smoke.
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+What is burning out Anna's test chips? Give a specific scenario,
+including input values together with a description of the failure
+scenario.  For what input combinations will this failure occur?
+
+
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+Are there input combinations for which Anna can expect a valid output at C? Explain.
+
+
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+One of Anna's test chips has failed by burning out the pullup
+connected to A as well as the pulldown connected to B.  Each of the
+burned out FETs appears as an open circuit, but the rest of the
+circuit remains functional. Can the resulting circuit be used as a
+combinational device whose two inputs are A and B?
+Explain its behavior for each combination of
+valid inputs.
+
+
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+In order to salvage her remaining three chips, Anna connects the A and
+B inputs of each and tries to use it as a single-input gate. Can the
+result be used as a single-input combinational device?  Explain.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+Occasionally you will come across a CMOS circuit where the
+complementary nature of the n-channel pull-downs and p-channel
+pull-ups are not obvious, as in the circuit shown below:
+
+<p/><center><img src="cmos05.gif"/></center>
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+Construct a table that gives the on-off status of each transistor in
+the circuit above for all combinations of inputs A and B.
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+Compute the output, Y, for each input combination and describe the
+function of the above circuit.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question7" class="question">
+    <p/><hr/><p/><u>Problem 7.</u>
+    
+In lecture there was a brief overview of the
+CMOS fabrication process.
+
+
+    <div id="question7A" class="question">
+    <ol type="A" start="1"><li>
+    
+What keeps the source/drain diffusions of a
+MOSFET from shorting out to the substrate or to
+each other?
+
+
+</li></ol></div>
+
+    <div id="question7B" class="question">
+    <ol type="A" start="2"><li>
+    
+Why does reducing the thickness of the thin oxide
+layer improve the performance of the mosfets?
+
+
+</li></ol></div>
+
+    <div id="question7C" class="question">
+    <ol type="A" start="3"><li>
+    
+Why is silicon dioxide (SiO<sub>2</sub>) deposited right before
+a new wiring layer is added to the surface of the
+wafer?
+
+
+</li></ol></div>
+
+    <div id="question7D" class="question">
+    <ol type="A" start="4"><li>
+    
+How are connections between the wiring layers made?
+
+
+</li></ol></div>
+
+    <div id="question7E" class="question">
+    <ol type="A" start="5"><li>
+    
+If one wanted to <i>increase</i> I<sub>DS</sub> for a
+NFET, how should it's dimensions be changed?
+
+
+</li></ol></div>
+
+    <div id="question7F" class="question">
+    <ol type="A" start="6"><li>
+    
+Suppose there are two mosfets of width W and length L
+connected in parallel, i.e., all their terminal connections
+are identical.  Given that I<sub>DS</sub> of a mosfet
+is proportional to W/L, what would be the appropriate
+dimensions for a <i>single</i> mosfet that would have the
+same I<sub>DS</sub> as the pair connected in parallel?
+
+
+</li></ol></div>
+</div>
+</body></html>

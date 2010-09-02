@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Virtual memory</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+Consider a virtual memory system that uses a single-level page map
+to translate virtual addresses into physical addresses.  Each of the
+questions below asks you to consider what happens when one of the
+design parameters of the original system is changed.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If the physical memory size (in bytes) is doubled, how does the
+number of bits in each entry of the page table change?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If the physical memory size (in bytes) is doubled, how does the
+number of entries in the page map change?
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If the virtual memory size (in bytes) is doubled, how does the
+number of bits in each entry of the page table change?
+
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If the virtual memory size (in bytes) is doubled, how does the
+number of entries in the page map change?
+
+
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If the page size (in bytes) is doubled, how does the number of
+bits in each entry of the page table change?
+
+
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If the page size (in bytes) is doubled, how does the number of
+entries in the page map change?
+
+
+</li></ol></div>
+
+    <div id="question1G" class="question">
+    <ol type="A" start="7"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+The following table shows the first 8 entries in the page map.
+Recall that the valid bit is 1 if the page is resident in physical
+memory and 0 if the page is on disk or hasn't been allocated.
+
+<p/><table border="1" cellspacing="4">
+<tr><td>Virtual page</td><td>Valid bit</td><td>Physical page</td></tr>
+<tr><td>0</td><td>0</td><td>7</td></tr>
+<tr><td>1</td><td>1</td><td>9</td></tr>
+<tr><td>2</td><td>0</td><td>3</td></tr>
+<tr><td>3</td><td>1</td><td>2</td></tr>
+<tr><td>4</td><td>1</td><td>5</td></tr>
+<tr><td>5</td><td>0</td><td>5</td></tr>
+<tr><td>6</td><td>0</td><td>4</td></tr>
+<tr><td>7</td><td>1</td><td>1</td></tr>
+</table>
+
+<p/>If there are 1024 (2<sup>10</sup>) bytes per page, what is the
+physical address corresponding to the decimal virtual address 3956?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+A particular 32-bit microprocessor includes support for paged virtual
+memory addressing with 2<sup>12</sup> byte pages. The mapping of virtual to
+physical addresses requires two translation steps:
+
+<ol>
+
+<li>The most significant 10 bits of the virtual address (the Dir
+field) are multiplied by 4 and appended to the 20 most significant
+bits of the dirbase (directory base) register to get the address in
+main memory of a page directory entry. Each entry in the page
+directory is a 32-bit record composed of a 20-bit PTBL field and
+various control bits (Present, Dirty, Read-only, etc.).</li>
+
+<p/><li>The bits of the Page field (virtual address bits 21 to 12) are
+multiplied by 4 and appended to the PTBL field to form the page-table
+address. This page table address references a 32-bit page table entry.
+Each page table entry is composed of a 20-bit physical page number
+(PPN) and a series of control bits.</li>
+
+</ol>
+
+<p/>All page-table entries and the page directory are stored in main
+memory.  The results of these translations are cached in a
+fully-associative translation look-aside buffer (TLB) with a total of 64
+entries, and a LRU replacement strategy is used on TLB misses.
+
+<p/><img src="vm01.gif"/>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Given a computer system with 2<sup>27</sup> bytes of physical memory that
+uses the virtual-to-physical address translation scheme described, how
+many pages of physical memory are there?
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How many memory pages does the Page Directory occupy?
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is the approximate maximum size for a process's working
+set that still achieves a 100% TLB hit rate?
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How large must the tag field of the TLB be?
+
+
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+A control bit, C, in each page table entry determines if memory
+references to that page are cacheable. In order to support this
+feature, which of the following statements concerning the interaction
+between virtual-to-physical address translations and caching must be
+true?
+
+<ol type="A">
+<li>The cache tags must contain physical addresses</li>
+<li>Each memory access requires a virtual-address translation to take
+place in parallel with the cache access</li>
+<li>The status of the cacheable bit, C, needs only to be considered on a
+cache miss</li>
+<li>Page table entries with their dirty bit set should clear their cacheable bit</li>
+<li>All of the above</li>
+</ol>
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+Consider two possible page-replacement strategies: LRU (the least
+recently used page is replaced) and FIFO (the page that has been in
+the memory longest is replaced).  The merit of a page-replacement
+strategy is judged by its hit ratio.
+
+<p/>Assume that, after space has been reserved for the page table, the
+interrupt service routines, and the operating-system kernel, there is
+only sufficient room left in the main memory for <i>four</i>
+user-program pages. Assume also that initially virtual pages 1, 2, 3,
+and 4 of the user program are brought into physical memory in that
+order.
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+For each of the two strategies, what pages will be in the memory
+at the end of the following sequence of virtual page accesses?  Read
+the sequence from left to right: (6, 3, 2, 8, 4).
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which (if either) replacement strategy will work best when the
+machine accesses pages in the following (stack) order: (3, 4, 5, 6,
+7, 6, 5, 4, 3, 4, 5, 6, 7, 6, ...)?
+
+
+</li></ol></div>
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+Which (if either) replacement strategy will work best when the
+machine accesses pages in the following (repeated sequence) order: (3,
+4, 5, 6, 7, 3, 4, 5, 6, 7, ...).
+
+
+</li></ol></div>
+
+    <div id="question3D" class="question">
+    <ol type="A" start="4"><li>
+    
+Which (if either) replacement strategy will work best when the
+machine accesses pages in a randomly selected order, such as (3, 4,
+2, 8, 7, 2, 5, 6, 3, 4, 8, ...).
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+A paged memory with a one-level page table has the following
+parameters: The pages are 2<sup>P</sup> bytes long; virtual addresses
+are V bits long, organized as follows:
+
+<p/><table border="1" cellspacing="4">
+<tr><td>virtual page number</td><td>offset in page</td></tr>
+</table>
+
+<p/>The page-table starts at physical address PTBL; and each page-table
+entry is a 4-byte longword, so that, given a virtual address, the
+relevant page-table entry can be found at PTBL + (page&nbsp;number)*4.
+Answer the following in terms of the parameters P and V:
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+How many bits long is the "offset in page" field?
+
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+How many bits long is the "virtual page number" field?
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+How many entries does the page table have, and what is the
+highest address occupied by a page-table entry?
+
+
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+How many pages long is the page table?
+
+
+</li></ol></div>
+
+    <div id="question4E" class="question">
+    <ol type="A" start="5"><li>
+    
+What is the smallest value of P such that the 
+page table fits into one page?
+
+
+</li></ol></div>
+
+    <div id="question4F" class="question">
+    <ol type="A" start="6"><li>
+    
+What relationships, if any, must hold between P, V, and the
+size of physical memory?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+If virtual addresses are V bits long, physical addresses are
+A bits long, the page size is 2<sup>P</sup> bytes, and a one-level page
+table is used, give an expression for the size of the page table.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+Adverbs Unlimited has recently added a new product, the VIRTUALLY
+to the product line introduced in an earlier tutorial problem.  The
+VIRTUALLY has a fully-associative cache with 256 entries and a block size
+of 1,
+2<sup>20</sup> bytes of physical memory, 16-bit virtual addresses, and
+a 2<sup>6</sup>-entry page map.  The VIRTUALLY will be used to support
+multiuser time-sharing. The page map holds the address translation for
+a single (current) process and must be reloaded (by the kernel) at
+each process switch.  The cache is located between the page map and
+main memory.
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+What is the page size?
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+Which virtual address lines are used to form the index to the
+page map?
+
+
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+Can the operation of the cache and page-map be overlapped?
+Explain in a single sentence.
+
+
+</li></ol></div>
+
+    <div id="question6D" class="question">
+    <ol type="A" start="4"><li>
+    
+Under what circumstances, if any, must the cache be invalidated
+(that is, its entries marked as invalid)?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question7" class="question">
+    <p/><hr/><p/><u>Problem 7.</u>
+    
+
+    <div id="question7A" class="question">
+    <ol type="A" start="1"><li>
+    
+Program A consists of 1000 consecutive ADD instructions, while
+program B consists of a loop that executes a single ADD instruction
+1000 times.  You run both programs on a certain machine and find that
+program B consistently executes faster.  Give two plausible
+explanations.
+
+
+</li></ol></div>
+</div>
+</body></html>
