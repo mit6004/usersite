@@ -1,0 +1,20 @@
+
+
+
+<div id="sidebar_content">
+
+  {% ifequal show 'Favorites' %}
+  Displaying only favorited videos for {{user.get_full_name}}. 
+  <a href="/{{selected_ta.id}}/{{is_favorite}}/All/">
+    Click </a> to show all Video clips.
+  
+  {% else %}
+  Displaying all video clips.
+  <a href="/{{selected_ta.id}}/{{is_favorite}}/Favorites/">
+    Click </a> to show only favorited videos for {{user.get_full_name}}
+  
+  {% endifequal %}
+
+
+
+</div>

@@ -1,127 +1,43 @@
-{% extends "base.html" %}
+{% extends "two_column.html" %}
 
 {% block title %}Course Media{% endblock %}
 
 {% block header %}
-<script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
-<script type="text/javascript" src="/site_media/common_quicktime_methods.js"></script>
 
-<script type="text/javascript">
+{% include "movie_header.html" %}
 
-  // define the video here
-  var qtEmbed = QT_GenerateOBJECTText_XHTML(
-  		'{{ta.video.get_absolute_url}}', //'video_placeholder.jpg',
-  		'800', // width
-  		'500', // height: set this to actual height + 20 (to leave space for controller)
-  		'', // required blank field
-  		'enablejavascript', 'true',
-  		'obj#id', 'movie1',
-  		'emb#name', 'movie1',
-  		'emb#id', 'movie1_emb',
-  		'postdomevents', 'true',
-  		'autoplay', 'false',
-  		'controller', 'true',
-  		'scale', 'aspect'
-  )
-  
-  // called from body.onload to set up listeners that will wait for quicktime
-  // movie to send events
-  
-  function RegisterListeners()
-  {
-  	// when the movie loads, it will set the end time to the duration of the movie
-  	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', setup_movie);
-  	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_times_and_play_movie);
-  }
-  
-  function set_times_and_play_movie()
-  {
-    var start_time = {{selected_ta.start_time}};
-    var end_time   = {{selected_ta.stop_time}};
-    
-    if(typeof(start_time) == "undefined")
-    {
-      start_time = 0;
-    }
-    if(typeof(end_time) == "undefined")
-    {
-      end_time = document.movie1.GetDuration();
-    } 
-        
-    set_start_and_end_times(start_time, end_time);
-    document.movie1.Play();
-  }
-  
-  function set_start_and_end_times(start_time, end_time)
-  {
+{% endblock header %}
 
-    
-    document.movie1.SetStartTime(start_time);
-    document.movie1.SetEndTime(end_time);
-  }
-
-  
-  function setup_movie()
-  {
-  	set_display_area_to_fit_movie();
-  	
-  }
-
-</script>
-
-{% endblock %}
-
-{% block body_attributes %}onload="RegisterListeners();"{% endblock %}
-
-{% block content %}
+{% block body_attributes %}onload="RegisterListeners();"{% endblock body_attributes %}
 
 
-  <div id="movie_div" style="float:left;align:left"></div>
+{% block main_column %}
 
-  <script type="text/javascript">
-    document.getElementById('movie_div').innerHTML = qtEmbed;
-  </script>
 
-  <div>
-    <table border="0" style="align:center;display:block">
-      <tr>
-	<th>
-	</th>
-	<th>
-	</th>
-	<th>
-	</th>
-	<th>
-	</th>
-      </tr>
-      <tr>
-	<td colspan="4">
-	  <h2>View more Videos with the same:</h2>
-	</td>
-      </tr>
-      <tr>
-	<th>
-	  <a href="/web/show_for_topic/{{ta.topic}}/">Topic</a>
-	</th>
-	<th>
-	  <a href="/web/show_for_author/{{ta.video.author.username}}/">Author</a>
-	</th>
-	<th>
-	  <a href="/web/show_for_semester/{{ta.video.semester}}/">Semester</a>
-	</th>
-	<th>
-	  <a href="/web/show_for_type/{{ta.video.type}}/">Type</a>
-	</th>
-      </tr>
-    </table>
-  </div>
+<table border="0">
+  <tr>
+    <td>
+      <div id="movie_div" style="float:left;align:left"></div>
+      
+      <script type="text/javascript">
+	document.getElementById('movie_div').innerHTML = qtEmbed;
+      </script>
+    </td>
+  </tr>
 
-  <div id="linked_problems">
-    <ul>
-    {% for linked_problem in linked_problems %}
-    <li>
-      <a href="/tutprobs/{{topic_number}}/{{linked_problem.id}}/">{{linked_problem.name}}</a>
-    </li>
-    {% endfor %}
-    </ul>
-    {% endblock %}
+  <tr>
+    <td>
+      {% include "comment_view.html" %}	
+    </td>
+  </tr>
+</table>
+
+{% endblock main_column%}
+{% block sidebar %}
+
+{% include "similar_video_bar.html" %}
+{% include "favorite_button.html" %}
+
+
+{% endblock sidebar %}
+

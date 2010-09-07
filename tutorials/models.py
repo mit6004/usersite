@@ -156,26 +156,11 @@ def open_location(filesystem_location, **kwargs):
 
 
 
-## Annotations ##
-
-
-class Annotation(models.Model):
+class TopicAssignment(models.Model):
     video = models.ForeignKey(PublicVideo)
     start_time = models.FloatField(default=0.0)
     stop_time = models.FloatField(default=0.0)
-    # OFFSET from beginning of video
 
-class Comment(Annotation):
-    user=models.ForeignKey(User)
-    text=models.TextField()
-    
-    def __unicode__(self):
-        return u'%s: %s' %(self.video, self.topic)
-    
-
-    
-
-class TopicAssignment(Annotation):
     ## inherits the percentage range of completion through document
     topic = models.CharField(max_length=128, choices=TOPIC_CHOICES)
     ## constrained to match the choices of topic made available 
@@ -215,6 +200,24 @@ class TopicAssignment(Annotation):
 #    num_student_favorites=property(get_num_student_favorites)
 
 
+
+class Comment(models.Model):
+    COMMENT_PERMISSION_CHOICES = (
+        ('students', 'Current and future 6.004 students'),
+        ('staff', 'Only 6.004 Staff Members and You'),
+        )
+    clip = models.ForeignKey(TopicAssignment, related_name='comments')
+    user=models.ForeignKey(User)
+    text=models.TextField()
+    permissions=models.CharField(max_length=64, choices=COMMENT_PERMISSION_CHOICES, default='students')
+    time = models.DateTimeField(auto_now=True, auto_now_add=True)
+
+    class Meta:
+        ordering=['time']
+
+    def __unicode__(self):
+        return u'%s: %s' %(self.text, self.clip.topic)
+    
 
 class LinkedWebPage(models.Model):
     name=models.CharField(max_length=50, default="")
@@ -283,7 +286,6 @@ models.signals.class_prepared.connect(databrowse_register)
 #    student_id = models.IntegerField(max_length=9, unique=True)
 #    class_year = models.IntegerField(max_length=4)
 
-    
 
  
 

@@ -12,6 +12,7 @@ class Migration(SchemaMigration):
         db.create_table('tutorials_quiz', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('num', self.gf('django.db.models.fields.IntegerField')(max_length=1)),
+            ('quiz_date', self.gf('django.db.models.fields.DateField')(null=True)),
             ('semester', self.gf('django.db.models.fields.CharField')(max_length=3)),
         ))
         db.send_create_signal('tutorials', ['Quiz'])
@@ -47,21 +48,37 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('tutorials', ['PublicVideo'])
 
-        # Adding model 'Annotation'
-        db.create_table('tutorials_annotation', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('video', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['tutorials.PublicVideo'])),
-            ('start_percent', self.gf('django.db.models.fields.FloatField')(default=0.0)),
-            ('stop_percent', self.gf('django.db.models.fields.FloatField')(default=100.0)),
-        ))
-        db.send_create_signal('tutorials', ['Annotation'])
-
         # Adding model 'TopicAssignment'
         db.create_table('tutorials_topicassignment', (
-            ('annotation_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['tutorials.Annotation'], unique=True, primary_key=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('video', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['tutorials.PublicVideo'])),
+            ('start_time', self.gf('django.db.models.fields.FloatField')(default=0.0)),
+            ('stop_time', self.gf('django.db.models.fields.FloatField')(default=0.0)),
             ('topic', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('num_staff_favorites', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
         db.send_create_signal('tutorials', ['TopicAssignment'])
+
+        # Adding model 'Comment'
+        db.create_table('tutorials_comment', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('clip', self.gf('django.db.models.fields.related.ForeignKey')(related_name='comments', to=orm['tutorials.TopicAssignment'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('text', self.gf('django.db.models.fields.TextField')()),
+            ('permissions', self.gf('django.db.models.fields.CharField')(default='students', max_length=64)),
+            ('time', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, auto_now_add=True, blank=True)),
+        ))
+        db.send_create_signal('tutorials', ['Comment'])
+
+        # Adding model 'LinkedWebPage'
+        db.create_table('tutorials_linkedwebpage', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(default='', max_length=50)),
+            ('url', self.gf('django.db.models.fields.URLField')(default='http://6004.csail.mit.edu/currentsemester/', max_length=200)),
+            ('topic_assignment', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['tutorials.TopicAssignment'])),
+            ('pointer_on_page', self.gf('django.db.models.fields.CharField')(default='', max_length=50)),
+        ))
+        db.send_create_signal('tutorials', ['LinkedWebPage'])
 
         # Adding model 'UserProfile'
         db.create_table('tutorials_userprofile', (
@@ -75,9 +92,9 @@ class Migration(SchemaMigration):
         db.create_table('tutorials_userprofile_favorites', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('userprofile', models.ForeignKey(orm['tutorials.userprofile'], null=False)),
-            ('publicvideo', models.ForeignKey(orm['tutorials.publicvideo'], null=False))
+            ('topicassignment', models.ForeignKey(orm['tutorials.topicassignment'], null=False))
         ))
-        db.create_unique('tutorials_userprofile_favorites', ['userprofile_id', 'publicvideo_id'])
+        db.create_unique('tutorials_userprofile_favorites', ['userprofile_id', 'topicassignment_id'])
 
 
     def backwards(self, orm):
@@ -97,11 +114,14 @@ class Migration(SchemaMigration):
         # Deleting model 'PublicVideo'
         db.delete_table('tutorials_publicvideo')
 
-        # Deleting model 'Annotation'
-        db.delete_table('tutorials_annotation')
-
         # Deleting model 'TopicAssignment'
         db.delete_table('tutorials_topicassignment')
+
+        # Deleting model 'Comment'
+        db.delete_table('tutorials_comment')
+
+        # Deleting model 'LinkedWebPage'
+        db.delete_table('tutorials_linkedwebpage')
 
         # Deleting model 'UserProfile'
         db.delete_table('tutorials_userprofile')
@@ -147,12 +167,14 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'tutorials.annotation': {
-            'Meta': {'object_name': 'Annotation'},
+        'tutorials.comment': {
+            'Meta': {'ordering': "['time']", 'object_name': 'Comment'},
+            'clip': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'comments'", 'to': "orm['tutorials.TopicAssignment']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'start_percent': ('django.db.models.fields.FloatField', [], {'default': '0.0'}),
-            'stop_percent': ('django.db.models.fields.FloatField', [], {'default': '100.0'}),
-            'video': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tutorials.PublicVideo']"})
+            'permissions': ('django.db.models.fields.CharField', [], {'default': "'students'", 'max_length': '64'}),
+            'text': ('django.db.models.fields.TextField', [], {}),
+            'time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'auto_now_add': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'tutorials.lab': {
             'Meta': {'ordering': "['num']", 'unique_together': "(('num', 'semester'),)", 'object_name': 'Lab'},
@@ -162,6 +184,14 @@ class Migration(SchemaMigration):
             'num': ('django.db.models.fields.IntegerField', [], {}),
             'semester': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
             'submit_due_date': ('django.db.models.fields.DateTimeField', [], {})
+        },
+        'tutorials.linkedwebpage': {
+            'Meta': {'object_name': 'LinkedWebPage'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '50'}),
+            'pointer_on_page': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '50'}),
+            'topic_assignment': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tutorials.TopicAssignment']"}),
+            'url': ('django.db.models.fields.URLField', [], {'default': "'http://6004.csail.mit.edu/currentsemester/'", 'max_length': '200'})
         },
         'tutorials.publicvideo': {
             'Meta': {'object_name': 'PublicVideo'},
@@ -179,17 +209,22 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['num']", 'unique_together': "(('semester', 'num'),)", 'object_name': 'Quiz'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'num': ('django.db.models.fields.IntegerField', [], {'max_length': '1'}),
+            'quiz_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'semester': ('django.db.models.fields.CharField', [], {'max_length': '3'})
         },
         'tutorials.topicassignment': {
-            'Meta': {'object_name': 'TopicAssignment', '_ormbases': ['tutorials.Annotation']},
-            'annotation_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['tutorials.Annotation']", 'unique': 'True', 'primary_key': 'True'}),
-            'topic': ('django.db.models.fields.CharField', [], {'max_length': '128'})
+            'Meta': {'object_name': 'TopicAssignment'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'num_staff_favorites': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'start_time': ('django.db.models.fields.FloatField', [], {'default': '0.0'}),
+            'stop_time': ('django.db.models.fields.FloatField', [], {'default': '0.0'}),
+            'topic': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'video': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tutorials.PublicVideo']"})
         },
         'tutorials.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'athena_id': ('django.db.models.fields.CharField', [], {'max_length': '8', 'primary_key': 'True'}),
-            'favorites': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['tutorials.PublicVideo']", 'null': 'True', 'blank': 'True'}),
+            'favorites': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['tutorials.TopicAssignment']", 'null': 'True', 'blank': 'True'}),
             'student_id': ('django.db.models.fields.IntegerField', [], {'max_length': '9', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'unique': 'True'})
         }

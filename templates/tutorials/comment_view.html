@@ -1,0 +1,45 @@
+<table border="0" align="center">
+	{% if user.is_authenticated %}
+	<form action="" method="post">
+	    <tr>
+	      <td colspan="2">
+	      <textarea rows="5" cols="60" name="text">Write your comment here....</textarea>
+	      </td>
+	    </tr>
+
+	    <tr>
+	      <td>
+		Visibility:
+		<select name="permissions">
+		  <option value="students"> All Students</option>
+		  <option value="staff"> Staff Members and {{user.username}}</option>
+		</select>
+	      </td>
+	      <td style="text-align:right">
+		<input type="submit" name="submit_comment" value="Submit Comment" />
+	      </td>
+	    </tr>
+	</form>
+	{% endif %}
+
+	{% if comments.count %}
+	<tr>
+	  <td colspan="2" class="sidebar_header">
+	    Comments about this video:
+	  </td>
+	</tr>
+	{% endif %}
+	  
+	{% for comment in comments %}
+	<tr>
+	  <td colsapn="2">
+	    "{{comment.text}}" 
+	    <br/> -- {{comment.user.username}} at {{comment.time}}
+	  </td>
+	</tr>
+	{% endfor %}
+
+</table>
+	
+
+

@@ -5,39 +5,9 @@
 {% block content %}
 
 
-
-<!--
-<table border="1">
-  <tr>
-    <th>Lectures</th><th>Recitations</th><th>Lab Help</th><th>Lab Checkoffs</th>
-  </tr>
-
-  <tr>
-    <td>
-
-      (Lecture List)
-    </td>
-
-    <td>
-      (Recitation List)
-    </td>
-
-    <td>
-
-
-    </td>
-
-
-    <td>
-     
-      
-    </td>
-    
-  </tr>
-</table>
--->
 <br>
 <div style="display:block">
+
 <table border="1">
   <tr>
     <th>--</th><th>Quizzes</th><th>Labs</th><th>Tutorial Problems</th><th>Concept Explanations</th>
@@ -50,7 +20,7 @@
       {% for f in fav_quizzes %}
       <li> <a href="/show_media/{{f.id}}" target="_blank">{{f}}</a>
 	{% endfor %}
-    </td>
+v    </td>
     <td>
       {% for f in fav_labs %}
       <li> <a href="/show_media/{{f.id}}">{{f}}</a>

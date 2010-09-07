@@ -1,0 +1,67 @@
+
+
+<script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
+<script type="text/javascript" src="/site_media/common_quicktime_methods.js"></script>
+
+<script type="text/javascript">
+
+  // define the video here
+  var qtEmbed = QT_GenerateOBJECTText_XHTML(
+  		'{{selected_ta.video.get_absolute_url}}', //'video_placeholder.jpg',
+  		'800', // width
+  		'500', // height: set this to actual height + 20 (to leave space for controller)
+  		'', // required blank field
+  		'enablejavascript', 'true',
+  		'obj#id', 'movie1',
+  		'emb#name', 'movie1',
+  		'emb#id', 'movie1_emb',
+  		'postdomevents', 'true',
+  		'autoplay', 'false',
+  		'controller', 'true',
+  		'scale', 'aspect'
+  )
+  
+  // called from body.onload to set up listeners that will wait for quicktime
+  // movie to send events
+  
+  function RegisterListeners()
+  {
+  	// when the movie loads, it will set the end time to the duration of the movie
+  	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', setup_movie);
+  	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_times_and_play_movie);
+  }
+  
+  function set_times_and_play_movie()
+  {
+    var start_time = {{selected_ta.start_time}};
+    var end_time   = {{selected_ta.stop_time}};
+    
+    if(typeof(start_time) == "undefined")
+    {
+      start_time = 0;
+    }
+    if(typeof(end_time) == "undefined")
+    {
+      end_time = document.movie1.GetDuration();
+    } 
+        
+    set_start_and_end_times(start_time, end_time);
+    document.movie1.Play();
+  }
+  
+  function set_start_and_end_times(start_time, end_time)
+  {
+
+    
+    document.movie1.SetStartTime(start_time);
+    document.movie1.SetEndTime(end_time);
+  }
+
+  
+  function setup_movie()
+  {
+  	set_display_area_to_fit_movie();
+  	
+  }
+
+</script>

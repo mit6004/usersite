@@ -1,0 +1,28 @@
+<div id="masthead">
+  <div id="home_nav">
+      <a class="mast_link" href="/accounts/profile/"> Media Browser </a>
+
+      <a class="mast_link" href="http://6004.csail.mit.edu/"> 6.004 Homepage </a>
+
+      <a class="mast_link" href="http://q.csail.mit.edu">Help/Checkoff Queue</a>
+
+  </div>
+
+  <div id="welcome_message">
+
+    {% if user.is_authenticated %}
+
+    Logged in as {{ user.get_full_name }}. 
+      <a class="mast_link" href="/accounts/logout/">Sign Out</a>.
+    {% else %}
+
+    Welcome. Please 
+    <a class="mast_link" href="/accounts/login">Sign In</a> 
+    to access all features of this site.
+  
+    {% endif %}
+
+  </div>
+
+  <div class="clear"></div>
+</div>

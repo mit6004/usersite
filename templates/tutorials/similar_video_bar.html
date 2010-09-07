@@ -1,0 +1,34 @@
+
+<p class="sidebar_header">View more Videos with the same:</p>
+
+<ul>
+  <li>Topic:
+    <a href="/web/show_for_topic/{{selected_ta.topic}}/">
+      {{selected_ta.topic}}</a></li>
+  
+  <li>Author:
+    <a href="/web/show_for_author/{{selected_ta.video.author.username}}/">
+      {{selected_ta.author.get_full_name}}</a></li>
+	  
+  <li>Semester:
+    <a href="/web/show_for_semester/{{selected_ta.video.semester}}/">
+      {{selected_ta.video.semester}}</a></li>
+  
+  <li>Type:
+    <a href="/web/show_for_type/{{selected_ta.video.type}}/">
+      {{selected_ta.video.type}}</a>
+  </li>
+</ul>
+
+
+<p class="sidebar_header">Tutorial Problems for this Topic:</p>
+
+<ul>
+  {% for linked_problem in linked_problems %}	  
+
+  <li> <a href="/tutprobs/{{topic}}/{{linked_problem.id}}/">
+      {{linked_problem.name}}</a></li>
+
+  {% endfor %}
+
+</ul>

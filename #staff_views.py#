@@ -1,4 +1,4 @@
-from tutorials import loader
+ofrom tutorials import loader
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from tutorials.models import *
@@ -32,7 +32,7 @@ def preview_and_set_topic(request, video_id):
             start_time_units = request.POST['start_time_units']
         else: start_time_units = 0
 
-o        if 'stop_time_units' in request.POST.keys(): 
+        if 'stop_time_units' in request.POST.keys(): 
             stop_time_units = request.POST['stop_time_units']
         else: stop_time_units = 0
 

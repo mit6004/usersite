@@ -1,0 +1,150 @@
+body 
+{
+    margin:0;
+    padding:0;
+    background-color:#667788;
+}
+
+div, td, p, th, ul, ol
+{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:100%;
+    line-height:125%;
+}
+
+
+
+ul, ol
+{
+    margin-top:0.5em;
+}
+
+#base
+{
+    height:100%;
+    /*background-color:#3c3c3c;*/
+}
+
+#top_block
+{
+    position:relative;
+    padding:0.5em;
+    width:90%;
+}
+
+#main_column
+{
+    background-color:#F0F0F0;
+    padding:0.5em;
+    float:left;
+    min-width:800px;
+}
+
+#sidebar
+{
+    font-size:75%;
+    width:300px;
+    float:left;
+    margin-left:3em;
+    position:auto;
+    background-color:#AABBCC;
+    padding:0.5em;
+    display:block;
+
+}
+
+#browse_sidebar
+{
+    position:absolute;
+    right:1.5%;
+    width:30%;
+    display:inline;
+    padding:0.5em;
+    background-color:#CCCCCC;
+}
+
+#sidebar_content
+{
+    display:block;
+    height:500px;
+}
+
+
+#bottom_block
+{
+    margin-top:0.5em;
+    display:block;
+    float:left;
+    width:90%;
+}
+
+.clear 
+{
+    clear:both;
+    height:0;
+    font-size:0;
+}
+
+.sidebar_header
+{
+    font-weight:bold;
+    font-size:120%;
+    margin-bottom:0px;
+}
+
+#masthead
+{
+    margin:0;
+    width:auto;
+    font-size:80%;
+    padding:.5em 2em;
+    background-color:#DDDDDD;
+    border-bottom:1px solid black;
+}
+
+
+#content_container
+{
+    width:90%;
+    margin:auto;
+    margin-top:1em;
+}
+
+#home_nav
+{
+    display:inline;
+    float:left;
+    text-align:left;
+}
+
+#welcome_message
+{
+    display:inline;
+    float:right;
+    text-align:right;
+    margin-left:3em;
+    margin-right:5em;
+}
+
+#page_top
+{
+    font-size: 125%;
+    font-weight:bold;
+    text-decoration:underline;
+ 
+    margin-bottom:10px;
+    
+
+}
+
+.mbrowser
+{
+    background-color:#EEEEEE;
+}
+
+.mast_link
+{
+    font-size:120%;
+    font-weight:bold;
+    padding:0.5em;
+}

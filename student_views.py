@@ -15,14 +15,19 @@ import datetime, os, re
 
 
 def get_student_info(request):
-    if request.user.is_authenticated():
+    is_authenticated=request.user.is_authenticated()
+    
+    if is_authenticated:
         print "user %s is authenticated \n" %(request.user.username)
         student=request.user
         profile=UserProfile.objects.get(user=student)
-        return {'student' : student, 'profile' : profile, }
+        return {'student' : student, 
+                'profile' : profile,
+                'is_authenticated': is_authenticated,
+                }
     else:
         print "user is NOT authenticated\n"
-        return {}
+        return {'is_authenticated':is_authenticated}
  
 
 def get_public_videos(request):
@@ -44,9 +49,8 @@ def get_public_videos(request):
         }
     for key in dict.keys():
         print "dict[%s] : %s\n" %(key, dict[key])
-
-    
     return dict
+
 
 def get_student_favorites(request):
     MAX_DISPLAY=5
@@ -68,23 +72,20 @@ def get_student_favorites(request):
     return dict
 
 
+
 def get_faves_by_topic(request):
     student_dict=get_student_info(request)
     student_faves = student_dict['profile'].favorites.all()
     topic_choices = [ [topic[0], topic[1]] for topic in TOPIC_CHOICES]
-                
     faves_by_topic={}
-    
     for topic_tuple in topic_choices:
         topic_faves = student_faves.filter(topic=topic_tuple[0])
         ## get all TopicAssigned video clips that match the exact topic part
-
         entry=''
         for topic_fave in topic_faves:
             entry = '%s <td><a href=\"%s\">%s</a></td>' %(entry, 
                                                      topic_fave.video.get_absolute_url(), 
                                                      topic_fave.video.file_name)
-
         faves_by_topic[topic_tuple[1]]=entry
         print "faves_by_topic[%s]: %s\n" %(topic_tuple[1], faves_by_topic[topic_tuple[1]])
     return faves_by_topic
@@ -115,31 +116,33 @@ def preview_and_set_topic(request, video_id):
     return render_to_response(template, dict)
 
 
+
+## Main view for media browser
 ## use built in decorator to limit access to logged in users
 @login_required
-def student_portal(request, topic_snippet_id=1, is_favorite='False', query_string=''):
+def student_portal(request, topic_snippet_id=1, is_favorite='False', show='Favorites', query_string=''):
     public_ta_dict = get_public_videos(request)
     favorite_ta_dict = get_student_favorites(request)
     faves_by_topic = get_faves_by_topic(request)
-
     ta_id = int(topic_snippet_id)
     all_topic_assignments=public_ta_dict['all_vids']
     selected_ta = all_topic_assignments.get(pk=ta_id)
-
-    favorite_bool=False
-    if is_favorite=='True':
-        favorite_bool=True
 
     if 'QUERY_STRING' in request.META.keys():
         query_string='?'+request.META['QUERY_STRING']   
     query=query_string
      
-    is_favorite=u'False'
-    
+    is_favorite=u'False'    
     if favorite_ta_dict['faves'].filter(pk=ta_id):
         is_favorite=u'True'
+
     verbose_topics = [ topic[1] for topic in TOPIC_CHOICES ]
-    filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
+
+    pre_filter = TopicAssignment.objects.all()
+    if show=='Favorites':
+        pre_filter=favorite_ta_dict['faves']
+    # only show a student's favorites
+    filterset=TopicAssignmentFilterSet(request.GET, queryset=pre_filter)
     dict={
         'query_string':query,
         'is_favorite':is_favorite,
@@ -147,60 +150,39 @@ def student_portal(request, topic_snippet_id=1, is_favorite='False', query_strin
         'selected_ta':selected_ta,
         'verbose_topics':verbose_topics,
         'faves_by_topic':faves_by_topic,
+        'show': show,
         }
-
     for key in dict.keys():
         print "dict[%s] : %s\n" %(key, dict[key])
+#    template="student_browse.html"
     template="browse.html"
-#    response = render_to_response(template, dict)
-#    print "the outgoing response is %s\n" %(response.content)
-#    return response
-    
     return render_to_response(template, dict, 
                               context_instance=
                               RequestContext(request, processors=[get_student_favorites]))
 
-def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
-
+## public browser. no authentication or favoriting.
+def browse(request, topic_snippet_id=1, query_string=''):
     all_topic_assignments = TopicAssignment.objects.all()
-
     ta_id = int(topic_snippet_id)
     print "ta_id = %d\n" %(ta_id)
     selected_ta = all_topic_assignments.get(pk=ta_id)
     selected_video = selected_ta.video
     v_id = selected_video.id
 
-    favorite_bool=False
-    if is_favorite=='True':
-        favorite_bool=True
-
     all_videos=PublicVideo.objects.all()
     selected_video = all_videos.get(pk=v_id)
     print "vid is %d" %(v_id)
 
     if 'QUERY_STRING' in request.META.keys():
-        query_string='?'+request.META['QUERY_STRING']   
+        if not request.META['QUERY_STRING'] =='':
+            query_string='?'+request.META['QUERY_STRING']   
     query=query_string
     print "full_path = %s\n" %(query)
  
-    favoriter_set = selected_ta.userprofile_set.all()   
-    if request.user:
-        if request.user.is_authenticated():
-            if favoriter_set.filter(user=request.user).count():
-                favorite_bool=True
-                
     filterset=TopicAssignmentFilterSet(request.GET, queryset=TopicAssignment.objects.all())
-
-    print "favorite_bool= %s and is_favorite=%s \n" %(favorite_bool, is_favorite)
-
-    if favorite_bool:
-        is_favorite=u'True'
-    else:
-        is_favorite=u'False'
 
     dict={
         'query_string':query,
-        'is_favorite':is_favorite,
         'all_videos':all_videos,
         'all_topic_assignments':filterset,
         'selected_ta':selected_ta,
@@ -219,15 +201,6 @@ def browse(request, topic_snippet_id=23, is_favorite='False', query_string=''):
 
 
 ## not used. for testing.
-
-@login_required
-def show_media(request, public_video_id):
-    media_object= PublicVideo.objects.get(pk=public_video_id)
-    template = "show_to_student.html"
-    this_dict = {'media': media_object,}
-
-    return render_to_response(template, this_dict,
-                              context_instance = RequestContext(request)) 
 
 
 def media_browser(request):
@@ -281,6 +254,3 @@ def media_browser(request):
     response = render_to_response(template, dict)
     print "the outgoing response is %s\n" %(response.content)
     return response
-
-#                              context_instance=
-#                              RequestContext(request, processors=[get_student_info]))

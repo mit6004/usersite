@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Course Media{% endblock %}
+
+{% block header %}
+{% include "movie_header.html" %}
+<!-- should pass parameters for selected_ta -->
+
+{% endblock %}
+
+{% block body_attributes %}onload="RegisterListeners();"{% endblock %}
+
+{% block content %}
+
+{% include "movie_div.html" %}
+
+{% block sidebar %}
+<div>
+  {% ifequal show 'Favorites' %}
+  Displaying only favorited videos for {{user.get_full_name}}. 
+  <a href="/{{selected_ta.id}}/{{is_favorite}}/All/">
+    Click </a> to show all Video clips.
+  
+  {% else %}
+  Displaying all video clips.
+  <a href="/{{selected_ta.id}}/{{is_favorite}}/Favorites/">
+    Click </a> to show only favorited videos for {{user.get_full_name}}
+  
+  {% endifequal %}
+  
+</div>
+{% endblock sidebar %}
+
+
+<div>
+    <table border="1" class="mbrowser" style="display:block;clear:both">
+      <tr>
+	<th>Topic</th>
+	<th>Type</th>
+	<th>Author</th>
+	<th>Semester</th>
+	<th>Staff Favorites</th>
+	<th>Start Time - End Time</th>
+	<th>Title</th>
+      </tr>
+      
+
+      <tr>
+	<form action="" method="get">
+	  <td>{{all_topic_assignments.form.topic}}</td>  
+	  <td>{{all_topic_assignments.form.video__type}}</td>
+	  <td>{{all_topic_assignments.form.video__author}}</td>	  
+	  <td>{{all_topic_assignments.form.video__semester}}</td>
+	  <td>{{all_topic_assignments.form.num_staff_favorites}}</td>
+	  <td>
+	  </td>
+	  <td>
+	    <input type="submit" value="filter"/>
+	  </td>
+	  
+	</form>
+      </tr>
+      
+      {% for ta in all_topic_assignments %}
+      <!-- a topicassignment is an annotation, and points to one topic 
+	   from the TOPIC_CHOICES list and a PublicVideo ForeignKey -->
+  
+      <tr>
+	<td>
+	  <a href="/web/show_for_topic/{{ta.topic}}/">
+	  {{ta.topic}}
+	  </a>
+	</td>
+	<td>
+	  <a href="/web/show_for_type/{{ta.video.type}}/">
+	  {{ta.video.type}}
+	  </a>
+	</td>
+	<td>
+	  <a href="/web/show_for_author/{{ta.video.author.username}}/">
+	  {{ta.video.author}}
+	  </a>
+	</td>
+	<td>
+	  <a href="/web/show_for_semester/{{ta.video.semester}}/">
+	  {{ta.video.semester}}
+	  </a>
+	</td>
+	<td>
+	  {{ta.get_num_staff_favorites}}
+	</td>
+
+	{% if ta.end_time %}
+	<td> {{ta.start_time}} - {{ta.end_time}}</td>
+	{% else %}
+	<td> {{ta.start_time}} - END </td>
+	{% endif %}
+	<td>
+	  
+	  
+	  <a href="/{{ta.id}}/{{is_favorite}}/{{show}}/{{query_string}}">
+	    
+	      
+	      {% if ta.video.title %}
+	      ({{ta.id}}) - 
+	      {{ta.video.title}}
+	      {% else %}
+	      ({{ta.id}}) - 
+	      {{ta.video.file_name}}
+	      {% endif %}
+	    </a>  
+	</td>
+	<td>
+	  <a href="/web/show_media/{{ta.id}}/"> <i> Full Size </i> </a>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+
+
+
+
+<!--{{selected_video.get_absolute_url}}-->
+
+
+
+
+
+
+
+
+{% endblock %}
+
+    

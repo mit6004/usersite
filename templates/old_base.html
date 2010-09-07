@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+<style type="text/css">
+.nav_tabs
+{
+clear:both;
+width:60;
+padding:30px;
+margin:0;
+float:right;
+}
+.nav_list
+{
+list-style:none;
+list-style-type:none;
+padding:0;
+position:relative
+}
+.nav_item
+{
+display:inline;
+float:left;
+}
+.nav_link
+{
+display:block;
+padding:12px 20px 0 20px;
+color:#ffffff;
+height:28px;
+font-weight:normal;
+margin:0 2 px;
+background-color:#23364E;
+border-top:1px;
+border-right:1px;
+}
+.mast
+{
+clear:both;
+}
+.post_tab
+{
+clear:both;
+float:left;
+}
+.filter_bar
+{
+clear:right;
+padding:30px;
+position:relative;
+}
+.filter_list
+{
+padding:0;
+position:relative;
+}
+.filter_item
+{
+display:block;
+padding:12px 20px 0 20px;
+font-weight:normal;
+border-top:1px;
+border-right:1px;
+background-color:#3266E4
+margin:0 2px
+}
+.mplayer
+{
+
+display:block;
+
+}
+.mbrowser
+{
+position:relative;
+font-size:100%;
+display:block;
+}
+</style>
+
+	  {% block header %} {% endblock %}
+  
+    <title>{% block title %}Course Records and Study Materials{% endblock %}</title>
+
+<!--
+<div="nav" class="nav_tabs">
+<ul class="nav_list">
+     <li style="display:inline" class="nav_item">
+       <a href="/accounts/profile" class="nav_link">
+	 {{user.username}}'s Home</a></li>
+     <li class="nav_item">
+       <a href="/" class="nav_link">
+	 Find Study Materials</a></li>
+     <li class="nav_item">
+       <a href="/accounts/records" class="nav_link">
+	 {{user.username}}'s Lab Records</a></li>
+</ul>
+</div>
+-->
+<!--<script language="javascript" type="text/javascript" src="tablefilter.js"></script>-->
+</head>
+
+
+<body {% block body_attributes %}{% endblock %}>
+	<div id="masthead">
+		{% if user.is_authenticated %}
+			<h3>Currently Logged in as {{ user.get_full_name }}. <a href="/accounts/logout/">Sign Out</a>. </h3>
+		{% else %}
+			<h2> Welcome. Please <a href="/accounts/login">Sign In</a> to access all features of this site.</h2>
+    {% endif %}
+	</div>
+
+
+<span>
+  {% block content %} {% endblock %}
+</span>
+  
+</body>
+</html>
+
+<!--
+style="display:block;float:left;padding:12px 20px 0 20px;color:#ffffff;height:28px;font-weight:normal;margin:0 2 px;background-color:#23364E;border-top:1px;border-right:1px">
+-->
+

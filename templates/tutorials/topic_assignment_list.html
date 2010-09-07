@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "two_column.html" %}
 
-{% block title %} List of Snippets {% endblock %}
-{% block header %}{% endblock %}
-{% block content %}
+{% block title %} {{title_string}} {% endblock %}
 
 
+{% block page_top %}
+{{header_string}}
+{% endblock page_top %}
+
+{% block main_column %}
 <table border="1">
   <tr>
     <th>
@@ -38,4 +41,11 @@
   </tr>
   {% endfor %}
 </table>
-{% endblock %}      
+{% endblock main_column %}      
+{% block sidebar %}
+
+<p class="sidebar_header" align="center">
+  <a href="/accounts/profile/">
+    Return to Media Browser</a></p>
+
+{% endblock sidebar %}

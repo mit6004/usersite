@@ -1,0 +1,22 @@
+<table>
+  <tr>
+
+    {% if user.is_authenticated and is_user_favorite %} 
+    <td class="sidebar_header">
+      <form action="" method="post" name="rm_favorite">
+	This video is marked as one of your favorites.
+	<input type="submit" name="rm_favorite" value="Remove it from Favorites" />
+      </form>
+    </td>
+    {% endif %}
+      
+    {% if user.is_authenticated and not is_user_favorite %} 
+    <td class="sidebar_header" style="display:inline">
+      <form action="" method="post" name="add_favorite">
+	You have not yet added this video to your favorites.
+	<input type="submit" name="add_favorite" value="Add it as a Favorite" style="align:right"/>
+      </form>
+    </td>
+    {% endif %}
+  </tr>
+</table>

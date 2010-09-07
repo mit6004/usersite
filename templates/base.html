@@ -1,82 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
-<style type="text/css">
-.nav_tabs
-{
-clear:both;
-width:60;
-padding:30px;
-margin:0;
-float:right;
-}
-.nav_list
-{
-list-style:none;
-list-style-type:none;
-padding:0;
-position:relative
-}
-.nav_item
-{
-display:inline;
-float:left;
-}
-.nav_link
-{
-display:block;
-padding:12px 20px 0 20px;
-color:#ffffff;
-height:28px;
-font-weight:normal;
-margin:0 2 px;
-background-color:#23364E;
-border-top:1px;
-border-right:1px;
-}
-.mast
-{
-clear:both;
-}
-.post_tab
-{
-clear:both;
-float:left;
-}
-.filter_bar
-{
-clear:right;
-padding:30px;
-position:relative;
-}
-.filter_list
-{
-padding:0;
-position:relative;
-}
-.filter_item
-{
-display:block;
-padding:12px 20px 0 20px;
-font-weight:normal;
-border-top:1px;
-border-right:1px;
-background-color:#3266E4
-margin:0 2px
-}
-.mplayer
-{
+<link rel="stylesheet" type="text/css" href="/site_media/css/usersite.css" />
 
-display:block;
-
-}
-.mbrowser
-{
-position:relative;
-font-size:100%;
-display:block;
-}
-</style>
 
 	  {% block header %} {% endblock %}
   
@@ -102,20 +28,18 @@ display:block;
 
 
 <body {% block body_attributes %}{% endblock %}>
-	<div id="masthead">
-		{% if user.is_authenticated %}
-			<h3>Currently Logged in as {{ user.get_full_name }}. <a href="/accounts/logout/">Sign Out</a>. </h3>
-		{% else %}
-			<h2> Welcome. Please <a href="/accounts/login">Sign In</a> to access all features of this site.</h2>
-    {% endif %}
-	</div>
-
-
-<span>
-  {% block content %} {% endblock %}
-</span>
+  <div id="base">
+  {% include "masthead.html" %}
+  
+  <div id="content_container">
+    {% block content %} 
+    {% endblock %}
+  </div>
+  </div>
   
 </body>
+
+
 </html>
 
 <!--

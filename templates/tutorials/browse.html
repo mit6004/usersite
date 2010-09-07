@@ -1,193 +1,31 @@
-{% extends "base.html" %}
+{% extends "three_block.html" %}
 
 {% block title %}Course Media{% endblock %}
 
+<!-- movie stuff -->
 {% block header %}
-<script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
-<script type="text/javascript" src="/site_media/common_quicktime_methods.js"></script>
-
-<script type="text/javascript">
-
-  // define the video here
-  var qtEmbed = QT_GenerateOBJECTText_XHTML(
-  		'{{selected_ta.video.get_absolute_url}}', //'video_placeholder.jpg',
-  		'800', // width
-  		'500', // height: set this to actual height + 20 (to leave space for controller)
-  		'', // required blank field
-  		'enablejavascript', 'true',
-  		'obj#id', 'movie1',
-  		'emb#name', 'movie1',
-  		'emb#id', 'movie1_emb',
-  		'postdomevents', 'true',
-  		'autoplay', 'false',
-  		'controller', 'true',
-  		'scale', 'aspect'
-  )
-  
-  // called from body.onload to set up listeners that will wait for quicktime
-  // movie to send events
-  
-  function RegisterListeners()
-  {
-  	// when the movie loads, it will set the end time to the duration of the movie
-  	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', setup_movie);
-  	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_times_and_play_movie);
-  }
-  
-  function set_times_and_play_movie()
-  {
-    var start_time = {{selected_ta.start_time}};
-    var end_time   = {{selected_ta.stop_time}};
-    
-    if(typeof(start_time) == "undefined")
-    {
-      start_time = 0;
-    }
-    if(typeof(end_time) == "undefined")
-    {
-      end_time = document.movie1.GetDuration();
-    } 
-        
-    set_start_and_end_times(start_time, end_time);
-    document.movie1.Play();
-  }
-  
-  function set_start_and_end_times(start_time, end_time)
-  {
-
-    
-    document.movie1.SetStartTime(start_time);
-    document.movie1.SetEndTime(end_time);
-  }
-
-  
-  function setup_movie()
-  {
-  	set_display_area_to_fit_movie();
-  	
-  }
-
-</script>
-
-{% endblock %}
-
+{% include "movie_header.html" %}
+{% endblock header %}
 {% block body_attributes %}onload="RegisterListeners();"{% endblock %}
+<!-- end movie stuff -->
 
-{% block content %}
-
-
-  <div id="movie_div" style="float:left;align:left"></div>
-
-  <script type="text/javascript">
-    document.getElementById('movie_div').innerHTML = qtEmbed;
-  </script>
+{% block browse_sidebar %}
+  {% include "student_browse.html" %}
+{% endblock browse_sidebar %}
 
 
+{% block main_column %}
+
+  {% include "movie_div.html" %}
+
+{% endblock main_column %}
+
+{% block bottom_block %}
+
+  {% include "mbrowser.html" %}
+
+{% endblock bottom_block %}
 
 
-<table border="1" style="float:left;padding:20px">
-  <tr>
-    <td style="colspan:4"> 
-      <h3>User Panel area for {{user.username}}</h3> 
-    </td>
-
-  </tr>
-
-  <tr>
-    <th style="colspan:1">
-      Topics
-    </th>
-    <th style="colspan:3">
-      Popular Videos
-    </th>
-  </tr>
-  <!--
-  {% for verbose_topic in verbose_topics %}
-  <tr>
-  <td>
-    {{verbose_topic}}
-  
-  </td>
-  
-  
-  {{faves_by_topic.verbose_topic}}
-  </tr>
-   {% endfor %}
-  
--->
-
-</table>
-
-
-
-
-
-<div>
-    <table border="1" class="mbrowser" style="display:block;clear:both">
-      <tr>
-	<th>Topic</th>
-	<th>Type</th>
-	<th>Author</th>
-	<th>Semester</th>
-	<th>Staff Favorites</th>
-	<th>Title</th>
-      </tr>
-      
-
-      <tr>
-	<form action="" method="get">
-	  <td>{{all_topic_assignments.form.topic}}</td>  
-	  <td>{{all_topic_assignments.form.video__type}}</td>
-	  <td>{{all_topic_assignments.form.video__author}}</td>	  
-	  <td>{{all_topic_assignments.form.video__semester}}</td>
-	  <td>{{all_topic_assignments.form.num_staff_favorites}}</td>
-	  <td>
-	    <input type="submit" value="filter"/>
-	  </td>
-	  
-	</form>
-      </tr>
-      
-      {% for ta in all_topic_assignments %}
-      <!-- a topicassignment is an annotation, and points to one topic 
-	   from the TOPIC_CHOICES list and a PublicVideo ForeignKey -->
-  
-      <tr>
-	<td>{{ta.topic}}</td>
-	<td>{{ta.video.type}}</td>
-	<td>{{ta.video.author}}</td>
-	<td>{{ta.video.semester}}</td>
-	<td>{{ta.get_num_staff_favorites}}</td>
-
-	<td>
-	  
-	  <a href="/vid={{ta.id}}/fav={{is_favorite}}/{{query_string}}" >
-	    {% if ta.video.title %}
-	    ({{ta.id}}) - 
-	    {{ta.video.title}}
-	    {% else %}
-	    ({{ta.id}}) - 
-	    {{ta.video.file_name}}
-	    {% endif %}
-	  </a>  
-	</td>
-      </tr>
-      {% endfor %}
-    </table>
-</div>
-
-
-
-
-<!--{{selected_video.get_absolute_url}}-->
-
-
-
-
-
-
-
-
-{% endblock %}
 
     
