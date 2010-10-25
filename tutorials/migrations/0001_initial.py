@@ -54,8 +54,9 @@ class Migration(SchemaMigration):
             ('video', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['tutorials.PublicVideo'])),
             ('start_time', self.gf('django.db.models.fields.FloatField')(default=0.0)),
             ('stop_time', self.gf('django.db.models.fields.FloatField')(default=0.0)),
-            ('topic', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('num_staff_favorites', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('num_student_favorites', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('topic', self.gf('django.db.models.fields.CharField')(max_length=128)),
         ))
         db.send_create_signal('tutorials', ['TopicAssignment'])
 
@@ -88,17 +89,24 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('tutorials', ['UserProfile'])
 
-        # Adding M2M table for field favorites on 'UserProfile'
-        db.create_table('tutorials_userprofile_favorites', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('userprofile', models.ForeignKey(orm['tutorials.userprofile'], null=False)),
-            ('topicassignment', models.ForeignKey(orm['tutorials.topicassignment'], null=False))
+        # Adding model 'Favorite'
+        db.create_table('tutorials_favorite', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('ta', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['tutorials.TopicAssignment'])),
+            ('time', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, auto_now_add=True, blank=True)),
+            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['tutorials.UserProfile'])),
         ))
-        db.create_unique('tutorials_userprofile_favorites', ['userprofile_id', 'topicassignment_id'])
+        db.send_create_signal('tutorials', ['Favorite'])
+
+        # Adding unique constraint on 'Favorite', fields ['ta', 'profile']
+        db.create_unique('tutorials_favorite', ['ta_id', 'profile_id'])
 
 
     def backwards(self, orm):
         
+        # Removing unique constraint on 'Favorite', fields ['ta', 'profile']
+        db.delete_unique('tutorials_favorite', ['ta_id', 'profile_id'])
+
         # Removing unique constraint on 'Lab', fields ['num', 'semester']
         db.delete_unique('tutorials_lab', ['num', 'semester'])
 
@@ -126,8 +134,8 @@ class Migration(SchemaMigration):
         # Deleting model 'UserProfile'
         db.delete_table('tutorials_userprofile')
 
-        # Removing M2M table for field favorites on 'UserProfile'
-        db.delete_table('tutorials_userprofile_favorites')
+        # Deleting model 'Favorite'
+        db.delete_table('tutorials_favorite')
 
 
     models = {
@@ -176,6 +184,13 @@ class Migration(SchemaMigration):
             'time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'auto_now_add': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
+        'tutorials.favorite': {
+            'Meta': {'ordering': "['time']", 'unique_together': "(('ta', 'profile'),)", 'object_name': 'Favorite'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'profile': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tutorials.UserProfile']"}),
+            'ta': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tutorials.TopicAssignment']"}),
+            'time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'auto_now_add': 'True', 'blank': 'True'})
+        },
         'tutorials.lab': {
             'Meta': {'ordering': "['num']", 'unique_together': "(('num', 'semester'),)", 'object_name': 'Lab'},
             'checkoff_due_date': ('django.db.models.fields.DateTimeField', [], {}),
@@ -216,6 +231,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'TopicAssignment'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'num_staff_favorites': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'num_student_favorites': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'start_time': ('django.db.models.fields.FloatField', [], {'default': '0.0'}),
             'stop_time': ('django.db.models.fields.FloatField', [], {'default': '0.0'}),
             'topic': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
@@ -224,7 +240,6 @@ class Migration(SchemaMigration):
         'tutorials.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'athena_id': ('django.db.models.fields.CharField', [], {'max_length': '8', 'primary_key': 'True'}),
-            'favorites': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['tutorials.TopicAssignment']", 'null': 'True', 'blank': 'True'}),
             'student_id': ('django.db.models.fields.IntegerField', [], {'max_length': '9', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'unique': 'True'})
         }

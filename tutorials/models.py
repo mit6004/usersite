@@ -160,6 +160,8 @@ class TopicAssignment(models.Model):
     video = models.ForeignKey(PublicVideo)
     start_time = models.FloatField(default=0.0)
     stop_time = models.FloatField(default=0.0)
+    num_staff_favorites=models.IntegerField(default=0)
+    num_student_favorites=models.IntegerField(default=0)
 
     ## inherits the percentage range of completion through document
     topic = models.CharField(max_length=128, choices=TOPIC_CHOICES)
@@ -180,10 +182,7 @@ class TopicAssignment(models.Model):
 
     def _get_video_semester(self):
         return self.video.semester
-    semester=property(_get_video_semester)
-    
-    num_staff_favorites=models.IntegerField(default=0)
-
+    semester=property(_get_video_semester)    
 
     def set_num_staff_favorites(self, value):
         self.num_staff_favorites=value
@@ -191,13 +190,34 @@ class TopicAssignment(models.Model):
     def set_num_student_favorites(self, value):
         self.num_student_favorites=value
 
-    def get_num_staff_favorites(self):
-        return self.userprofile_set.filter(user__is_staff=True).count()
-#    num_staff_favorites=property(get_num_staff_favorites)
+    def inc_num_staff_favorites(self):
+        print "incrementing number of staff favorites for %s from %d " %(self, self.num_staff_favorites)
+        temp = self.num_student_favorites
+        self.num_student_favorites = temp+1
+        self.save()
+        print "to %d\n" %(self.num_staff_favorites)
 
-    def get_num_student_favorites(self):
-        return self.userprofile_set.filter(user__is_staff=False).count()
-#    num_student_favorites=property(get_num_student_favorites)
+    def dec_num_staff_favorites(self):
+        print "decrementing number of staff favorites for %s from %d " %(self, self.num_staff_favorites)
+        temp = self.num_student_favorites
+        self.num_student_favorites = temp-1
+        self.save()
+        print "to %d\n" %(self.num_staff_favorites)
+
+    def inc_num_student_favorites(self):
+        print "incrementing number of student favorites for %s from %d " %(self, self.num_student_favorites)
+        temp = self.num_student_favorites
+        self.num_student_favorites = temp+1
+        self.save()
+        print "to %d\n" %(self.num_student_favorites)
+
+    def dec_num_student_favorites(self):
+        print "decrementing number of student favorites for %s from %d " %(self, self.num_student_favorites)
+        temp = self.num_student_favorites
+        self.num_student_favorites = temp-1
+        self.save()
+        print "to %d\n" %(self.num_student_favorites)
+
 
 
 
@@ -226,8 +246,6 @@ class LinkedWebPage(models.Model):
     pointer_on_page=models.CharField(max_length=50, default="")
 
 
-
-
 ## ------- USER STUFF ------ ##
 
 class UserProfile(models.Model):
@@ -237,10 +255,25 @@ class UserProfile(models.Model):
     ## See Django Book ch 12 for more info
     athena_id = models.CharField(max_length=8, primary_key=True)
     student_id = models.IntegerField(max_length=9, unique=True, null=True, blank=True)
-    favorites = models.ManyToManyField(TopicAssignment, null=True, blank=True)
+#    favorites = models.ManyToManyField(Favorite, null=True, blank=True)
 
     def __unicode__(self):
         return self.athena_id
+
+
+class Favorite(models.Model):
+    ta = models.ForeignKey(TopicAssignment)
+    time = models.DateTimeField(auto_now=True, auto_now_add=True)
+    profile = models.ForeignKey(UserProfile)
+
+    class Meta:
+        ordering=['time']
+        unique_together= (('ta', 'profile'))
+
+    def __unicode__(self):
+        return u'\"%s\" favorited by: %s' %(self.ta.video.title, self.profile.user.get_full_name())
+
+
 
 ## -- SIGNAL UTILS -- ##
 
@@ -271,8 +304,22 @@ def admin_register(sender, **kwargs):
     admin.site.register(sender)
 
 
+def inc_favorites(sender, instance, **kwargs):
+    if instance.profile.user.is_staff:
+        instance.ta.inc_num_staff_favorites()
+    else:
+        instance.ta.inc_num_student_favorites()
+
+def dec_favorites(sender, instance, **kwargs):
+    if instance.profile.user.is_staff:
+        instance.ta.dec_num_staff_favorites()
+    else:
+        instance.ta.dec_num_student_favorites()
+
 # --- SIGNALS --- ##
 models.signals.post_save.connect(make_profile, sender=User)
+models.signals.post_save.connect(inc_favorites, sender=Favorite)
+models.signals.pre_delete.connect(dec_favorites, sender=Favorite)
 models.signals.class_prepared.connect(databrowse_register)
 
 

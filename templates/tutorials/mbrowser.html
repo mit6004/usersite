@@ -6,22 +6,22 @@
 	<th>Semester</th>
 	<th>Staff Favorites</th>
 	<th>Start Time - End Time</th>
-	<th>Title</th>
+	<th>Time Range in video</th>
+	<th>Link to Detail Page </th>
+	<th>Preview</th>
       </tr>
       
       <tr>
 	<form action="" method="get">
-	  <td>{{all_topic_assignments.form.topic}}</td>  
-	  <td>{{all_topic_assignments.form.video__type}}</td>
-	  <td>{{all_topic_assignments.form.video__author}}</td>	  
-	  <td>{{all_topic_assignments.form.video__semester}}</td>
-	  <td>{{all_topic_assignments.form.num_staff_favorites}}</td>
-	  <td>
-	  </td>
-	  <td>
-	    <input type="submit" value="filter"/>
-	  </td>
-	  
+	  <td>{{topic_assignment_filterset.form.topic}}</td>  
+	  <td>{{topic_assignment_filterset.form.video__type}}</td>
+	  <td>{{topic_assignment_filterset.form.video__author}}</td>	  
+	  <td>{{topic_assignment_filterset.form.video__semester}}</td>
+	  <td>{{topic_assignment_filterset.form.num_staff_favorites}}</td>
+	  <td>{{topic_assignment_filterset.form.num_student_favorites}}</td>
+	  <td colspan="2" style="text-align:center">
+	    <input style="font-weight:bold" type="submit" value="-- Apply Filters--"/></td>
+	  <td style="text-align:center">---</td>
 	</form>
       </tr>
       
@@ -30,52 +30,20 @@
 	   from the TOPIC_CHOICES list and a PublicVideo ForeignKey -->
   
       <tr>
-	<td>
-	  <a href="/web/show_for_topic/{{ta.topic}}/">
-	  {{ta.topic}}
-	  </a>
-	</td>
-	<td>
-	  <a href="/web/show_for_type/{{ta.video.type}}/">
-	  {{ta.video.type}}
-	  </a>
-	</td>
-	<td>
-	  <a href="/web/show_for_author/{{ta.video.author.username}}/">
-	  {{ta.video.author}}
-	  </a>
-	</td>
-	<td>
-	  <a href="/web/show_for_semester/{{ta.video.semester}}/">
-	  {{ta.video.semester}}
-	  </a>
-	</td>
-	<td>
-	  {{ta.get_num_staff_favorites}}
-	</td>
-
-	{% if ta.end_time %}
-	<td> {{ta.start_time}} - {{ta.end_time}}</td>
-	{% else %}
-	<td> {{ta.start_time}} - END </td>
-	{% endif %}
-	<td>
-	  
-	  
-	  <a href="/{{ta.id}}/{{query_string}}">
-	    
-	      
-	      {% if ta.video.title %}
-	      ({{ta.id}}) - 
-	      {{ta.video.title}}
-	      {% else %}
-	      ({{ta.id}}) - 
-	      {{ta.video.file_name}}
-	      {% endif %}
-	    </a>  
-	</td>
-	<td>
-	  <a href="/web/show_media/{{ta.id}}/"> <i> Full Size </i> </a>
+	<td><a href="/web/show_for_topic/{{ta.topic}}/">{{ta.topic}}</a></td>
+	<td><a href="/web/show_for_type/{{ta.video.type}}/">{{ta.video.type}}</a></td>
+	<td><a href="/web/show_for_author/{{ta.video.author.username}}/">{{ta.video.author}}</a></td>
+	<td><a href="/web/show_for_semester/{{ta.video.semester}}/">{{ta.video.semester}}</a></td>
+	<td>{{ta.num_staff_favorites}}</td>
+	<td>{{ta.num_student_favorites}}</td>
+	<td>{% if ta.end_time %}{{ta.start_time}} - {{ta.end_time}}{% else %}{{ta.start_time}} - END{% endif %}</td>
+	<td><a href="/web/show_media/{{ta.id}}/"> 
+	    ({{ta.id}}) - 	      
+	    {% if ta.video.title %}{{ta.video.title}}
+	    {% else %}{{ta.video.file_name}}
+	    {% endif %}</a></td>
+	<td style="text-align:center"><a href="/{{ta.id}}/{{query_string}}">
+	    <img style="margin:0;padding:0;height:7%" src="/site_media/images/eye.png" height="10"></img></a></td>
       </tr>
       {% endfor %}
     </table>

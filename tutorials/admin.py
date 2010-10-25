@@ -22,6 +22,9 @@ class LinkedWebPageAdmin(admin.ModelAdmin):
     list_display=('name', 'url', 'pointer_on_page', 'topic_assignment')
     list_filter=('name', 'url', 'topic_assignment')
 
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display=('ta','time')
+
 
 
 admin.site.register(UserProfile)
@@ -33,3 +36,4 @@ admin.site.register(TopicAssignment, TopicAssignmentAdmin)
 #admin.site.register(LabHintVideo, LabHintVideoAdmin)
 admin.site.register(Comment)
 admin.site.register(LinkedWebPage, LinkedWebPageAdmin)
+admin.site.register(Favorite, FavoriteAdmin)

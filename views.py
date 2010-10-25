@@ -34,7 +34,7 @@ def get_student_favorites(request):
     
     if student_dict['is_authenticated']:
         profile = student_dict['profile']
-        faves = profile.favorites.all()
+        faves = profile.favorite_set.all()
     else:
         faves = TopicAssignment.objects.none()
 
@@ -113,12 +113,16 @@ def make_comment(request, user, topic_assignment):
 
 
 def add_favorite(request, profile, ta):
-    profile.favorites.add(ta)
-    profile.save()
+    # ADDED LINE TO CONSTRUCT FAVORITE MODEL INSTANCE 9/8/10
+    favorite=Favorite()
+    favorite.profile=profile
+    favorite.ta=ta
+    favorite.save()
 
 def rm_favorite(request, profile, ta):
-    profile.favorites.remove(ta)
-    profile.save()
+    f = Favorite.objects.filter(ta=ta).filter(profile=profile)
+    f.all().delete()
+
 
 # main page for displaying a single movie with comment and favorite options
 def show_media(request, ta_id):

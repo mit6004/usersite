@@ -64,13 +64,12 @@ urlpatterns = patterns('',
 
                        #public browser
                        (r'^$', student_views.browse),
-                       (r'^(?P<topic_snippet_id>\d+)/$', student_views.browse),
-                       (r'^(?P<topic_snippet_id>\d+)/(?P<is_favorite>\w+)/$', student_views.browse),
-                       (r'^(?P<topic_snippet_id>\d+)/(?P<is_favorite>\w+)/(?P<query_string>\w+)/$', student_views.browse),
-
-                       (r'^(?P<topic_snippet_id>\d+)/(?P<is_favorite>\w+)/(?P<show_favorites>\w+)/$', 
+                       (r'^public/$', student_views.browse),
+                       (r'^(?P<topic_snippet_id>\d+)/$', 
                         student_views.student_portal),
-                       (r'^(?P<topic_snippet_id>\d+)/(?P<is_favorite>\w+)/(?P<show_favorites>\w+)/(?P<query_string>\w+)/$', 
+                       (r'^(?P<topic_snippet_id>\d+)/(?P<show>\w+)/$', 
+                        student_views.student_portal),
+                       (r'^(?P<topic_snippet_id>\d+)/(?P<show>\w+)/(?P<query_string>\w+)/$', 
                         student_views.student_portal),
 
 

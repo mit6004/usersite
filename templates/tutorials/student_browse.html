@@ -5,12 +5,12 @@
 
   {% ifequal show 'Favorites' %}
   Displaying only favorited videos for {{user.get_full_name}}. 
-  <a href="/{{selected_ta.id}}/{{is_favorite}}/All/">
+  <a href="/{{selected_ta.id}}/All/">
     Click </a> to show all Video clips.
   
   {% else %}
   Displaying all video clips.
-  <a href="/{{selected_ta.id}}/{{is_favorite}}/Favorites/">
+  <a href="/{{selected_ta.id}}/Favorites/">
     Click </a> to show only favorited videos for {{user.get_full_name}}
   
   {% endifequal %}

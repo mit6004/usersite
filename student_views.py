@@ -47,20 +47,42 @@ def get_public_videos(request):
         'tutprobs': tutprobs,
         'all_vids':all_vids,
         }
-    for key in dict.keys():
-        print "dict[%s] : %s\n" %(key, dict[key])
+#    for key in dict.keys():
+#        print "dict[%s] : %s\n" %(key, dict[key])
     return dict
+
+def favorites_to_tas(favorite_set):
+    return (favorite.ta for favorite in favorite_set)
 
 
 def get_student_favorites(request):
     MAX_DISPLAY=5
     student_dict= get_student_info(request)
     profile = student_dict['profile']
-    fav_quizzes = profile.favorites.filter(video__type='OldQuiz')
-    fav_labs = profile.favorites.filter(video__type='LabHint')
-    fav_concepts = profile.favorites.filter(video__type='Concept')
-    fav_tutprobs = profile.favorites.filter(video__type='TutProb')
-    faves = profile.favorites.all()
+    fav_quizzes = profile.favorite_set.filter(ta__video__type='OldQuiz')
+    fav_labs = profile.favorite_set.filter(ta__video__type='LabHint')
+    fav_concepts = profile.favorite_set.filter(ta__video__type='Concept')
+    fav_tutprobs = profile.favorite_set.filter(ta__video__type='TutProb')
+    faves = profile.favorite_set.all()
+    dict = {
+        'fav_quizzes': fav_quizzes,
+        'fav_labs': fav_labs,
+        'fav_concepts': fav_concepts,
+        'fav_tutprobs': fav_tutprobs,
+        'faves':faves,
+        }  
+    dict.update(student_dict)
+    return dict
+
+def get_student_favorite_tas(request):
+    MAX_DISPLAY=5
+    student_dict= get_student_info(request)
+    profile = student_dict['profile']
+    fav_quizzes = profile.favorite_set.filter(ta__video__type='OldQuiz')
+    fav_labs = profile.favorite_set.filter(ta__video__type='LabHint')
+    fav_concepts = profile.favorite_set.filter(ta__video__type='Concept')
+    fav_tutprobs = profile.favorite_set.filter(ta__video__type='TutProb')
+    faves = profile.favorite_set.all()
     dict = {
         'fav_quizzes': fav_quizzes,
         'fav_labs': fav_labs,
@@ -75,19 +97,37 @@ def get_student_favorites(request):
 
 def get_faves_by_topic(request):
     student_dict=get_student_info(request)
-    student_faves = student_dict['profile'].favorites.all()
+    student_faves = student_dict['profile'].favorite_set.all()
     topic_choices = [ [topic[0], topic[1]] for topic in TOPIC_CHOICES]
     faves_by_topic={}
     for topic_tuple in topic_choices:
-        topic_faves = student_faves.filter(topic=topic_tuple[0])
+        topic_faves = student_faves.filter(ta__topic=topic_tuple[0])
         ## get all TopicAssigned video clips that match the exact topic part
         entry=''
         for topic_fave in topic_faves:
             entry = '%s <td><a href=\"%s\">%s</a></td>' %(entry, 
-                                                     topic_fave.video.get_absolute_url(), 
-                                                     topic_fave.video.file_name)
+                                                     topic_fave.ta.video.get_absolute_url(), 
+                                                     topic_fave.ta.video.file_name)
         faves_by_topic[topic_tuple[1]]=entry
-        print "faves_by_topic[%s]: %s\n" %(topic_tuple[1], faves_by_topic[topic_tuple[1]])
+        #print "faves_by_topic[%s]: %s\n" %(topic_tuple[1], faves_by_topic[topic_tuple[1]])
+    return faves_by_topic
+
+
+def get_fave_tas_by_topic(request):
+    student_dict=get_student_info(request)
+    student_faves = student_dict['profile'].favorite_set.all()
+    topic_choices = [ [topic[0], topic[1]] for topic in TOPIC_CHOICES]
+    faves_by_topic={}
+    for topic_tuple in topic_choices:
+        topic_faves = student_faves.filter(ta__topic=topic_tuple[0])
+        ## get all TopicAssigned video clips that match the exact topic part
+        entry=''
+        for topic_fave in topic_faves:
+            entry = '%s <td><a href=\"%s\">%s</a></td>' %(entry, 
+                                                     topic_fave.ta.video.get_absolute_url(), 
+                                                     topic_fave.ta.video.file_name)
+        faves_by_topic[topic_tuple[1]]=entry
+        #print "faves_by_topic[%s]: %s\n" %(topic_tuple[1], faves_by_topic[topic_tuple[1]])
     return faves_by_topic
 
 
@@ -120,48 +160,59 @@ def preview_and_set_topic(request, video_id):
 ## Main view for media browser
 ## use built in decorator to limit access to logged in users
 @login_required
-def student_portal(request, topic_snippet_id=1, is_favorite='False', show='Favorites', query_string=''):
+def student_portal(request, topic_snippet_id="1", show='Favorites', query_string=''):
+    if not request.user:
+        return HttpResponseRedirect("/public/")
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect("/public/")
+
     public_ta_dict = get_public_videos(request)
-    favorite_ta_dict = get_student_favorites(request)
-    faves_by_topic = get_faves_by_topic(request)
+    favorite_dict = get_student_favorites(request)
+    fave_tas_by_topic = get_fave_tas_by_topic(request)
     ta_id = int(topic_snippet_id)
     all_topic_assignments=public_ta_dict['all_vids']
     selected_ta = all_topic_assignments.get(pk=ta_id)
-
+    
+    print "(student_portal) show: %s \n" %(show)
+    print "(student_portal) query_string: %s\n" %(query_string)
     if 'QUERY_STRING' in request.META.keys():
-        query_string='?'+request.META['QUERY_STRING']   
+        query_string='?'+request.META['QUERY_STRING']
     query=query_string
      
     is_favorite=u'False'    
-    if favorite_ta_dict['faves'].filter(pk=ta_id):
+    if favorite_dict['faves'].filter(ta__pk=ta_id):
         is_favorite=u'True'
 
     verbose_topics = [ topic[1] for topic in TOPIC_CHOICES ]
-
+  
     pre_filter = TopicAssignment.objects.all()
     if show=='Favorites':
-        pre_filter=favorite_ta_dict['faves']
+        pre_filter=[ favorite.ta for favorite in favorite_dict['faves']]
     # only show a student's favorites
+
     filterset=TopicAssignmentFilterSet(request.GET, queryset=pre_filter)
     dict={
         'query_string':query,
-        'is_favorite':is_favorite,
-        'all_topic_assignments':filterset,
+        'topic_assignment_filterset':filterset,
+        'all_topic_assignments':pre_filter,
         'selected_ta':selected_ta,
         'verbose_topics':verbose_topics,
-        'faves_by_topic':faves_by_topic,
+        'faves_by_topic':fave_tas_by_topic,
         'show': show,
         }
-    for key in dict.keys():
-        print "dict[%s] : %s\n" %(key, dict[key])
+    for item in pre_filter:
+        print "(student_portal) pre_filter(n): %s\n" %(item)
+
+#    for key in dict.keys():
+#        print "dict[%s] : %s\n" %(key, dict[key])
 #    template="student_browse.html"
     template="browse.html"
-    return render_to_response(template, dict, 
+    return render_to_response(template, dict,
                               context_instance=
                               RequestContext(request, processors=[get_student_favorites]))
 
 ## public browser. no authentication or favoriting.
-def browse(request, topic_snippet_id=1, query_string=''):
+def browse(request, topic_snippet_id=1, is_favorite=False, query_string=''):
     all_topic_assignments = TopicAssignment.objects.all()
     ta_id = int(topic_snippet_id)
     print "ta_id = %d\n" %(ta_id)
