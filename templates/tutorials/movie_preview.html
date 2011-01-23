@@ -70,6 +70,62 @@ function set_default_end_time()
 {% block content %} 
 <form action="" method="post">
 <table>
+
+
+<tr>
+
+
+
+<td>
+
+<input type="text" name="time" id="time" value="0">
+<script type="text/javascript">
+function set_current_time(seconds)
+{
+seconds = seconds + 1;
+document.getElementById('time').value = seconds;
+setTimeout("set_current_time(" + seconds + ");", 1000);
+}
+set_current_time(0);
+</script>
+</td>
+
+<td>
+playhead part
+<input type="text" name="playhead" id="playhead" value="0">
+<script type="text/javascript">
+function display_playhead()
+{
+
+document.getElementById('playhead').value = playhead_position();
+setTimeout("display_playhead()", 1000);
+}
+display_playhead();
+</script>
+</td>
+
+
+<td>
+Time part
+
+<script type="text/javascript">
+
+var d = new Date();
+var curr_hour = d.getHours();
+var curr_min = d.getMinutes();
+
+var curr_sec = d.getSeconds();
+var curr_msec = d.getMilliseconds();
+
+document.write(curr_hour + ":" + curr_min + ":" 
++ curr_sec + ":" + curr_msec);
+
+
+</script>
+</td>
+</tr>
+
+
 <tr>
 <td colspan="4" align="center">
 

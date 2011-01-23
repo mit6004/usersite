@@ -34,6 +34,11 @@ student_detail_info = {
 urlpatterns = patterns('',
                        # all students
                        #(r'^students/$', views.student_list),
+
+                       ## jquery testing - server side data handler 
+                       (r'^post_test/$', views.post_handler),
+                       (r'^post_test/page/$', views.post_test),
+
                        # admin portal
                        (r'^admin/', include(admin.site.urls)),
                        # trying out databrowse app
@@ -50,7 +55,7 @@ urlpatterns = patterns('',
                        (r'^upload_video/$', staff_views.upload_video),
 
                        (r'^landing/$', views.landing),
-
+                       
                        # web of links
                        (r'^web/show_media/(?P<ta_id>\d+)/$', views.show_media),
                        (r'^web/show_for_topic/(?P<topic>\w+)/$', views.show_by_topic),
@@ -79,7 +84,8 @@ urlpatterns = patterns('',
 
 
                        # tutorial problems
-                       (r'^tutprobs/(?P<topic>\w+)/$', views.tutorial_by_topic),
+                       (r'^tutprobs/$', views.tutorial_main),
+                       (r'^tutprobs/(?P<topic>.*)$', views.tutorial_by_topic),
                        (r'^tutprobs/(?P<topic>\w+)/(?P<linked_problem_id>\d+)/$', views.tutorial_by_id),
                        
 

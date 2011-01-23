@@ -1,4 +1,4 @@
-ofrom tutorials import loader
+from tutorials import loader
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from tutorials.models import *
@@ -26,9 +26,14 @@ def preview_and_set_topic(request, video_id):
     video = PublicVideo.objects.get(pk=video_id)
 
     if request.method=="POST":
+        # We have an upload submission from movie_preview.html
         print "post!"
 
         if 'start_time_units' in request.POST.keys():
+            # then the button, with input type "onclick" triggers the event listener 
+            # in movie_preview.html "set_start_time();" and here, this the dictionary below, 
+            # we have the conversion from start_time_units to start_time in the 
+            # topic_assignment object itself. 
             start_time_units = request.POST['start_time_units']
         else: start_time_units = 0
 

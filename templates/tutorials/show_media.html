@@ -25,11 +25,10 @@
     </td>
   </tr>
 
-  <tr>
-    <td>
-      {% include "comment_view.html" %}	
-    </td>
-  </tr>
+{% if debug %}
+{% include "log_debug_rows.html" %}
+{% endif %}
+
 </table>
 
 {% endblock main_column%}

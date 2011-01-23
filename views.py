@@ -10,6 +10,7 @@ from django.template import RequestContext
 from django.db.models import Q
 from django.conf import settings
 import datetime, os, re
+    
 
 
 def get_student_info(request):
@@ -44,10 +45,12 @@ def get_student_favorites(request):
     dict.update(student_dict)
     return dict
 
+
 def render_with_student_context(request, template, dict):    
     return render_to_response(template, dict, 
                               context_instance=
                               RequestContext(request, processors=[get_student_favorites]))
+
 
 
 def show_by_topic(request, topic):
@@ -104,12 +107,12 @@ def make_comment(request, user, topic_assignment):
     text=""
     if 'text' in request.POST.keys():
         text = request.POST['text']
-
-    comment=Comment(text=text, permissions=permissions)
-    comment.clip=topic_assignment
-    comment.user=user
-    comment.save()
-    print "saved comment %s by %s \n" %(comment.text, comment.user.username)
+    if not (text == "Write your comment here...."):    
+        comment=Comment(text=text, permissions=permissions)
+        comment.clip=topic_assignment
+        comment.user=user
+        comment.save()
+        print "saved comment %s by %s \n" %(comment.text, comment.user.username)
 
 
 def add_favorite(request, profile, ta):
@@ -140,7 +143,7 @@ def show_media(request, ta_id):
 
     comments=Comment.objects.none()
 #    comments=ta.comments.all()
-    print "ther are %d comments  before filtering \n" %(comments.count())
+    print "there are %d comments  before filtering \n" %(comments.count())
    # empty query set
     if student_info['is_authenticated']:
         student=student_info['student']
@@ -162,12 +165,17 @@ def show_media(request, ta_id):
                 add_favorite(request, student_info['profile'], ta)
             if 'rm_favorite' in request.POST.keys():
                 rm_favorite(request, student_info['profile'], ta)
+            
+            for key in request.POST.keys():
+                print "requst.POST[%s] = %s \n" %(key, request.POST[key])
+                
 
     print "there are %d comments \n" %(comments.count())    
     print "user.is_authenticated = %s \n" %(request.user.is_authenticated())
 
     topic_number=TOPIC_NUMBERS[ta.topic]
     dict = {
+        'debug': True,
         'selected_ta':ta,
         'topic':ta.topic,
         'linked_problems':linked_problems,
@@ -185,15 +193,31 @@ def landing(request):
     return render_with_student_context(request, template, dict)
 
 
-def tutorial_by_topic(request, topic):
-    print "\n in XFtutorial_by_topic\n"
-    # make sure right format for dictionary above
-    base_url = "http://6004.csail.mit.edu/currentsemester/tutprobs/"
-    page = TUTORIAL_PROBLEM_URLS[topic]
-    direct_to = base_url + page
-    print "redirecting from tutorial by topics for topic=%s to %s\n" %(topic, direct_to)
-    return HttpResponseRedirect(direct_to)
 
+def tutorial_main(request):
+    template = "tutprobs.htm"
+    dict = {}
+    return render_to_response(template, dict)
+
+
+
+##def tutorial_by_topic(request, topic):
+##    print "\n in XFtutorial_by_topic\n"
+##    # make sure right format for dictionary above
+##    base_url = "http://6004.csail.mit.edu/currentsemester/tutprobs/"
+##    base_url="tutprobs"
+##    page = TUTORIAL_PROBLEM_URLS[topic]
+##    direct_to = base_url + page
+##    print "redirecting from tutorial by topics for topic=%s to %s\n" %(topic, direct_to)
+##    return HttpResponseRedirect(direct_to)
+
+
+def tutorial_by_topic(request, topic):
+    print "in views.tutorial_by_topic"
+    template="%s" %(topic)
+    print "topic is %s \n" %(topic)
+    dict = {}
+    return render_to_response(template, dict)
 
 ## shows the tutorial problems for the topic assigned to this clip
 ## want to refine to break this up by problem.
@@ -209,5 +233,59 @@ def tutorial_by_id(request, topic, linked_problem_id):
     return HttpResponseRedirect(direct_to)
 
 
+## testing jquery ##
+## server side handler function 
+def post_handler(request):
+    print "In post_handler"
+    iform_start = request.POST['iform_start']
+    print "iform_start : %s \n" %(iform_start)
+    iform_end = request.POST['iform_end']
+    print "iform_end : %s \n" %(iform_end)
+    return HttpResponse("{'response_text: recieved.'}", 
+                                   mimetype="application/json")
 
     
+def post_test(request):
+    template = "js_test.html"
+    ta_id = 4
+    ta = TopicAssignment.objects.get(pk=ta_id)
+    linked_problems=LinkedWebPage.objects.filter(topic_assignment__id=ta_id)
+    is_user_favorite=False
+    student = AnonymousUser()
+    student_info = get_student_info(request)
+    # get the profile and authentication info
+    comments=Comment.objects.none()
+#    comments=ta.comments.all()
+
+   # empty query set
+    if student_info['is_authenticated']:
+        student=student_info['student']
+        student_faves = get_student_favorites(request)
+        comments = ta.comments.filter(
+            Q(permissions='students') 
+            | ( Q(permissions='staff') & Q(user=student) ) )
+        if student.is_staff:
+            comments=ta.comments.all()
+        if student_faves['faves'].filter(pk=ta_id).count():
+            is_user_favorite=True
+        if request.method=='POST':
+            if 'submit_comment' in request.POST.keys():
+                make_comment(request, student, ta)
+            if 'add_favorite' in request.POST.keys():
+                add_favorite(request, student_info['profile'], ta)
+            if 'rm_favorite' in request.POST.keys():
+                rm_favorite(request, student_info['profile'], ta)
+            for key in request.POST.keys():
+                print "requst.POST[%s] = %s \n" %(key, request.POST[key])
+    topic_number=TOPIC_NUMBERS[ta.topic]
+    dict = {
+        'debug': True,
+        'selected_ta':ta,
+        'topic':ta.topic,
+        'linked_problems':linked_problems,
+        'is_user_favorite':is_user_favorite,
+        'user': student,
+        'comments': comments,
+        'permissions': ['staff','student'],
+        }
+    return render_with_student_context(request, template, dict)

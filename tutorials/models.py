@@ -189,7 +189,7 @@ class TopicAssignment(models.Model):
     
     def set_num_student_favorites(self, value):
         self.num_student_favorites=value
-
+        
     def inc_num_staff_favorites(self):
         print "incrementing number of staff favorites for %s from %d " %(self, self.num_staff_favorites)
         temp = self.num_student_favorites
@@ -218,6 +218,14 @@ class TopicAssignment(models.Model):
         self.save()
         print "to %d\n" %(self.num_student_favorites)
 
+class ViewInterval(models.Model):
+    ta = models.ForeignKey(TopicAssignment, related_name='intervals')
+    user = models.ForeignKey(User)
+    start_time = models.FloatField(default=0.0)
+    stop_time = models.FloatField(default=0.0)
+    
+    def __unicode__(self):
+        return u'(Viewer: %s) (Video: %s) (Range: %d - %d)' %(self.user, self.ta, self.start_time, self.end_time)
 
 
 

@@ -2,6 +2,8 @@
 
 <script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
 <script type="text/javascript" src="/site_media/common_quicktime_methods.js"></script>
+<script type="text/javascript" src="/site_media/jquery.js"></script>
+<script type="text/javascript" src="/site_media/interval_methods.js"></script>
 
 <script type="text/javascript">
 
@@ -29,8 +31,18 @@
   	// when the movie loads, it will set the end time to the duration of the movie
   	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', setup_movie);
   	RegisterListener('qt_load', 'movie1', 'movie1_emb', set_times_and_play_movie);
+
+  // Added 1/19/11
+  RegisterListener('qt_load', 'movie1', 'movie1_emb', set_time_scale);
+  RegisterListener('qt_load', 'movie1', 'movie1_emb', setup_start_timer);
+  RegisterListener('qt_timechanged', 'movie1', 'movie1_emb', set_interval_skip_units);
+  RegisterListener('qt_pause', 'movie1', 'movie1_emb', set_interval_pause_units);
+  RegisterListener('qt_stop', 'movie1', 'movie1_emb', set_interval_pause_units);
+  RegisterListener('qt_play', 'movie1', 'movie1_emb', check_and_send);
+  RegisterListener('qt_play', 'movie1', 'movie1_emb', set_interval_start_units);
   }
-  
+
+
   function set_times_and_play_movie()
   {
     var start_time = {{selected_ta.start_time}};

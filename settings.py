@@ -80,6 +80,7 @@ TEMPLATE_DIRS = (
     '/home/caitlinj/website/djcode/usersite/templates/records',
     '/home/caitlinj/website/djcode/usersite/templates/tutorials',
     '/home/caitlinj/website/djcode/usersite/templates/6004_tutorial_probs',
+    '/home/caitlinj/website/djcode/usersite/tutprobs',
 
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
