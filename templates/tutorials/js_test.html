@@ -1,0 +1,71 @@
+{% extends "two_column.html" %}
+
+{% block title %}Course Media{% endblock %}
+
+{% block header %}
+
+{% include "movie_header.html" %}
+
+{% endblock header %}
+
+<script type="text/javascript" src="/media/js/jquery.js"></script>
+<!--
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#post_form').submit(function(event){
+            event.preventDefault(); // cancel the default action
+            var form = this;
+            var data = {}
+            data.post_data = $(form).find('input[@name=our_text]').val();
+            // suppose our django app called 'testapp'
+            $.post("/post_test/", 
+                data, 
+                function(responseData) {
+                  alert(responseData.response_text);
+                },
+                "json"
+            );
+        });
+    }); 
+  </script>
+-->
+{% block body_attributes %}onload="RegisterListeners();"{% endblock body_attributes %}
+
+
+{% block main_column %}
+
+
+<table border="0">
+  <tr>
+    <td>
+      <div id="movie_div" style="float:left;align:left"></div>
+      
+      <script type="text/javascript">
+	document.getElementById('movie_div').innerHTML = qtEmbed;
+      </script>
+    </td>
+  </tr>
+
+{% if debug %}
+{% include "log_debug_rows.html" %}
+{% endif %}
+
+</table>
+
+<!--
+<form id="post_form" method="post">
+  URL: <input type="text" name="our_text" />
+  <input type="submit" value="Add" />
+</form>
+-->
+
+
+{% endblock main_column%}
+{% block sidebar %}
+
+{% include "similar_video_bar.html" %}
+{% include "favorite_button.html" %}
+
+
+{% endblock sidebar %}
+

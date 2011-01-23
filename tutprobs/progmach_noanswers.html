@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Programmable machines</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+
+Consider the following circuit:
+
+<p/><img src="progmach01.gif"/>
+
+<p/>The heavy lines represent busses, which are many signals grouped
+together, e.g., an eight-bit bus is eight separate signal wires that
+are treated as a group.  When a bus connects to one or more
+components, it's just shorthand for drawing the individual signal
+wires between those components.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+The components with triangular schematic symbols are tristate drivers
+that operate like buffers except that they have an additional control
+input called an enable.  When the enable is high, the buffer is on and
+the input value is driven onto the output.  When the enable is low,
+the buffer is off and doesn't drive anything onto its output (i.e.,
+the output pin is in a high-impedance state).  What rules should the
+designer follow when designing the logic that generates DRA, DRB and
+DRALU in order to ensure that the DBUS signals always have legitimate
+values?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Draw a schematic showing how a tristate driver might
+be implemented using mosfets.  Hint: The following schematic shows one
+way of implementing a tristate driver.
+
+<p/><img src="progmach03.gif"/>
+
+<p/>You just have to fill in the logic inside each of the clouds-think
+about for what values of DATA, ENABLE you want the pullup to be on and
+replace the upper cloud with one or more logic gates that implement
+that equation.  Ditto for the pulldown and lower cloud.
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+The register-like symbols labeled "Reg A" and "Reg B" also have an
+additional enable input and are called load-enabled registers.  When
+the enable is high, the register will be loaded from the incoming
+data.  When the enable is low, the register reloads itself with its
+previous value.  Show how to implement a load-enabled register from a
+regular D-register and a 2-way multiplexer.
+
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+It's considered bad practice to control the loading of a register by
+"gating" its clock, i.e., by adding some logic that controls whether
+or not the register sees a rising clock edge.  Briefly explain why
+"gating the clock" is discouraged.  Hint: consider the effects of
+clock skew and logic hazards.
+
+
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+The arithmetic-logic unit (ALU) has two data inputs (A and B) and, in
+this circuit, can perform only two operations, based on the single
+control signal FN:
+
+<ul>
+when FN = 0, the ALU output is A-B<br/>
+when FN = 1, the ALU output is B-A
+</ul>
+
+<p/>The ALU also generates two condition codes which give us some
+additional information about the ALU output:
+
+<ul>
+Z = 1 when the ALU output is the number "0"<br/>
+N = 1 when the ALU output is a negative number
+</ul>
+
+<p/> Assuming that we have 8-bit data values and use a two's complement
+representation for the data values processed by the ALU, draw
+gate-level schematics for the logic that generates the Z and N signals
+from the ALU output value.
+
+
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Your job is to build a controller that will cause the circuit above to
+execute the following algorithm which computes the greatest common
+divisor of two inputs:
+
+<pre>
+	while (a != b)
+		if (a > b) a = a - b;
+	 	else b = b - a;
+</pre>
+
+The controller will be a state machine that takes 2 bits of input (Z
+and N) and produces control signals for the data paths (DRA, DRB,
+DRALU, LDA, LDB, FN).
+
+<p/>Draw a state diagram for the controller.  Outputs from your FSM
+should depend only on the current state.  Indicate which are the
+initial and final states of your FSM on the diagram.
+
+
+</li></ol></div>
+
+    <div id="question1G" class="question">
+    <ol type="A" start="7"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Supply a truth table for the logic that generates the control signals.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+<b>The material in this question will not covered by any quizzes</b>.
+It's presented here as an extended example of a programmable datapath.
+
+<p/>The following diagram shows the datapath and control circuitry for
+a nifty little microprogrammed architecture the students used to
+build in the 6.004 lab:
+
+<p/><img src="progmach08.gif"/>
+
+<p/>Some features of the MAYBE:
+
+<ul>
+<li>The datapath is 8 bits wide.  All the subsystems connect to a
+common 8-bit bus which routes data between the subsystems.  In
+a particular cycle, one of the subsystems is selected to drive data
+onto the bus (chosen by the DR signals) which can then be loaded into
+the selected destination (chosen by the LD signals).</li>
+
+<p/><li>The Control ROM is programmed as a nanointerpreter that
+executes one of 256 microinstructions selected by the contents of the
+OP register.  Each microinstruction consists of up to 16 nanoinstruction;
+the nanoPC is generated by the PHASE counter which is reset to 0 each
+time the OP register is loaded.</li>
+
+<p/><li>The Control ROM is programmed using the following template:</li>
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>********</td><td>****</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>Opcode = uROM; ADR+</td></tr>
+</table>
+</center>
+
+<p/>"*" is used to match either "0" or "1" on the corresponding address
+line.  The template above initializes every nanoinstruction in the Control ROM to
+an operation that reads the next byte from the UROM (DRSEL = 001),
+places it in the OP register (LDSEL = 000), and then increments the
+ADRHI/ADRLO registes (ADR+ = 1).
+
+<p/><li>The UROM contains a microprogram that is executed by the
+nanointerpreter.  Each microinstruction in the UROM begins with an
+8-bit opcode; microinstruction execution begins by loading the opcode
+into the OP register.  As the nanointerpreter executes the nanocode
+associated with that opcode, additional operand bytes may be fetched
+from the UROM.  The final step in executing a microinstruction is to
+load the OP register with the opcode of the next microinstruction.</li>
+
+<p/><li>The ADRHI/ADRLO registers form a 16-bit program counter
+for the UROM program.  These registers can be loaded from the
+data bus (eg, when doing a branch) or simply incremented by
+asserting ADR+.  Note that the ADRHI/ADRLO registers are incremented
+at the end of the cycle after they have been used as the address
+for the UROM in the current cycle.</li>
+
+</ul>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+If we inadvertently switch connections on two of the wires that
+run from the MAR register to the address inputs of the SRAM will
+operation be affected?  Is your answer the same if we switch two
+wires running between ADRHI/ADRLO and the address inputs to the
+UROM?  If the answers are not the same, what constitutes the
+difference between the SRAM and UROM?
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+What, if anything, prevents two drivers from putting conflicting
+data on the data bus of the MAYBE (ignore transients during propagation
+delays of the control circuitry)?  Can such conflicts happen if there
+are programming errors in the Control ROM?
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+Given a big enough Control ROM, could the LDSEL and DRSEL
+decoders be eliminated (producing the load and drive signals directly
+as Control ROM outputs)?  If so, what advantage might this have?
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+Execution of a nanoprogram can be influenced by information
+for the datapath?  Explain how a nanoprogram can make data-dependent
+decisions.
+
+
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+Given a big enough Control ROM, could the condition shift register
+be eliminated (using the condition bits directly as Control ROM inputs)?
+If so, what advantage might this have?  How many more (or fewer) outputs
+and inputs would the Control ROM need to have to implement this?  What
+would be the size (in bits) of the Control ROM?
+
+
+</li></ol></div>
+
+    <div id="question2F" class="question">
+    <ol type="A" start="6"><li>
+    
+The nanoinstruction shown above selects the UROM as the data source
+and asserts ADR+ during the same clock cycle.  How does this work, i.e.,
+is the original or incremented address used when accessing the UROM?
+
+
+</li></ol></div>
+
+    <div id="question2G" class="question">
+    <ol type="A" start="7"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00001010</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001010</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>010</td><td>A = SRAM</td></tr>
+<tr><td>00001010</td><td>0010</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001010</td><td>0011</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>011</td><td>B = SRAM</td></tr>
+<tr><td>00001010</td><td>0100</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001010</td><td>0101</td><td>*</td><td>=</td><td>0</td><td>100110</td><td>00</td><td>010</td><td>100</td><td>SRAM = A + B; latch CCs</td></tr>
+<tr><td>00001010</td><td>0110</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+
+</li></ol></div>
+
+    <div id="question2H" class="question">
+    <ol type="A" start="8"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00001011</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00001011</td><td>0001</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001011</td><td>0010</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>011</td><td>B = SRAM</td></tr>
+<tr><td>00001011</td><td>0011</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00001011</td><td>0100</td><td>*</td><td>=</td><td>0</td><td>100110</td><td>00</td><td>010</td><td>100</td><td>SRAM = A + B; latch CCs</td></tr>
+<tr><td>00001011</td><td>0101</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+
+</li></ol></div>
+
+    <div id="question2I" class="question">
+    <ol type="A" start="9"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00001100</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00001100</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>001</td><td>001</td><td>ADR = uROM</td></tr>
+<tr><td>00001100</td><td>0010</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>010</td><td>001</td><td>ADR = A</td></tr>
+<tr><td>00001100</td><td>0011</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+
+</li></ol></div>
+
+    <div id="question2J" class="question">
+    <ol type="A" start="10"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00010111</td><td>0000</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00010111</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>01</td><td>010</td><td>010</td><td>Shift CC's</td></tr>
+<tr><td>00010111</td><td>0010</td><td>1</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>001</td><td>001</td><td>ADR = uROM</td></tr>
+<tr><td>00010111</td><td>0011</td><td>1</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>010</td><td>001</td><td>ADR = A</td></tr>
+<tr><td>00010111</td><td>0100</td><td>1</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+<tr><td>00010111</td><td>0010</td><td>0</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>010</td><td>A = uROM; ADR+</td></tr>
+<tr><td>00010111</td><td>0011</td><td>0</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+
+</li></ol></div>
+
+    <div id="question2K" class="question">
+    <ol type="A" start="11"><li>
+    
+What does the following nanocode program do?
+
+<p/><center><table border="1">
+<tr><td>Opcode</td><td>Phase</td><td>COND</td><td>=</td><td>ADR+</td><td>ALU</td><td>CC</td><td>DRSEL</td><td>LDSEL</td><td>Comment</td></tr>
+<tr><td>00000011</td><td>0000</td><td>*</td><td>=</td><td>0</td><td>110011</td><td>11</td><td>010</td><td>101</td><td>MAR = 11111111</td></tr>
+<tr><td>00000011</td><td>0001</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>010</td><td>A = SRAM</td></tr>
+<tr><td>00000011</td><td>0010</td><td>*</td><td>=</td><td>0</td><td>111110</td><td>11</td><td>010</td><td>100</td><td>SRAM = A - 1</td></tr>
+<tr><td>00000011</td><td>0011</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>101</td><td>MAR = uROM; ADR+</td></tr>
+<tr><td>00000011</td><td>0100</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>100</td><td>011</td><td>B = SRAM</td></tr>
+<tr><td>00000011</td><td>0101</td><td>*</td><td>=</td><td>0</td><td>111111</td><td>11</td><td>010</td><td>101</td><td>MAR = A</td></tr>
+<tr><td>00000011</td><td>0110</td><td>*</td><td>=</td><td>0</td><td>101011</td><td>11</td><td>010</td><td>100</td><td>SRAM = B</td></tr>
+<tr><td>00000011</td><td>0111</td><td>*</td><td>=</td><td>1</td><td>111111</td><td>11</td><td>001</td><td>000</td><td>OP = uROM; ADR+</td></tr>
+</table>
+</center>
+
+
+</li></ol></div>
+</div>
+</body></html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<q:questions xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:q="py:tutprobs"
+	     title="Pipelining">
+
+<q:question>
+Consider the following combinational logic circuit constructed from 6
+modules.  In the diagram below, each combinational component is marked
+with its propagation delay in seconds; contamination delays are zero
+for each component.
+
+<p/><center><img src="pipeline19.gif"/></center>
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is the latency and throughput of this combinational circuit?
+
+<q:answer>
+latency = longest path from X to C(X) = 1 + 30 + 20 + 2 = 53<br/>
+throughput = 1/latency for combinational circuits = 1/53
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Place the <i>smallest</i> number of ideal (zero delay, zero setup/hold
+time) pipeline registers in the circuit above so as to maximize its
+throughput.  Remember to place a register on the output.
+
+<q:answer>
+We need 4 registers:
+<p/><center><img src="pipeline22.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is the latency and throughput of your pipelined circuit?
+
+<q:answer>
+throughput = 1/(max pipeline stage delay) = 1/30<br/>
+latency = (1/throughput)*(number of pipeline stages) = 30 * 3 = 90
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+We can simulate a pipelined version of a slow component by replicating
+the critical element and alternating inputs between the various
+copies.  Complete the circuit diagram below to create a 2-way
+interleaved version of the "30" component:
+
+<p/><center><img src="pipeline20.gif"/></center>
+
+<q:answer>
+<center><img src="pipeline23.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Substituting the interleaved implementation for the original "30"
+module as shown in the diagram below, place the smallest number of
+ideal (zero delay, zero setup/hold time) pipeline registers in the
+circuit below so as to maximize its throughput.  Remember to place a
+register on the output.  (Draw the pipeline registers in the diagram
+below.)
+
+<p/><center><img src="pipeline21.gif"/></center>
+
+<q:answer>
+<p/><center><img src="pipeline24.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is the latency and throughput of your newly pipelined circuit?
+
+<q:answer>
+throughput = 1/(max pipeline stage delay) = 1/20<br/>
+latency = (1/throughput)*(number of pipeline stages) = 20 * 4 = 80
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+In general, if we take a combinational circuit and pipeline it using
+ideal (zero delay, zero setup/hold time) registers, which one of the
+following statements best describes the resulting change in the
+circuit's latency and throughput:
+
+<p/><ul>
+A.  The throughput may improve but the latency definitely does not.<br/>
+B.  Both the throughput and latency may improve.<br/>
+C.  The throughput definitely improves and the latency definitely gets worse.<br/>
+D.  The latency may improve but the throughput definitely does not.<br/>
+E.  The throughput definitely improves and the latency definitely does not.
+</ul>
+
+<q:answer>
+A.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Partial Products, Inc., has hired you as its vice president in charge
+of marketing. Your immediate task is to determine the sale prices of
+three newly announced multiplier modules. The top-of-the-line Cooker
+is a pipelined multiplier. The Sizzler is a combinational
+multiplier. The Grunter is a slower sequential multiplier. Their
+performance figures are as follows (T is some constant time interval):
+
+<pre>
+        Throughput    Latency
+Cooker    1/T            5T
+Sizzler   1/4T           4T
+Grunter   1/32T         32T
+</pre>
+
+Customers follow a single principle: Buy the cheapest combination of
+hardware that meets my performance requirements.  These requirements
+may be specified as a maximum allowable latency time, a minimum
+acceptable throughput, or some combination of these. Customers are
+willing to try any paralleled or pipelined configuration of
+multipliers in an attempt to achieve the requisite performance. You
+may neglect the cost (both financial and as a decrease in performance)
+of any routing, latching, or other hardware needed to construct a
+configuration.  Concentrate only on the inherent capabilities of the
+arrangement of multipliers itself.
+
+<p/>It has been decided that the Cooker will sell for $1000.  The
+following questions deal with determining the selling prices of
+Sizzlers and Grunters.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+How much can you charge for Sizzlers and still sell any? That is, is
+there some price for Sizzlers above which any performance demands that
+could be met by a Sizzler could also be met by some combination of
+Cookers costing less?  If there is no such maximum price, indicate a
+performance requirement that could be met by a Sizzler but not by any
+combination of Cookers. If there is a maximum selling price, give the
+price and explain your reasoning.
+
+<q:answer>
+If there is a performance requirement for the latency to be &lt;= 4T, then
+there is no combination of Cookers that will meet this performance
+requirement.  So it is in theory possible to sell some Sizzlers at any
+price.  Using multiple Cookers can further improve the overall
+multiplier throughput, but their latency cannot be shortened.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+How little can you charge for Sizzlers and still sell any Cookers? In
+other words, is there a price for the Sizzler below which every
+customer would prefer to buy Sizzlers rather than a Cooker? Give and
+explain your answer, as above.
+
+<q:answer>
+The minimum price for a Sizzler is $250.01 if we want to continue
+to sell Cookers. If the price of a Sizzler is less than that, 4
+Sizzlers could be used in parallel to achieve the same throughput
+as a Cooker with a better latency in the bargain.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Is there a maximum price for the Grunter above which every customer
+would prefer to buy Cookers instead?  As before, give the price, if it
+exists, and explain your reasoning in either case.
+
+<q:answer>
+The maximum price for the Grunter is $999.99 since for applications
+that can accept long latencies (&gt;= 32T) it's worth buying a Grunter if
+it saves any money at all.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Is there a minimum price for the Grunter below which every customer
+would prefer to buy Grunters rather than a Cooker?  Once again, give
+the price, if it exists, and explain your reasoning in either case.
+
+<q:answer>
+There is no minimum price for a Grunter that would cause every
+customer to buy Grunters instead of Cookers.  The latency of the
+Grunter will always be 32T, so when performance requirements demand
+latencies &lt; 32T, Grunters won't do the job.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Suppose that, as a customer, you have an application in which 64 pairs
+of numbers appear all at once, and their 64 products must be generated
+in as short a time as practicable. You have $1000 to spend.  At what
+price would you consider using Sizzlers?  At what price would you
+consider using Grunters?
+
+<q:answer>
+Sizzlers will be considered when they cost $250 or less.  Grunters may
+be considered when they cost $124.93 or less.  To see this, consider
+the case when Sizzlers cost $125.01.  Buying seven Sizzlers would
+yield a latency of 40T at a cost of $875.07.  The customer cannot
+afford another Sizzler, but adding a single Grunter for $124.93 will
+reduce the latency to 36T.  All optimal configurations are explored
+below:
+
+<p/><img src="pipeline18.gif"/>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Peculiar Peripherals, Inc. Builds a combinational encryption device
+constructed of nine modules as follows:
+
+<p/><img src="pipeline02.gif"/> 
+
+<p/>The device takes an integer value X and computes an encrypted
+version C(X).  In the diagram above each combinational component is
+marked with its propagation delay in microseconds; contamination
+delays are zero for each component.
+
+<q:subquestion>
+
+What is the latency and throughput of the combinational encryption
+device?
+
+<q:answer>
+Latency = 5 + 3 + 1 + 5 + 3 + 3 + 5 = 25us.  Throughput = 1/25us.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Redraw the diagram marking the locations for ideal (zero-delay)
+registers that will pipeline the device for maximal throughput.
+Ensure a register at the output and use the minimum number of
+registers necessary.
+
+<q:answer>
+<img src="pipeline14.gif"/> 
+
+<p/>We can remove some of the registers implied by contours (eg, those
+shown with dotted lines) without decreasing the throughput.  There
+are several equivalent variations of this diagram.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Give the latency and throughput of your pipelined version.
+Again assume ideal registers.
+
+<q:answer>
+There a six registers in each input-output path and the clock period
+is 5, so latency = 30 and throughput = 1/5.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Consider the following combinational encryption device constructed
+from six modules:
+
+<p/><img src="pipeline01.gif"/> 
+
+<p/>The device takes an integer value, X, and computes an encrypted
+version C(X).  In the diagram above, each combinational component is
+marked with its propagation delay in seconds; contamination delays are
+zero for each component.
+
+<p/>In answering the following questions assume that registers added to
+the circuit introduce no additional delays (i.e., the registers have a
+contamination and propagation delay of zero, as well as zero setup and
+hold times).  Any modifications must result in a circuit that obeys
+our rules for a well-formed pipeline and that computes the same
+results as the combinational circuit above.  Remember that our
+pipeline convention requires that every pipeline stage has a register
+on its output.
+
+<p/>When answering the questions below, if you add a register to one of
+the arrows in the diagram, count it as a single register.  For
+example, it takes two registers to pipeline both inputs to the
+rightmost module (the one with latency 4).
+
+<q:subquestion>
+What is the latency of the combinational encryption device?
+
+<q:answer>
+Latency = delay along longest path from input to output = 2 + 3 + 4 = 9.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If we want to increase the throughput of the encryption device,
+what is the minimum number of registers we need to add?
+
+<q:answer>
+Three.  Playing by our pipelining rules, we always add a register
+to the output.  The increase the throughput we need to add other
+register that bisect the circuit.  The cheapest place to do this
+is just before the "4" module, requiring two additional registers.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If we are required to add exactly 5 registers, what is the best
+throughput we can achieve?
+
+<q:answer>
+The best throughput we can achieve with 5 registers is 1/5: place
+3 (!) registers on the output and two registers on the arcs leading
+to the "4" module.  If we use 4 registers to divide the circuit between
+the "2" and "3" modules, the resulting throughput is 1/7.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If we can add as many registers as we like, is there an upper
+bound on the throughput we can achieve?
+
+<q:answer>
+Yes: 1/4, because the best we can do by just adding registers is
+to segregate the "4" module into its own pipeline stage.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If we can add as many registers as we like, is there a lower
+bound on the latency we can achieve?
+
+<q:answer>
+Lower bound on latency = 9.  We can never make the latency less by
+adding pipeline registers; usually the latency increases.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Consider the following pipelined circuit: The number written on top of
+each combinational element indicates its propagation delay in
+nanoseconds. Assume that the pipeline registers shown are ideal (they
+have a propagation delay, contamination delay, hold-time and a set-up
+time of 0 ns).
+
+<p/><img src="pipeline11.gif"/>
+
+<q:subquestion>
+What is the minimum clock period for which we can expect the given
+circuit to operate correctly?
+
+<q:answer>
+8ns since we have to leave time for the logic between registers
+A and C to do its stuff.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+What is the minimum latency of the circuit as shown?
+
+<q:answer>
+32ns = 4 pipeline stages at 8ns clock period.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If the registers labeled F and G are removed, describe the
+resulting circuit's behavior.
+
+<q:answer>
+Removing F and G combines the last two pipeline stages into a single
+pipeline stage.  The latency improves to 24ns and the throughput
+stays 1/8ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Assume you were to redesign the pipelining of the given circuit
+to achieve the maximum possible throughput with minimum latency. What
+is the minimum number of pipeline registers required (including
+register H)?
+
+<q:answer>
+We can do it with four registers if we allow ourselves to use
+only a single register on values that go to multiple inputs:
+
+<p/><img src="pipeline12.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If the pipeline registers in the given circuit were all replaced
+with non-ideal pipeline registers having propagation delays of 2 ns,
+set-up times of 1 ns, and hold times of 0 ns, what would be the
+maximum throughput achievable with the supplied six combinational
+modules?
+
+<q:answer>
+The clock period would be set by the delay of the pipeline stage
+containing the "8" module: tCLK = tPD,REG + 8 + tS,REG = 11ns.
+So the throughput would be 1/11ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If the pipeline registers in the given circuit were all
+replaced with non-ideal pipeline registers having propagation delays
+of 2 ns, set-up times of 1 ns, and hold times of 0 ns, how long before
+the system clock must the input x be set-up to assure that the
+pipeline registers A and B do not go into a metastable state?
+
+<q:answer>
+tS,X = 7 + tS,REG = 8ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Suppose that a second output, g(x), is desired from the given
+circuit. It provides the partial result present at the output of the
+pipeline register labeled C. If we wish the outputs f(x) and g(x) to
+correspond to the same input after each clock, how many new pipeline
+registers should be added to the circuit shown?
+
+<q:answer>
+We need to add 2 new registers:
+
+<p/><img src="pipeline13.gif"/>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+You have the task of pipelining a combinational circuit consisting
+entirely of 2-input NAND gates with 1ns propagation delay by adding
+registers having tS=1ns, tH=1 ns, tPD=2 ns and tCD=1 ns.  The
+propagation delay of the original combinational circuit is 20 ns.
+
+<q:subquestion>
+Assuming you add the minimum number of registers to pipeline the
+circuit for maximal throughput, what is the latency of the resulting
+pipelined circuit?
+
+<q:answer>
+If the combinational circuit has a tPD of 20ns when built from 1ns
+components, there must be an input-output path involving 20 components.
+To get maximal throughput, we'd place each component in its own
+pipeline stage for a total of 20 stages.  Each stage requires
+tPD,REG + tPD,NAND + tS,REG = 2 + 1 + 1 = 4ns to do its job.  So
+the latency of the circuit pipelined for maximal throughput is 80ns.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Circuits Maximus, Inc. makes circuits which compute the maximum of two unsigned
+binary numbers.  They are constructed using combinational 1-bit Maximizes modules
+which are cascaded to deal with longer words, as shown below:
+
+<p/><img src="pipeline08.gif"/>
+
+<p/>This diagram show a 4-bit Maximizer chain which computes at the M outputs the
+larger of the A or B input operands.  Each Maximizer module takes the Ith bit
+of each of two binary operands, A and B, as well as comparison outputs from the
+next higher-order Maximizer module in a chain, as shown below:
+
+<p/><img src="pipeline09.gif"/>
+
+<p/>A "1" on either of the inputs AGin and BGin from the next higher-order module
+signals that A or B, respectively, is greater; both inputs are zero if the higher-order bits
+are identical.  The M module computes the output values AGout and BGout from AGin, BGin,
+Ai and Bi and sends these outputs values to the next lower-order M module.  It also
+passes either Ai or Bi as the Mi output, denoting the Ith bit of the maximum of A
+and B.
+
+<p/>An implementation has been developed for the M module that has 10ns propagation
+delay and a 2ns contamination delay.
+
+<q:subquestion>
+Assuming that use of ideal registers, mark the previous diagram to show a 4-bit
+Maximizer pipelined for maximum throughput.
+
+<q:answer>
+<img src="pipeline15.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+To compute the maximum value of N inputs (N > 2), the following structure is
+proposed:
+
+<p/><img src="pipeline10.gif"/>
+
+<p/>In this circuit, the maximum of four 4-bit unsigned numbers is
+computed and appears at the output M3..M0.
+What is the latency and throughput of this combinational circuit,
+assuming that each M module has a propagation delay of 10ns?
+
+<q:answer>
+The longest path from inputs to outputs passes through 6 M
+modules, so the latency is 60 and the throughput is 1/60.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Show how this circuit can be pipelined from maximum throughput
+using a minimum number of pipeline stages.  Remember to include a
+register at each output.
+
+<q:answer>
+The solution below uses a different technique for pipelining
+a circuit.  Start by labeling each module with its maximum
+"distance" from the inputs, i.e., the largest number of
+components that have to be traversed on some path from the
+inputs to the module in question.  Label all outputs with the
+length (in modules) of the longest path from input to output
+label each input with "0".  The number of pipeline
+registers required on each wire is the difference between
+the label at the start of the arrow and the end of the arrow.
+
+<p/>A common mistake: forgetting to add the necessary pipeline
+registers on the input and output arrows.
+
+<p/><img src="pipeline16.gif"/>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+The following combinational circuit takes a single input
+and produces a visual output by lighting the light on the center
+component module.
+
+<p/><img src="pipeline03.gif"/>
+
+<p/>Consider the result of pipelining the above circuit for maximum
+throughput, using the minimum number of registers necessary.  The
+result would be a pipeline such that input asserted during clock
+period I produces the proper output on the light during clock
+period I+K (we want minimal K which gives maximal throughput).
+
+<q:subquestion>
+How many registers should appear on the bold wire (marked X) in
+the pipelined version of the above circuit?
+
+<q:answer>
+Using the pipelining technique described in the previous
+problem, we can see from the labels that 7 registers would
+be required on the wire marked X:
+
+<p/><img src="pipeline17.gif"/>
+</q:answer>
+</q:subquestion>
+</q:question>
+</q:questions>

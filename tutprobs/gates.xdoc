@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<q:questions xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:q="py:tutprobs"
+	     title="Gates and Boolean logic">
+
+<q:question>
+
+Consider the following circuit that implements the 2-input function
+H(A,B):
+
+<p/><center><img src="gates16.gif"/></center>
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Fill in the following truth table for H:
+<p/><table border="1" cellpadding="4">
+<tr><th bgcolor="#C0C0C0">A</th><th bgcolor="#C0C0C0">B</th><th bgcolor="#C0C0C0">H</th></tr>
+<tr><td>0</td><td>0</td><td>&nbsp;</td></tr>
+<tr><td>0</td><td>1</td><td>&nbsp;</td></tr>
+<tr><td>1</td><td>0</td><td>&nbsp;</td></tr>
+<tr><td>1</td><td>1</td><td>&nbsp;</td></tr>
+</table>
+
+<q:answer>
+<table border="1" cellpadding="4">
+<tr><th bgcolor="#C0C0C0">A</th><th bgcolor="#C0C0C0">B</th><th bgcolor="#C0C0C0">H</th></tr>
+<tr><td>0</td><td>0</td><td><b>1</b></td></tr>
+<tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>1</td><td>0</td><td><b>0</b></td></tr>
+<tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+</table>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Give a sum-of-products expression that corresponds to the truth table above.
+
+<q:answer>
+The equation has one product term for each line of the truth table
+where H(A,B) = 1.  Each product term contains two literals, one for each
+of the two inputs.
+<pre>    _ _         _
+H = A*B + A*B + A*B
+</pre>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Using the following table of timing specifications for each component,
+what are t<sub>CD</sub>, t<sub>PD</sub> and t<sub>R</sub> for the circuit
+shown above?
+
+<p/><center><table border="1">
+<tr><th>gate</th><th>t<sub>CD</sub></th><th>t<sub>PD</sub></th><th>t<sub>R</sub></th><th>t<sub>F</sub></th></tr>
+<tr><td>I</td><td>3ps</td><td>15ps</td><td>8ps</td><td>5ps</td></tr>
+<tr><td>ND2</td><td>5ps</td><td>30ps</td><td>11ps</td><td>7ps</td></tr>
+<tr><td>AN2</td><td>12ps</td><td>50ps</td><td>13ps</td><td>9ps</td></tr>
+<tr><td>NR2</td><td>5ps</td><td>30ps</td><td>7ps</td><td>11ps</td></tr>
+<tr><td>OR2</td><td>12ps</td><td>50ps</td><td>9ps</td><td>13ps</td></tr>
+</table></center>
+
+<q:answer>
+t<sub>CD</sub> = cd(NR2) + cd(NR2) + cd(ND2) = 15ps
+<ul>= minimum considering all paths from inputs to output</ul>
+
+<p/>t<sub>PD</sub> = pd(AN2) + pd(NR2) + pd(ND2) = 110ps
+<ul>= maximum considering all paths from inputs to output</ul>
+
+<p/>t<sub>r</sub> = r(ND2) = 11ps
+<ul>= rise time of gate that drives output</ul>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+<b>Gates and Boolean equations</b>
+
+<q:subquestion>
+Show the Boolean equation for the function F described by the
+following circuit:
+
+<p/><img src="gates03.gif"/>
+
+<q:answer>
+<pre>
+             _       _       _
+F(A,B,C,D) = A*B + A*C*D + A*B*C
+</pre>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Consider the circuit shown below.  Each of the control inputs, C0
+through C3, must be tied to a constant, either 0 or 1.
+
+<p/><img src="gates04.gif"/>
+
+<p/>What are the values of C0 through C3 
+that would cause F to be the <i>exclusive OR</i>
+of A and B?
+
+<q:answer>
+We want F to be 1 when A=1 and B=0, or when A=0 and B=1.
+So C0 = 0, C1 = 1, C2 = 1, C3 = 0.  
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Can any arbitrary
+Boolean function of A and B be realized through appropriate wiring of the
+control signals C0 through C3?
+
+<q:answer>
+Yes.  This circuit implements a 4-input MUX with its two select lines
+connected to A and B.  By choosing the appropriate values for C0 through C3 we
+can implement any of the 16 possible Boolean functions of A and B.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Give a sum-of-products expression for each of the
+following circuits:
+
+<p/><img src="gates06.gif"/>
+
+<q:answer>
+<pre>
+      _     _
+(A) = A*B + B + C
+      _     _
+(B) = A*C + B*C
+      _       _
+(C) = A*C + B*C
+      _       _       _
+(D) = A*B + A*C*D + A*B*C
+      _ _           _
+(E) = A*D + B*C + B*D
+</pre>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Give a canonical sum-of-products expression for the Boolean function
+described by each truth table below
+
+<p/><img src="gates05.gif"/>
+
+<q:answer>
+We can construct a sum-of-products expression from a truth table
+by writing down a product term for each line of the table where
+the output is 1.  Each product term contains all the input
+variables: directly (ie, "A") if that variable is 1 for this
+line of the truth table, or negated (ie, "not A") if that variable
+is 0 for this line of the truth table.  We then OR the product terms
+together to get the final expression:
+<pre>
+           _ _ _     _ _     _
+F(A,B,C) = A*B*C + A*B*C + A*B*C + A*B*C
+           _         _         _
+G(A,B,C) = A*B*C + A*B*C + A*B*C + A*B*C
+</pre>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+We've seen that there are a total of sixteen 2-input Boolean
+functions.  How many 5-input Boolean functions are there?
+
+<q:answer>
+There are 2<sup>2<sup>5</sup></sup> = 2<sup>32</sup> 5-input
+boolean functions.  To see why, recall that the truth table
+for a 5-input function will have 32 rows, one for each possible
+combination of the 5 inputs.  The output column for each row
+can be filled in with one of two choices ("0" or "1"), for a total
+of 2<sup>32</sup> possible ways of filling in the output column
+for all 32 rows.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+A priority encoder has inputs that are assigned some predetermined
+order. The output is the binary encoding of the first "1" valued input
+from the ordered list, and it is zero otherwise.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Give the truth table for a 3-input priority encoder.
+
+<q:answer>
+Assume the inputs are A, B, C with A having priority 3, B priority 2
+and C priority 1:
+<pre>
+A  B  C | P1 P0
+========|=========
+0  0  0 |  0  0
+0  0  1 |  0  1
+0  1  0 |  1  0
+0  1  1 |  1  0
+1  0  0 |  1  1
+1  0  1 |  1  1
+1  1  0 |  1  1
+1  1  1 |  1  1
+</pre>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Give a sum of products realization of this priority encoder.
+
+<q:answer>
+<pre>
+     _   _   _         _ _     _         _
+P1 = A*B*C + A*B*C + A*B*C + A*B*C + A*B*C + A*B*C = A + B
+     _ _       _ _     _         _               _
+P0 = A*B*C + A*B*C + A*B*C + A*B*C + A*B*C = A + B*C
+</pre>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Suppose we are building circuits using only the
+following three components:
+
+<ul>
+<li>inverter: tcd = 0.5ns, tpd = 1.0ns, tr = tf = 0.7ns</li>
+<li>2-input NAND: tcd = 0.5ns, tpd = 2.0ns, tr = tf = 1.2ns</li>
+<li>2-input NOR: tcd = 0.5ns, tpd = 2.0ns, tr = tf = 1.2ns</li>
+</ul>
+
+<p/>Consider the following circuit constructed from an inverter
+and four 2-input NOR gates:
+
+<p/><img src="gates02.gif"/>
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is t<sub>PD</sub> for this circuit?
+
+<q:answer>
+t<sub>PD</sub> for the circuit is the maximum cumulative propagation delay
+considering all paths from any input to any output.  In this
+circuit, the longest path involves three 2-input NAND gates
+with a cummulative t<sub>PD</sub> = 6ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is t<sub>CD</sub> for this circuit?
+
+<q:answer>
+t<sub>CD</sub> for the circuit is the minimum cumulative contamination delay
+considering all paths from any input to any output.  In this
+circuit, the shortest path involves two 2-input NAND gates
+with a cumulative t<sub>CD</sub> = 1ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is the output rise time for this circuit?
+
+<q:answer>
+The output rise time is determined by tr of the gate connected
+to OUT.  In this case, it's a 2-input NAND with tr = 1.2ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is t<sub>PD</sub> of the <i>fastest</i> equivalent
+circuit (i.e., one that implements the same function)
+built using only the three components listed above?
+
+<q:answer>
+The most straightforward way to determine the functionality of
+a circuit is to build a truth table:
+<pre>
+A  B  | OUT
+======|=====
+0  0  |  1
+0  1  |  0
+1  0  |  1
+1  1  |  0
+</pre>
+from which we can see that OUT = not B.  We can implement
+this with a single inverter that has a t<sub>PD</sub> = 1ns.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Suppose that each component in the circuit below has a
+propagation delay (tpd) of 10ns, a contamination delay (tcd)
+of 1ns, and negligable rise and fall times.  Suppose initially
+that all four inputs are 1 for a long time and then the input D
+changes to 0.
+
+<p/><img src="gates07.gif"/>
+
+<q:subquestion>
+Draw a waveform plot showing how X, Y, Z, W and
+Q change with time after the input transition on D.  First assume
+that the gates are <i>not</i> lenient.  How will the waveforms
+change if the gates are lenient?
+
+<q:answer>
+Waveforms with non-lenient gates:
+
+<p/><img src="gates08.gif"/>
+
+<p/>Waveforms with lenient gates:
+
+<p/><img src="gates09.gif"/>
+
+where we see that X doesn't change since the value of A
+is sufficient to determine the value of X.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+<b>The Mysterious Circuit X</b>
+
+<q:subquestion>
+Determine the function of the Circuit X, below, by writing out and
+examining its truth table.  Give a minimal sum-of-products Boolean
+expression for each output.
+
+<p/><img src="gates10.gif"/>
+
+<q:answer>
+<img src="gates12.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+For Circuit X assume that AND gates have a propagation of 2 nS and a
+contamination delay of 1nS, while XOR gates have a propagation delay
+of 3 nS and contamination delay of 2 nS.
+
+<p/>Compute the aggregate contamination and propagation delays for
+Circuit X. What is the maximum frequency that the inputs of Circuit X
+be changed while insuring that all outputs are stable for 5 nS?
+
+<q:answer>
+The contamination delay of the circuit is obtained from the shortest
+path form an input to an output.  In circuit X this path start at A1
+(or B1) and ends at P1, encountering only one AND gates.  Thus
+t<sub>CD</sub> = 1ns.
+
+<p/>The propagation delay of the circuit is obatined from the longest
+path from an input to an output.  In circuit X this path starts at any
+of the inputs and ends at P4, encoutering two AND gates and one XOR
+gate.  Thus t<sub>PD</sub> = 2ns + 2ns + 3ns = 7ns.
+
+<p/>The answer to the next part is best understood by drawing a timing
+diagram:
+
+<p/><img src="gates13.gif"/>
+
+<p/>Thus if the inputs transition no faster than every 11ns (~90 MHz),
+the outputs will be stable for at least 5ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Suppose the gates below are added to Circuit X.  How are the answers
+to part b) affected?
+
+<p/><img src="gates11.gif"/>
+
+<q:answer>
+The shortest path from input to output now passes through three
+AND gates for outputs P1 and P8 and one AND gate and an XOR gate
+for outputs P2 and P4.  Thus
+
+<p/>t<sub>CD</sub> = min(1ns + 1ns + 1ns, 1ns + 2ns) = 3ns.
+
+<p/>The path that creats the largest propagation delay in the
+circuit is still the path from any input to P4, so
+t<sub>PD</sub> is still 7ns.
+
+<p/>With this new circuit the inputs can transition every 9ns
+and still guarantee that the outputs will be stable for 5ns.
+
+<p/><img src="gates14.gif"/>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+The Xilinx 4000 series field-programmable gate array (FPGA) can be
+programmed to emulate a circuit made up of many thousands of gates;
+for example, the XC4025E can emulate circuits with up to 25,000 gates.
+The heart of the FPGA architecture is a configurable logic block (CLB)
+which has a combinational logic subsection with the following circuit
+diagram:
+
+<p/><img src="gates15.gif"/>
+ 
+<p/>There are two 4-input function generators and one 3-input function
+generator, each capable of implementing an arbitrary Boolean function
+of its inputs.
+
+<p/>The function generators are actually small 16-by-1 and 8-by-1
+memories that are used as lookup tables; when the Xilinx device is
+"programmed" these memories are filled with the appropriate values so
+that each generator produces the desired outputs. The multiplexer
+select signals (labeled "Mx" in the diagram) are also set by the
+programming process to configure the CLB.  After programming, these Mx
+signals remain constant during CLB operation.
+
+<p/>The following is a list of the possible configurations.  For each
+configuration indicate how each the control signals should be
+programmed, which of the input lines (C1-C4, F1-F4, and G1-G4) are
+used, and what output lines (X, Y, or Z) the result(s) appear on.
+
+<q:subquestion>
+An arbitrary function F of up to four input variables, plus another
+arbitrary function G of up to four unrelated input variables, plus a
+third arbitrary function H of up to three unrelated input variables.
+	
+<q:answer>
+Let X = F(F1, F2, F3, F4), Z = G(G1, G2, G3, G4), Y = H(C1, C2, C3).
+The necessary control signals are:
+
+<p/><ul>
+	MA = 1<br/>
+	MB = 1<br/>
+	MC = 0 (select C1)<br/>
+	MD = 1 (select C2)<br/>
+	ME = 2 (select C3)
+</ul>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+An arbitrary single function of five variables.
+	
+<q:answer>
+
+Let Y = F(A1, A2, A3, A4, A5).  This can be implemented using both
+4-input logic functions, and selecting between the two outputs with
+the 3-input logic function.
+
+<p/><ul>
+	Z=f(A1, A2, A3, A4, 0), <br/>
+	X=f(A1, A2, A3, A4, 1), <br/>
+	Y= Z if A5=0, else Y=X
+</ul>
+
+<p/>So Z is calculating F for the case when A5 = 0, X is calculating F for
+the case when A5 = 1, and Y is selecting between X and Z with a
+multiplexer function. A1-A4 represents F1-F4 and G1-G4 (they're
+connected to the same 4 inputs) and A5 represents C1.  The necessary
+control signals are:
+
+<p/><ul>
+	MA = 0<br/>
+	MB = 0<br/>
+	MC = X (value doesn't matter)<br/>
+	MD = X (value doesn't matter)<br/>
+	ME = 0 (select C1)
+</ul>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+An arbitrary function of four variables together with some functions
+of six variables.  Characterize the functions of six variables that
+can be implemented.
+	
+<q:answer>
+Let Z = G(G1, G2, G3, G4)  - any function of 4 variables.
+
+<p/><ul>
+	X = F(F1, F2, F3, F4)<br/>
+	Y = H(C1, C2, X) = H(C1, C2, F(F1, F2, F3, F4))
+</ul>
+
+<p/>The functions of six variables which can be implemented (along with
+the 4-variable function) are all those functions that can be
+re-written as a function of 3 variables.  The inputs to this function
+of three variables must be 2 of the original variables and some
+function of the remaining four variables.  The necessary control
+signals are:
+
+<p/><ul>
+	MA = 0<br/>
+	MB = 1<br/>
+	MC = X (value doesn't matter)<br/>
+	MD = 0 (select C1)<br/>
+	ME = 1 (select C2)
+</ul>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Some functions of up to nine variables.  Characterize the functions of
+up to nine variables that can be implemented.
+
+<q:answer>
+Let
+
+<p/><ul>
+	X = F(F1, F2, F3, F4)<br/>
+	Z = G(G1, G2, G3, G4)<br/>
+	Y = H(C1, X, Z) = H(C1, F(F1, F2, F3, F4), G(G1, G2, G3, G4))<br/>
+</ul>
+
+<p/>The functions of nine variables that can be implemented are all
+those functions that can be re-written as a function of 3 variables.
+The inputs to this three-variable function will be one of the original
+variables, plus two separate functions of 4 variables (these two
+4-variable functions will have the remaining 8 original variables as
+inputs).
+
+<p/><ul>
+	MA = 0<br/>
+	MB = 0<br/>
+	MC = X (value doesn't matter)<br/>
+	MD = X (value doesn't matter)<br/>
+	ME = 0 (select C1)<br/>
+</ul>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+[Optional challenge] Can every function of six inputs be implemented?
+If so, explain how.  If not, give a 6-input function and explain why
+it can't be implemented in the CLB.
+
+<q:answer>
+
+The functions of 6 variables which we can implement must be of the form 
+
+<p/><ul>
+	Y = y(C1, C2, f(F1,F2,F3,F4))
+</ul>
+
+<p/>or of the form
+
+<p/><ul>
+	Y = y(C1, f(F1, F2, F3, F4), g(G1, G2, G3, G4)) 
+</ul>
+
+<p/>(this second function will have some overlap between C1, F1-4, and
+G1-4; some variables will be connected to multiple inputs)
+Essentially, the functions we are able to implement are only those for
+which we can factor a set of 4 variables out of the equation.  For
+example, the following function cannot be implemented by the CLB:
+
+<p/><ul>
+	Y = A1A2A3A4A5 + A1A2A3A4A6 + A1A2A3A5A6 + A1A2A4A5A6 <br/>
+		+ A1A3A4A5A6 +A2A3A4A5A6 
+</ul>
+
+<p/>This function cannot be broken down into either of the forms mentioned above.  
+</q:answer>
+</q:subquestion>
+</q:question>
+</q:questions>

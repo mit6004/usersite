@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Gates and Boolean logic</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+
+Consider the following circuit that implements the 2-input function
+H(A,B):
+
+<p/><center><img src="gates16.gif"/></center>
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Fill in the following truth table for H:
+<p/><table border="1" cellpadding="4">
+<tr><th bgcolor="#C0C0C0">A</th><th bgcolor="#C0C0C0">B</th><th bgcolor="#C0C0C0">H</th></tr>
+<tr><td>0</td><td>0</td><td>&nbsp;</td></tr>
+<tr><td>0</td><td>1</td><td>&nbsp;</td></tr>
+<tr><td>1</td><td>0</td><td>&nbsp;</td></tr>
+<tr><td>1</td><td>1</td><td>&nbsp;</td></tr>
+</table>
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Give a sum-of-products expression that corresponds to the truth table above.
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Using the following table of timing specifications for each component,
+what are t<sub>CD</sub>, t<sub>PD</sub> and t<sub>R</sub> for the circuit
+shown above?
+
+<p/><center><table border="1">
+<tr><th>gate</th><th>t<sub>CD</sub></th><th>t<sub>PD</sub></th><th>t<sub>R</sub></th><th>t<sub>F</sub></th></tr>
+<tr><td>I</td><td>3ps</td><td>15ps</td><td>8ps</td><td>5ps</td></tr>
+<tr><td>ND2</td><td>5ps</td><td>30ps</td><td>11ps</td><td>7ps</td></tr>
+<tr><td>AN2</td><td>12ps</td><td>50ps</td><td>13ps</td><td>9ps</td></tr>
+<tr><td>NR2</td><td>5ps</td><td>30ps</td><td>7ps</td><td>11ps</td></tr>
+<tr><td>OR2</td><td>12ps</td><td>50ps</td><td>9ps</td><td>13ps</td></tr>
+</table></center>
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+<b>Gates and Boolean equations</b>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+Show the Boolean equation for the function F described by the
+following circuit:
+
+<p/><img src="gates03.gif"/>
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Consider the circuit shown below.  Each of the control inputs, C0
+through C3, must be tied to a constant, either 0 or 1.
+
+<p/><img src="gates04.gif"/>
+
+<p/>What are the values of C0 through C3 
+that would cause F to be the <i>exclusive OR</i>
+of A and B?
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Can any arbitrary
+Boolean function of A and B be realized through appropriate wiring of the
+control signals C0 through C3?
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+Give a sum-of-products expression for each of the
+following circuits:
+
+<p/><img src="gates06.gif"/>
+
+
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+Give a canonical sum-of-products expression for the Boolean function
+described by each truth table below
+
+<p/><img src="gates05.gif"/>
+
+
+</li></ol></div>
+
+    <div id="question2F" class="question">
+    <ol type="A" start="6"><li>
+    
+We've seen that there are a total of sixteen 2-input Boolean
+functions.  How many 5-input Boolean functions are there?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+A priority encoder has inputs that are assigned some predetermined
+order. The output is the binary encoding of the first "1" valued input
+from the ordered list, and it is zero otherwise.
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Give the truth table for a 3-input priority encoder.
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Give a sum of products realization of this priority encoder.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+Suppose we are building circuits using only the
+following three components:
+
+<ul>
+<li>inverter: tcd = 0.5ns, tpd = 1.0ns, tr = tf = 0.7ns</li>
+<li>2-input NAND: tcd = 0.5ns, tpd = 2.0ns, tr = tf = 1.2ns</li>
+<li>2-input NOR: tcd = 0.5ns, tpd = 2.0ns, tr = tf = 1.2ns</li>
+</ul>
+
+<p/>Consider the following circuit constructed from an inverter
+and four 2-input NOR gates:
+
+<p/><img src="gates02.gif"/>
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is t<sub>PD</sub> for this circuit?
+
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is t<sub>CD</sub> for this circuit?
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is the output rise time for this circuit?
+
+
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is t<sub>PD</sub> of the <i>fastest</i> equivalent
+circuit (i.e., one that implements the same function)
+built using only the three components listed above?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+Suppose that each component in the circuit below has a
+propagation delay (tpd) of 10ns, a contamination delay (tcd)
+of 1ns, and negligable rise and fall times.  Suppose initially
+that all four inputs are 1 for a long time and then the input D
+changes to 0.
+
+<p/><img src="gates07.gif"/>
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+Draw a waveform plot showing how X, Y, Z, W and
+Q change with time after the input transition on D.  First assume
+that the gates are <i>not</i> lenient.  How will the waveforms
+change if the gates are lenient?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+<b>The Mysterious Circuit X</b>
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+Determine the function of the Circuit X, below, by writing out and
+examining its truth table.  Give a minimal sum-of-products Boolean
+expression for each output.
+
+<p/><img src="gates10.gif"/>
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+For Circuit X assume that AND gates have a propagation of 2 nS and a
+contamination delay of 1nS, while XOR gates have a propagation delay
+of 3 nS and contamination delay of 2 nS.
+
+<p/>Compute the aggregate contamination and propagation delays for
+Circuit X. What is the maximum frequency that the inputs of Circuit X
+be changed while insuring that all outputs are stable for 5 nS?
+
+
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+Suppose the gates below are added to Circuit X.  How are the answers
+to part b) affected?
+
+<p/><img src="gates11.gif"/>
+
+
+</li></ol></div>
+</div>
+
+    <div id="question7" class="question">
+    <p/><hr/><p/><u>Problem 7.</u>
+    
+The Xilinx 4000 series field-programmable gate array (FPGA) can be
+programmed to emulate a circuit made up of many thousands of gates;
+for example, the XC4025E can emulate circuits with up to 25,000 gates.
+The heart of the FPGA architecture is a configurable logic block (CLB)
+which has a combinational logic subsection with the following circuit
+diagram:
+
+<p/><img src="gates15.gif"/>
+ 
+<p/>There are two 4-input function generators and one 3-input function
+generator, each capable of implementing an arbitrary Boolean function
+of its inputs.
+
+<p/>The function generators are actually small 16-by-1 and 8-by-1
+memories that are used as lookup tables; when the Xilinx device is
+"programmed" these memories are filled with the appropriate values so
+that each generator produces the desired outputs. The multiplexer
+select signals (labeled "Mx" in the diagram) are also set by the
+programming process to configure the CLB.  After programming, these Mx
+signals remain constant during CLB operation.
+
+<p/>The following is a list of the possible configurations.  For each
+configuration indicate how each the control signals should be
+programmed, which of the input lines (C1-C4, F1-F4, and G1-G4) are
+used, and what output lines (X, Y, or Z) the result(s) appear on.
+
+
+    <div id="question7A" class="question">
+    <ol type="A" start="1"><li>
+    
+An arbitrary function F of up to four input variables, plus another
+arbitrary function G of up to four unrelated input variables, plus a
+third arbitrary function H of up to three unrelated input variables.
+	
+
+</li></ol></div>
+
+    <div id="question7B" class="question">
+    <ol type="A" start="2"><li>
+    
+An arbitrary single function of five variables.
+	
+
+</li></ol></div>
+
+    <div id="question7C" class="question">
+    <ol type="A" start="3"><li>
+    
+An arbitrary function of four variables together with some functions
+of six variables.  Characterize the functions of six variables that
+can be implemented.
+	
+
+</li></ol></div>
+
+    <div id="question7D" class="question">
+    <ol type="A" start="4"><li>
+    
+Some functions of up to nine variables.  Characterize the functions of
+up to nine variables that can be implemented.
+
+
+</li></ol></div>
+
+    <div id="question7E" class="question">
+    <ol type="A" start="5"><li>
+    
+[Optional challenge] Can every function of six inputs be implemented?
+If so, explain how.  If not, give a 6-input function and explain why
+it can't be implemented in the CLB.
+
+
+</li></ol></div>
+</div>
+</body></html>

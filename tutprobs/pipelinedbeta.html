@@ -1,0 +1,1188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><head><script language="JavaScript1.2" src="tutprobs.js"></script></head><body style="margin-top:5px">
+	<noscript><table width=100%% border="1" cellpadding="8" bgcolor="yellow"><tr><td>
+        You need to have Javascript enabled to view this page
+        properly.  If your browser does not support Javascript
+        or you have chosen not to enable it, please return to
+        the previous page and use the appropriate link to view
+        non-script versions of this tutorial page.
+        </td></tr></table></noscript><h3>Pipelined Beta</h3>
+        <a href="\#" onClick="showall(); return false"><img border="0" src="showall.gif"/></a>
+        &nbsp;
+        <a href="\#" onClick="hideall(); return false"><img border="0" src="hideall.gif"/></a>
+        <p/><img src="star.gif" alt="Discussed in section"/>
+        indicates problems that have been selected for discussion
+        in section, time permitting.
+        
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+Beta quickies.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+In a 5-stage pipelined Beta, when does the hardware use its
+ability to insert NOP into the instruction stream at the IF stage
+(using the MUX controlled by Annul<sup>IF</sup>)?
+
+<div id="control1A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1A'); return false">
+          <img name="ctl1A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1A" class="answer" style="display:none"><font color="blue">
+A NOP is inserted in the IF stage when annulling instructions in the
+branch delay slot because of a taken branch or when flushing the
+pipeline due to a fault in the ALU or MEM stages.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+In a 5-stage pipelined Beta, when does the hardware use its
+ability to insert a NOP into the instruction stream at the ALU stage
+(using the MUX controlled by Annul<sup>ALU</sup>)?
+
+<div id="control1B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1B'); return false">
+          <img name="ctl1B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1B" class="answer" style="display:none"><font color="blue">
+If a fault occurs in the MEM stage (eg, illegal memory address), the
+instruction currently in the ALU stage needs to be discarded, which
+the hardware does by substituting a NOP.  Note that a fault in the MEM
+stage discards all the instructions currently in the IF, RF and ALU
+stages since they
+logically come <i>after</i> the instruction which caused the fault.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Ben Bitdiddle is thinking about modifying a 5-stage pipelined
+Beta to add a "Jump if Memory Zero" instruction (JMZ) that fetches
+the contents of a memory location and jumps if the fetched value
+is zero.  How many branch delay slots would follow a JMZ instruction
+in the modified 5-stage pipelined Beta?
+
+<div id="control1C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1C'); return false">
+          <img name="ctl1C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1C" class="answer" style="display:none"><font color="blue">
+The contents of the memory location accessed by JMZ aren't available
+until the instruction reaches the WB stage.  If the branch decision
+is made at that point, instructions in MEM, ALU, RF and IF have
+already been fetched -- so there are 4 branch delay slots.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+Suppose the following code were running on a Beta implementation
+with a 5-stage pipeline, full bypassing and 1 branch delay slot with
+annulment.
+
+<pre>PUSH (R1)
+PUSH (R2)
+LD (BP, -12, R0)
+LD (BP, -16, R1)
+CMPEQ (R0, R1, R2)
+BT (R2, L1)
+</pre>
+
+When the CMPEQ is executed, assuming no interrupts, where does the
+value for R0 come from?  How about the value for R1? (The choices
+would be from the register file or bypassed from one of the pipeline
+stages.)
+
+<div id="control1D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1D'); return false">
+          <img name="ctl1D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1D" class="answer" style="display:none"><font color="blue">
+The CMPEQ instruction stalls in the RF stage until values for both R0
+and R1 are available.  The value for R1 isn't available until the second
+LD reaches the WB stage at which point the results from the first LD
+have already been written into the register file.  So R0 comes from
+the register file and R1 is bypassed from the WB stage.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which of the following pipeline hazards cannot be dealt with
+transparently and at no performance cost by bypassing?
+
+<ol type="A">
+<li>A shared register between consecutive ALU instructions.</li>
+<li>A BR followed by an ALU instruction using the BR.</li>
+<li>An LD followed by an ALU instruction using the LD.</li>
+<li>Access to LP by the first instruction in a called procedure.</li>
+<li>Access to XP by the first instruction in an interrupt handler.</li>
+</ol>
+
+<div id="control1E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1E'); return false">
+          <img name="ctl1E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1E" class="answer" style="display:none"><font color="blue">
+(C) Since the data from an LD instruction isn't available until the
+WB stage, bypassing can't help.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+The number of branch delay slots reflects
+<ol type="A">
+<li>The distance between the instruction fetch stage and the stage at which the branch decision is made.</li>
+<li>The distance between the writeback stage and the stage at which the branch decision is made.</li>
+<li>The total length of the pipeline.</li>
+<li>The position within the pipeline of the instruction fetch stage.</li>
+<li>The number of cycles required for a fetch from data memory.</li>
+</ol>
+
+<div id="control1F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1F'); return false">
+          <img name="ctl1F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1F" class="answer" style="display:none"><font color="blue">
+(A) The number of branch delay slots refers to the number of instructions following
+a branch that are fetched by the pipeline before the branch decision is made.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+A common method for communicating with input and
+output devices is to assign them to one or more memory addresses. This
+technique is called memory-mapped I/O.  Some I/O locations are used to
+address status words that indicate the availability of an associated
+I/O device. These status words indicate if an input device has new
+input information available, or if an output device has processed its
+previous output request. Often, computers will execute tight loops
+waiting for the status of an I/O device. Consider the following
+instruction sequence for checking the status of an external I/O
+device.
+
+<pre>loop: LD(R31, status, R0)
+      BEQ(R0, loop, R31)
+      ADD (R0, R1, R2)
+</pre>
+
+<p/>The following pipeline diagram illustrates the execution of this
+instruction sequence on a standard 5-stage pipelined Beta:.
+
+<p/><img src="pipelinedbeta01.gif"/>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How many clock cycles does it take to execute one iteration of the
+2-instruction loop given?
+
+<div id="control2A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2A'); return false">
+          <img name="ctl2A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2A" class="answer" style="display:none"><font color="blue">
+5 clocks.  Measuring from the LD instruction of one iteration to the
+LD instruction of the next, we get five cycles.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What aspect of the instruction sequence causes NOP1 to be
+inserted into the pipeline?
+
+<div id="control2B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2B'); return false">
+          <img name="ctl2B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2B" class="answer" style="display:none"><font color="blue">
+The RA field of the BEQ matched the RC field of the LD in the ALU
+stage.  BEQ is testing the value in R0 which was the destination for
+the preceeding LD instruction.  The memory data being accessed by LD
+won't be available to the Beta until the LD instruction reaches the WB
+stage.  So the hardware let's the LD instruction progress through the
+pipeline while stalling the BEQ instruction in the RF stage until the
+necessary data is available.  The "gap" that opens between the two
+instructions is filled with NOPs (in this case, NOP1 and NOP2).
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What aspect of the instruction sequence causes NOP2 to be
+inserted into the pipeline?
+
+<div id="control2C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2C'); return false">
+          <img name="ctl2C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2C" class="answer" style="display:none"><font color="blue">
+The RA field of the BEQ matched the RC field of the LD in the MEM stage.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What aspect of the instruction sequence causes NOP3 to be
+inserted into the pipeline?
+
+<div id="control2D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2D'); return false">
+          <img name="ctl2D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2D" class="answer" style="display:none"><font color="blue">
+All taken BEQ instructions cause NOPs to be inserted.  We have chosen
+to annul instructions that follow taken branches.  This is
+accomplished by in the IF stage by replacing annulling instructions
+with NOPs.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+In a non-standard version of the 5-stage pipelined Beta,
+<b>where the instruction following a branch is not annulled</b>, which of
+the following statements would be true?
+
+<ol type="A">
+<li>The ADD instruction would be executed each time through the loop.</li>
+<li>The loop would still take 5 cycles to execute</li>
+<li>The value of the register R0 that is tested by the BEQ instruction comes from a by-pass path</li>
+<li>The value of the register R0 that is accessed by the ADD instruction comes from the register file.</li>
+</ol>
+
+<div id="control2E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2E'); return false">
+          <img name="ctl2E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2E" class="answer" style="display:none"><font color="blue">
+All of the above.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+The 5-stage pipelined Beta (as shown in lecture) is executing the
+sequence
+
+<pre>ADD(R31,R31,R31)    | NOP
+ADD(R1,R2,R1)
+LD(R1,4,R1)
+SUB(R1,R5,R6)
+ORC(R1,123,R1)
+SHL(R1,R1,R1)
+</pre>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which input is selected by the Ra bypass MUX when the ADD instruction
+is in the ALU stage?
+
+<div id="control3A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3A'); return false">
+          <img name="ctl3A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3A" class="answer" style="display:none"><font color="blue">
+The ALU output.  The LD instruction is in the RF stage and needs to
+get the result of the ADD.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Which input is selected by the Ra bypass MUX when the LD instruction
+is in the WB stage?
+
+<div id="control3B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3B'); return false">
+          <img name="ctl3B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3B" class="answer" style="display:none"><font color="blue">
+The WD input to the register file.  After several stalls (holding
+SUB in the RF stage) LD's output is bypassed back to the RF stage.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Each of the following scenarios shows a snapshot
+of a 5-stage Beta executing a sample code sequence.  For each scenario,
+indicate the appropriate settings for the bypass muxes, the IR muxes,
+and the IR/ALU regs load enable signals.  Then draw another snapshot
+showing the state of the 5-stage Beta on the following cycle.
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+<b>Scenario 1:</b> assume R2 contains 25
+<pre>. = 0x200
+ADDC(R31,10,R0)
+ADD(R2,R0,R1)
+CMPLE(R0,R1,R2)
+BT(R2,Loop,R31)
+</pre>
+
+<img src="pipelinedbeta02.gif"/><img src="pipelinedbeta03.gif"/>
+
+<div id="control4A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4A'); return false">
+          <img name="ctl4A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4A" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta18.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+<b>Scenario 2:</b> assume R1 contains 10, R2 contains 60
+
+<pre>. = 0x100
+LOOP: ADD(R1,R2,R3)
+      CMPLEC(R3,100,R0)
+      BT(R0,Loop,R31)
+      SHLC(R3,1,R3)
+</pre>
+
+<img src="pipelinedbeta04.gif"/><img src="pipelinedbeta03.gif"/>
+
+<div id="control4B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4B'); return false">
+          <img name="ctl4B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4B" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta19.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+<b>Scenario 3:</b> (show 3 cycles of snapshot) assume Mem[124] contains 42
+
+<pre>. = 0x60
+LD(R31,124,R0)
+ADDC(R0,1,R0)
+ST(R0,124,R31)
+</pre>
+
+<img src="pipelinedbeta05.gif"/><img src="pipelinedbeta03.gif"/>
+<p/><img src="pipelinedbeta03.gif"/><img src="pipelinedbeta03.gif"/>
+
+<div id="control4C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4C'); return false">
+          <img name="ctl4C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4C" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta20.gif"/><br/>
+<img src="pipelinedbeta21.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+<b>Scenario 4: </b> Show what happens when LD gets a MEMORY FAULT and
+is aborted in the MEM pipeline stage.
+
+<pre>. = 0x60
+LD(R31,-1,R0)
+ADDC(R0,1,R0)
+</pre>
+
+<img src="pipelinedbeta06.gif"/><img src="pipelinedbeta03.gif"/>
+
+<div id="control4D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4D'); return false">
+          <img name="ctl4D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4D" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta24.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4E" class="question">
+    <ol type="A" start="5"><li>
+    
+<b>Scenario 5:</b> (show 3 cycles of snapshot) Show what happens when
+an interrupt occurs when the Beta is fetching the SUB instruction.
+Assume the hardware sets PC<sup>IF</sup> to 0 when taking an
+interrupt.
+
+<pre>. = 0x100                             . = 0x0
+ADD(...)                    IHANDLER: ADDC(SP,4,SP)   | PUSH(XP)
+MUL(...)                              ST(XP,-4,SP)
+SUB(...)  | Interrupt here            ...
+</pre>
+
+<img src="pipelinedbeta07.gif"/><img src="pipelinedbeta03.gif"/>
+<p/><img src="pipelinedbeta03.gif"/><img src="pipelinedbeta03.gif"/>
+
+<div id="control4E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4E'); return false">
+          <img name="ctl4E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4E" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta22.gif"/><br/>
+<img src="pipelinedbeta23.gif"/>
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+Consider execution of the following code sequence on our pipelined Beta processor:
+
+<pre>ADDC(R31, 3, R0)
+SUBC(R0, 1, R1)
+MUL(R0, R1, R2)
+XOR(R0, R2, R3)
+ST(R3, 0x1000, R31)
+</pre>
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+What value gets stored into location 0x1000?
+
+<div id="control5A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5A'); return false">
+          <img name="ctl5A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5A" class="answer" style="display:none"><font color="blue">
+<pre>ADDC(R31, 3, R0)     | R0 = 3
+SUBC(R0, 1, R1)      | R1 = 2, R0 bypassed from ALU
+MUL(R0, R1, R2)      | R2 = 6, R0 bypassed from MEM, R1 bypassed from ALU
+XOR(R0, R2, R3)      | R3 = 5, R0 bypassed from WB, R2 bypassed from ALU
+ST(R3, 0x1000, R31)  | 5 is stored in location 0x1000, R3 bypassed from ALU
+</pre>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+At what point during the execution of the above sequence is data
+bypassed from the Memory stage to the ASEL or BSEL input multiplexors?
+
+<div id="control5B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5B'); return false">
+          <img name="ctl5B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5B" class="answer" style="display:none"><font color="blue">
+When the MUL is in the RF stage.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+The above sequence is executed on a faulty Beta, whose only problem is
+that data bypassed from the WB stage is always presented to the ASEL
+and BSEL multiplexors as zero.  What value will be written into memory
+location 0x1000 using this faulty Beta?
+
+<div id="control5C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5C'); return false">
+          <img name="ctl5C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5C" class="answer" style="display:none"><font color="blue">
+<pre>ADDC(R31, 3, R0)     | R0 = 3
+SUBC(R0, 1, R1)      | R1 = 2, R0 bypassed from ALU
+MUL(R0, R1, R2)      | R2 = 6, R0 bypassed from MEM, R1 bypassed from ALU
+XOR(R0, R2, R3)      | R3 = 6, R0 bypassed from WB (as 0), R2 bypassed from ALU
+ST(R3, 0x1000, R31)  | 6 is stored in location 0x1000, R3 bypassed from ALU
+</pre>
+
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+Now the same sequence is executed on a different faulty Beta.  In
+this case, all data read from the register file on either port reads
+as zero.  What value will the above sequence write into memory
+location 0x1000 using this processor?
+
+<div id="control5D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5D'); return false">
+          <img name="ctl5D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5D" class="answer" style="display:none"><font color="blue">
+5!  As shown in the answer to part (A) no accesses are made to
+register file when fetching register contents, bypass paths are
+always used.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+Flaky Betas Inc.'s purchasing agent, Penny Pincher, has acquired a
+large number of 5-stage pipelined Betas with full bypass and 1
+annulled branch delay slot (the FB3).  These processors have a single
+flaw: the connection of the PC inputs to the WDSEL multiplexor is
+defective.  Penny is proud of the deal she made, but the FBI software
+team points out that procedure calls are broken since the write to the
+LP register uses the broken path.
+
+<p/>After a moment's thought, Penny proposes that a call to a nearby
+procedure f, rather than generating a BR(f,LP)be compiled as:
+
+<pre>LDR(.+8,LP)
+BR(f,r31)
+LONG(.+4)
+</pre>
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+Which of the following is the best statement about Penny's scheme?
+
+<ol type="A">
+<li>it works</li>
+<li>it will work only if the return sequence from a procedure is
+modified to add 4 to the value of LP before executing a JMP(LP) to
+return to the caller</li>
+<li>doesn't work since the LDR instruction is also broken by the flaw
+in the FB3's data path</li>
+<li>only works if the program is placed in the bottom 32767 words of
+main memory.</li>
+<li>doesn't work</li>
+</ol>
+
+<div id="control6A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6A'); return false">
+          <img name="ctl6A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6A" class="answer" style="display:none"><font color="blue">
+(A) The LDR loads the address of the instruction following the LONG()
+into LP, so when the procedure returns, execution resumes at the
+correct point
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+Whether Penny's proposed scheme works or not, the software team
+doesn't like it and demands another solution.  Penny remembers that
+all of the bypass paths in the Beta design are still operational
+except for the one at the last (write back) stage.
+
+<p/>On a procedure call, during the cycle in which the first
+instruction of the called procedure is in the RF pipeline stage, where
+in the 5-stage Beta pipeline is the return address?
+
+<div id="control6B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6B'); return false">
+          <img name="ctl6B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6B" class="answer" style="display:none"><font color="blue">
+In the memory pipeline stage.  Instruction sequence is BR, annulled
+instruction, first instruction of procedure, i.e., the BR is two
+stages further along the pipeline.
+
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+Assuming that all procedures are compiled with a standard entry
+and exit code sequence and that we don't need to worry about
+interrupts, does the fact that the bypass paths still work help Penny
+generate another solution?
+
+<div id="control6C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6C'); return false">
+          <img name="ctl6C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6C" class="answer" style="display:none"><font color="blue">
+Yes!  But the entry sequence will have to be modified by adding
+ADDC(LP,0,LP) as the first instruction to keep from loosing the value
+because of the FB3 flaw.  Adding this instruction bypasses the value
+of LP from the M stage (see answer to (B) above) just before it gets mashed
+by the broken path.
+
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question7" class="question">
+    <p/><hr/><p/><u>Problem 7.</u>
+    
+Pipelines-R-Us, a processor-design consulting firm located in the
+Valley, has submitted the following proposal to the 6.004 staff.  They
+have noticed that the MEMORY stage of the five-stage pipelined Beta
+isn't used except during load and store operations.  They propose
+omitting that stage entirely whenever the memory isn't used, as
+illustrated by the following table showing how an instruction travels
+through the various pipeline stages in succeeding cycles:
+
+<p/><img src="pipelinedbeta08.gif"/>
+
+<p/>P-R-U reasons that instructions that leave out the MEM stage can
+complete a cycle earlier and thus most programs will run 20% faster!
+
+<p/>In your answers below assume that both the original and the P-R-U
+pipelined implementations are fully bypassed.
+
+
+    <div id="question7A" class="question">
+    <ol type="A" start="1"><li>
+    
+Explain briefly to P-R-U why decreasing the latency of a single
+instruction does not necessarily have an impact on the throughput of
+the processor.  Hint: consider how long it would take the original
+pipelined Beta to complete a sequence of 1000 ADDs.  Then compare that
+with how long a P-R-U-modified Beta would take to complete the same
+sequence.
+
+<div id="control7A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7A'); return false">
+          <img name="ctl7A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7A" class="answer" style="display:none"><font color="blue">
+In the original pipelined Beta it will take 5 clock periods (T) to
+complete the first ADD and then 999T to complete the rest.  Thus the
+total time to process 1000 ADDs will be 1004T.  In the P-R-U modified
+Beta it will take 4T for the first ADD and 999T for the rest.  So the
+total time for this "improved" Beta to complete 1000 ADDs will be
+1003T, which is not much improvement over the regular pipelined Beta.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7B" class="question">
+    <ol type="A" start="2"><li>
+    
+Consider a sequence of alternating LD and ADD instructions.  Assuming
+that the LD instructions use different source and destination
+registers than the ADD instructions (i.e., there are no stalls
+introduced due to data dependencies), what is the instruction
+completion rate of the original, unmodified 5-stage Beta pipeline?
+
+<div id="control7B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7B'); return false">
+          <img name="ctl7B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7B" class="answer" style="display:none"><font color="blue">
+With no stalls, the original Beta completes alternating LDs and ADDs
+at one instruction per clock period T.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7C" class="question">
+    <ol type="A" start="3"><li>
+    
+Now show how the same sequence of instructions will perform on a
+processor modified as P-R-U has suggested.  Assume that the hardware
+will stall an instruction if it requires a pipeline stage that is
+currently being used by a previous instruction.  For example, if two
+instructions both want to use the WB pipeline stage in the same cycle,
+the instruction that started later will be forced to wait a cycle.
+Draw a pipeline diagram showing where the stalls need to be introduced
+to prevent pipe stage conflicts.
+
+<div id="control7C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7C'); return false">
+          <img name="ctl7C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7C" class="answer" style="display:none"><font color="blue">
+If an instruction that uses all 5 stages (such as LD/ST/etc.) is
+executed right before an instruction that only uses 4 stages
+(ADD/SUB/etc.) then the second instruction will have to be stalled
+because the WB stage is in use and thus cannot be used at the same
+time by the second instruction.  For example:
+
+<pre>
+foo:	LONG( 0 )
+
+	LD( foo, R0 )
+	ADD( R1, R2, R3 )
+</pre>
+
+To execute this sequence correctly the pipeline diagram must look like
+this:
+
+<p/><img src="pipelinedbeta09.gif"/>
+
+<p/>The stall occurs when the ADD and the LD attempt to use the WB stage
+at the same time, forcing the ADD instruction to remain in a wait
+stage during t5.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7D" class="question">
+    <ol type="A" start="4"><li>
+    
+Did P-R-U's idea improve performance?  Why or why not?
+
+<div id="control7D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7D'); return false">
+          <img name="ctl7D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7D" class="answer" style="display:none"><font color="blue">
+If all we ever executed were single 4-stage instructions such as one
+ADD, then P-R-U's idea would improve latency by 20%.  In reality,
+however, we execute programs with many instructions.  If these
+instructions are all 4-stage instructions, then, as shown in part (A)
+the performance improvement is insignificant.  If these instructions
+are intermixed 4-stage and 5-stage instructions, then, as shown in
+part (C), there isn't any performance improvement.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question8" class="question">
+    <p/><hr/><p/><u>Problem 8.</u>
+    
+Bargain Betas, Inc specializes in selling slightly defective Beta
+processors to budget-minded customers who are willing to program
+around the defects.  BBI has acquired rights to the design of the
+Buba, a slightly defective version of the 5-stage pipelined Beta from
+lecture.  The Buba differs only in its having no bypass logic or
+branch delay slot annulling.
+
+<p/>You try running three little test sequences on the Buba, starting
+in each case with R1= -1, R2 = 1, R3 = 5, and R4 = -1:
+
+<pre>S1: 	ADD(R1, R2, R3)
+	SUB(R2, R3, R4)
+	CMPLT(R3, R4, R5)
+
+S2: 	ADD(R1, R2, R3)
+	NOP
+	SUB(R2, R3, R4)
+	NOP
+	CMPLT(R3, R4, R5)
+
+S3: 	ADD(R1, R2, R3)
+	NOP
+	SUB(R2, R3, R4)
+	CMPLT(R3, R4, R5)
+</pre>
+
+
+    <div id="question8A" class="question">
+    <ol type="A" start="1"><li>
+    
+For each of the above sequences, give the value to be found in R5 (i)
+after execution on a working Beta and (ii) after execution on a Buba.
+Explain your answers.
+
+<div id="control8A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8A'); return false">
+          <img name="ctl8A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8A" class="answer" style="display:none"><font color="blue">
+In the Buba, a 5-stage pipeline without bypass logic, the result of an
+instruction will not be available to be read (in the Register File
+stage) until 4 clock cyles later. So for instance, if a certain
+instruction writes a value to R0, that value cannot be used by the
+next 3 instructions (they will all be reading the previous value of
+R0). The fourth instruction (following the original instruction) is
+the first that will be able to read the new value of R0. So, for
+instance, consider the following code:
+
+<pre>ADDC(R31, 10, RO)
+SUBC(R0, 5, R1)
+ANDC(R0, 6, R2)
+ORC(R0, 7, R3)
+CMPLTC(R0, 11, R4)
+</pre>
+
+<img src="pipelinedbeta10.gif"/>
+
+<p/>The CMPLTC will be the first instruction to fetch the new value of
+R0. All the preceding instructions will be using the previous value(s)
+of R0. The ADDC instruction is in the Write Back stage while ORC is in
+the Register File stage-so the new R0 is not written back in time for
+the ORC to read it.
+
+<p/>For the working Beta, S1, S2, and S3 all compute the same results.
+Initially: Reg[ R1 ] = -1, Reg[ R2 ] = 1, Reg[ R3 ] = 5, Reg[ R4 ] = -1
+
+<pre>
+ADD( R1, R2, R3 )         Reg[ R3 ] = Reg[ R1 ] + Reg[ R2 ] = (-1) + 1 = 0
+SUB( R2, R3, R4 )         Reg[ R4 ] = Reg[ R2 ] - Reg[ R3 ] = 1 - 0 = 1
+CMPLT( R3, R4, R5 )       Reg[ R5 ] = (Reg[ R3 ] &lt; Reg[ R4 ]) = (0 &lt; 1) = 1
+</pre>
+
+so <b>Reg[ R5 ] = 1</b> for all three cases.
+
+<p/>For the Buba (italics denote cases in which the Buba is different from
+a working Beta, in which the most recently calculated result is not
+being used):
+
+<pre>
+S1:
+ADD( R1, R2, R3 )        Reg[ R3 ] = Reg[ R1 ] + Reg[ R2 ] = (-1) + 1 = 0
+   <i>new value of Reg[R3] not available yet</i>
+SUB( R2, R3, R4 )        Reg[ R4 ] = Reg[ R2 ] - Reg[ R3 ] = 1 - 5 = -4
+   <i>new values of Reg[ R3 ] and Reg[ R4 ] not available yet</i>
+CMPLT( R3, R4, R5 )      Reg[ R5 ] = (Reg[ R3 ] &lt; Reg[ R4 ]) = (5 &lt; -1) = 0
+   <b>Reg[ R5 ] = 0</b>
+
+S2:
+ADD( R1, R2, R3 )        Reg[ R3 ] = Reg[ R1 ] + Reg[ R2 ] = (-1) + 1 = 0
+NOP
+   <i>new value of Reg[ R3 ] not available yet</i>
+SUB( R2, R3, R4 )        Reg[ R4 ] = Reg[ R2 ] - Reg[ R3 ] = 1 - 5 = -4
+NOP
+   <i>new value of Reg[ R4 ] not available yet (but Reg[ R3 ] is available)</i>
+CMPLT( R3, R4, R5 )      Reg[ R5 ] = (Reg[ R3 ] &lt; Reg[ R4 ]) = (0 &lt; -1) = 0
+   <b>Reg[ R5 ] = 0</b>
+
+S3:
+ADD( R1, R2, R3 )        Reg[ R3 ] = Reg[ R1 ] + Reg[ R2 ] = (-1) + 1 = 0
+NOP
+   <i>new value of Reg[ R3 ] not available yet</i>
+SUB( R2, R3, R4 )        Reg[ R4 ] = Reg[ R2 ] - Reg[ R3 ] = 1 - 5 = -4
+   <i>new values of Reg[ R3 ] and Reg[ R4 ] not available yet</i>
+CMPLT( R3, R4, R5 )       Reg[ R5 ] = (Reg[ R3 ] &lt; Reg[ R4 ]) = (5 &lt; -1) = 0
+   <b>Reg[ R5 ] = 0</b>
+</pre>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question8B" class="question">
+    <ol type="A" start="2"><li>
+    
+Describe how to add minimal bypass logic to the Buba so that the
+correct value will be left in R5 after the completion of sequence S2.
+
+<div id="control8B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8B'); return false">
+          <img name="ctl8B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8B" class="answer" style="display:none"><font color="blue">
+For S2 to function correctly, we need to add bypass logic so that the
+result of the ADD will be available for the SUB instruction. The ADD
+is 2 instructions ahead of the SUB, so the ADD will be in the MEM
+stage while the SUB is in the RF stage. So we need to add a bypass
+path from the ALU output in the MEM stage which goes back to the B
+operand in the RF stage. We also need the result of the SUB
+instruction for the CMPLE, but this can be accomplished with the same
+logic.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question8C" class="question">
+    <ol type="A" start="3"><li>
+    
+Describe what bypass paths are necessary to get the correct results in
+all three cases.
+
+<div id="control8C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8C'); return false">
+          <img name="ctl8C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8C" class="answer" style="display:none"><font color="blue">
+We have already discussed what is needed for S2. For S1:
+
+<ul>
+<li>Result of ADD needs to be passed to the following SUB instruction;
+bypass required: from ALU output in ALU stage to B operand in RF stage</li>
+<li>Result of SUB needs to be passed to the following CMPLT instruction;
+bypass required: from ALU output in ALU stage to B operand in RF stage.</li>
+<li>Result of ADD needs to be passed to the CMPLT instruction (2 cycles later);
+bypass required: from ALU output in MEM stage to A operand in RF stage.</li>
+</ul>
+
+<p/>For S3:
+<ul>
+<li>Result of ADD needs to be passed to the SUB instruction, following two cycles later;
+bypass required: from ALU output in MEM stage to B operand in RF stage</li>
+<li>Result of SUB needs to be passed to the following CMPLT instruction;
+bypass required: from ALU output in ALU stage to B operand in RF stage</li>
+<li>Result of ADD needs to be passed to the CMPLT instruction, three cycles later;
+bypass required: from ALU output in WB stage to A operand in RF stage.</li>
+</ul>
+
+<p/>In total, there are 4 bypass paths required:
+<ul>
+ALU output in ALU stage to B operand in RF stage<br/>
+ALU output in MEM stage to A operand in RF stage<br/>
+ALU output in MEM stage to B operand in RF stage<br/>
+ALU output in WB stage to A operand in RF stage
+</ul>
+
+<p/>Note: we will also need muxes to select between the possible
+operands for A and B
+
+
+</font><div>
+</li></ol></div>
+
+    <div id="question8D" class="question">
+    <ol type="A" start="4"><li>
+    
+Add the minimal number of NOPs necessary to the following instructions
+to make it produce identical results on the Buba and a normal Beta:
+
+<pre>ADD(R3, R4, R5)
+SUB(R5, R6, R7)
+ADD(R1, R2, R3)
+MUL(R7, R1, R2)
+ADD(R4, R3, R5)
+CMPLE(R7, R8, R9)
+DIV(R7, R8, R10)
+BEQ(R5, done)
+ADDC(R1, 1, R5)
+</pre>
+
+<div id="control8D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8D'); return false">
+          <img name="ctl8D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8D" class="answer" style="display:none"><font color="blue">
+<pre>ADD( R3, R4, R5 )
+NOP
+NOP
+NOP 			| Reg[R5] has not yet been updated
+SUB( R5, R6, R7 )
+ADD( R1, R2, R3 )
+NOP
+NOP 			| Reg[R7] has not yet been updated
+MUL( R7, R1, R2 )
+ADD( R4, R3, R5 )
+CMPLE( R7, R8, R9 )
+DIV( R7, R8, R10 )
+NOP 			| Reg[R5] has not yet been updated
+BEQ( R5, done )
+NOP
+ADDC( R1, 1, R5 )
+</pre>
+
+The NOP after the BEQ instruction is necessary so that ADDC will only
+be executed if the branch is not taken.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question9" class="question">
+    <p/><hr/><p/><u>Problem 9.</u>
+    
+This problem concerns the effect of external interrupts on the 5-stage
+pipelined Beta with bypass paths and 1 branch delay slot with
+annulment (i.e., the instruction in the delay slot is not executed).
+Recall that if an external interrupt arrives in cycle I, then the
+address of the interrupt handler, XAdr, is loaded into the PC at the
+end of cycle I and that the instruction that occupied the IF stage
+during cycle I gets replaced with BNE(R31,XAdr,XP).  Assume that these
+are the first lines of the interrupt handler:
+
+<pre>XAdr:   ADDC(SP,4,SP)
+        ST(R0,-4,SP)
+        ...
+</pre>
+		
+First, consider this code fragment:
+
+<pre>        . = 0x1234
+start:  CMPLTC(R1,0,R2)
+        SUB(R3,R2,R3)
+        XOR(R0,R3,R0)
+        MUL(R1,R2,R3)
+        SHLC(R1,2,R4)
+</pre>
+
+
+    <div id="question9A" class="question">
+    <ol type="A" start="1"><li>
+    
+Complete the following pipeline diagram for normal execution of those
+instructions (i.e., no interrupts are asserted).
+
+<p/><img src="pipelinedbeta11.gif"/>
+
+<div id="control9A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('9A'); return false">
+          <img name="ctl9A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer9A" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta13.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question9B" class="question">
+    <ol type="A" start="2"><li>
+    
+Complete the following pipeline diagram assuming that an interrupt
+arrives in cycle t2.  What value is saved in XP as the result of the
+interrupt?  Where should the interrupt handler return to when it
+finishes?  Why doesn't it just return to the instruction whose address
+is saved in XP?
+
+<p/><img src="pipelinedbeta11.gif"/>
+
+<div id="control9B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('9B'); return false">
+          <img name="ctl9B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer9B" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta14.gif"/>
+
+<p/>The interrupt causes the address 0x123C to be stored in XP.  When
+the interrupt handler is done it should return to the SUB instruction
+at 0x1238.  If it would return to the address in the XP, then the SUB
+instruction would never get executed, because it was not executed
+before the interrupt handler.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question9C" class="question">
+    <ol type="A" start="3"><li>
+    
+Now consider what happens when we include a branch in the instruction
+sequence:
+
+<pre>skip:   BR(NEXT)
+        CMPLTC(R1,0,R2)
+        ADD(R3,R2,R3)
+		
+next:   XOR(R0,R3,R0)
+        MUL(R1,R2,R3)
+        SHLC(R1,2,R4)
+</pre>
+
+Complete the diagram for normal execution of the instructions starting
+at skip.
+
+<p/><img src="pipelinedbeta12.gif"/>
+
+<div id="control9C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('9C'); return false">
+          <img name="ctl9C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer9C" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta15.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question9D" class="question">
+    <ol type="A" start="4"><li>
+    
+Complete the diagram assuming that an interrupt arrives in cycle t2.
+To what instruction will the handler return when it is finished?  Why
+is this a problem?
+
+<p/><img src="pipelinedbeta12.gif"/>
+
+<div id="control9D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('9D'); return false">
+          <img name="ctl9D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer9D" class="answer" style="display:none"><font color="blue">
+<img src="pipelinedbeta16.gif"/>
+
+<p/>After the interrupt handler is finished, it will return to the
+CMPLTC instruction.  That clearly is not the correct behavior because
+we want the branch to be taken and CMPLTC to be annulled.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question9E" class="question">
+    <ol type="A" start="5"><li>
+    
+Normally interrupts are handled on the cycle on which they arrive,
+i.e., the instruction in the IF stage is discarded and a branch is
+forced to location Xadr.  Suppose the hardware could be changed so
+that in some cases interrupts weren't handled on the cycle in which
+they arrived.  In particular, suppose that interrupts were not allowed
+to occur when annulling an instruction in a branch delay slot.
+Explain how this solves the problem observed in part (D).
+
+<div id="control9E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('9E'); return false">
+          <img name="ctl9E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer9E" class="answer" style="display:none"><font color="blue">
+By not allowing interrupts when annulling the branch delay slot (cycle
+t2), then the value of PC+4 that gets stored in XP when the interrupt
+is handled (cycle t3) is the address of the second instruction
+following the branch, which in our example is the MUL instruction.
+When returning from the interrupt handler, the XP will be adjusted to
+the address of the XOR instruction.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question9F" class="question">
+    <ol type="A" start="6"><li>
+    
+Suppose interrupts are not allowed to occur when annulling an
+instruction in a branch delay slot.  Will the following program create
+a loop that can't be interrupted?
+
+<pre>
+X:      BR(Y)
+Y:      BR(X)
+</pre>
+
+<div id="control9F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('9F'); return false">
+          <img name="ctl9F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer9F" class="answer" style="display:none"><font color="blue">
+No, the sequence is interruptible.  If the interrupt arrives during
+t2, and we have disabled interrupts during branch delay slot
+annulment, then the interrupt will be serviced during t3.
+
+<p/><img src="pipelinedbeta17.gif"/>
+
+<p/>The address stored in XP is the instruction following the BR(X), so
+when returning from the interrupt handler, then the XP is adjusted so
+it has the address of the BR(X).  A similar argument could be made if
+the interrupt arrives while annulling the branch delay slot of the
+BR(X) instruction.
+</font><div>
+</li></ol></div>
+</div>
+</body></html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<q:questions xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:q="py:tutprobs"
+	     title="CMOS technology">
+
+<q:question>
+The following diagram shows a schematic for the
+pulldown circuitry for a particular CMOS gate:
+
+<p/><center><img src="cmos01.gif"/></center>
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What is the correct schematic for the pullup
+circuitry?
+
+<q:answer>
+To figure out the complement of a FET circuit,
+decompose it into SERIES and PARALLEL subcircuits.  In
+our example the NFET pulldown circuitry can be decomposed
+as:
+
+<p/><center>PARALLEL(SERIES(PARALLEL(A,B),C),D)</center>
+
+<p/>The complementary circuit simply converts SERIES
+circuits into PARALLEL circuits and vice versa:
+
+<p/><center>SERIES(PARALLEL(SERIES(A,B),C),D)</center>
+
+<p/>which we can then draw as a schematic using the complementary
+type of FET (in this example PFETs):
+
+<p/><center><img src="cmos09.gif"/></center>
+
+<p/>Note that series circuits can be drawn with the components
+in any order, so there are several equally legitimate pullup
+schematics.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the pullup circuitry is designed correctly, what is
+the logic function implemented this gate?
+
+<q:answer>
+Start with the SERIES/PARALLEL decomposition of the pulldown
+given in the answer to the preceeding question:
+
+<p/><center>PARALLEL(SERIES(PARALLEL(A,B),C),D)</center>
+
+<p/>Convert SERIES connections to AND and PARALLEL connections to OR:
+
+<p/><center>OR(AND(OR(A,B),C),D)</center>
+
+<p/>Finally invert the answer to get
+
+<p/><center>OUTPUT = -(D + C*(A + B))</center>
+
+<p/> where "-" is NOT, "*" is AND and "+" is OR.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the pullup circuitry is designed
+correctly, when the output of the CMOS gate above
+is a logic "0", in the steady state what would we
+expect the voltage of the output terminal to be?
+What would be the voltage if the output were a
+logic "1"?
+
+<q:answer>
+When the output of a CMOS gate is a logic "0",
+we would expect the voltage to be essentially 0V.
+There is a miniscule amount of leakage through the
+pullup circuitry even though the PFETS are off,
+so the output isn't precisely 0V, but the current
+through the NFET pulldowns is many of order of
+magnitude larger.
+
+<p/>Similarly, when the output of a CMOS gate is a logic "1",
+we would expect the voltage to be the same as the power
+supply voltage (VDD).
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+
+The following diagram shows a schematic for the pullup circuitry for a
+particular CMOS gate:
+
+<p/><center><img src="cmos03.gif"/></center>
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Draw a schematic for the pulldown circuitry for this CMOS gate. 
+
+<q:answer>
+The pullup is configured as SERIES(PARALLEL(A,D),PARALLEL(B,C)) so the
+pulldown should be the complement: PARALLEL(SERIES(A,D),SERIES(B,C))
+
+<p/><center><img src="cmos10.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Assuming the pulldown circuitry is designed correctly, give an expression
+for the logic function implemented by this gate.
+
+<q:answer>
+Using the pullup circuitry we can develop the following sum-of-products
+expression for F:
+<pre>     _   _   _   _    _ _   _ _   _ _   _ _
+F = (A + D)*(B + C) = A*B + A*C + B*D + C*D
+</pre>
+Or we can look at the pulldown circuitry and express F as the complement
+of the function that describes when the pulldown is on:
+<pre>    _________    
+F = A*D + B*C
+</pre>
+Using several applications of DeMorgan's theorem this can be expanded to
+<pre>     ___   ___     _   _   _   _
+F = (A*D)*(B*C) = (A + D)*(B + C)
+</pre>
+which is the expression we derived using the pullup circuitry.
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Consider the following circuit built from nfets
+and pfets:
+
+<p/><center><img src="cmos02.gif"/></center>
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Can this circuit be used as a CMOS gate?  If not,
+explain why.  If so, what function does it compute?
+
+<q:answer>
+Since the pullup and pulldown circuits are complementary,
+the circuit is a legitimate CMOS gate.  The function is
+<pre>    _________    ___  _    _   _  _   _ _   _ _
+F = (A*B) + C = (A*B)*C = (A + B)*C = A*C + B*C
+</pre>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+If we wanted the output voltage to change more
+quickly when going from a logic "0" to a logic "1",
+what changes would we make to the fets?
+
+<q:answer>
+To increase the speed of a rising output transition, we
+need to charge the output node more quickly.  The most
+effective change would be to increase the <i>width</i>
+of the PFET pullups which will increase the amount of
+pullup current they conduct when on.
+
+<p/>Note that increasing the width of the PFETS will also
+increase the capacitance of the output node since the
+PN junction capacitance of the PFET drain diffusions increases
+when the width of the PFET increases.  But the speed gain from
+increased pullup current more than offsets the slowdown
+from increased capacitance.
+
+<p/>We can also decrease the width of the two NFET pulldowns
+directly connected to the output node.  This will decrease
+the output capacitance and hence speed up any output
+transition.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Consider the 4-input Boolean function
+Y = (A*B) + (C*D) where "*" is AND and "+" is OR.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Implement the function with a single 4-input CMOS gate and an inverter.
+
+<q:answer>
+<center><img src="cmos08.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Anna Logue, a circuit designer who missed several early 6.004
+lectures, is struggling to design her first CMOS logic gate.  She has
+implemented the following circuit:
+
+<p/><center><img src="cmos04.gif"/></center>
+
+Anna has fabricated 100 test chips containing this circuit, and has a
+simple testing circuit which allows her to try out her proposed gate
+statically for various combinations of the A and B inputs.  She has
+burned out 97 of her chips, and needs your help before destroying the
+remaining three.  She is certain she is applying only valid input
+voltages, and expects to find a valid output at terminal C.  Anna also
+keeps noticing a very faint smell of smoke.
+
+<q:subquestion>
+What is burning out Anna's test chips? Give a specific scenario,
+including input values together with a description of the failure
+scenario.  For what input combinations will this failure occur?
+
+<q:answer>
+The chips are burning out when the pulldown and pullup are both
+active.  This will occur when A=0, B=1 or when A=1, B=0.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Are there input combinations for which Anna can expect a valid output at C? Explain.
+
+<q:answer>
+Yes, if A=1 and B=1, then C=0.  Or if A=0 and B=0, then C=1
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+One of Anna's test chips has failed by burning out the pullup
+connected to A as well as the pulldown connected to B.  Each of the
+burned out FETs appears as an open circuit, but the rest of the
+circuit remains functional. Can the resulting circuit be used as a
+combinational device whose two inputs are A and B?
+Explain its behavior for each combination of
+valid inputs.
+
+<q:answer>
+No.  When A=1 and B=0, the circuit will burn out again, since the pullup
+and pulldown will be active, thus burning out the circuit. Also, the
+output is not defined when A=0 and B=1, since neither the pullup or
+pulldown are active.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+In order to salvage her remaining three chips, Anna connects the A and
+B inputs of each and tries to use it as a single-input gate. Can the
+result be used as a single-input combinational device?  Explain.
+
+<q:answer>
+Yes.  Since A=B, we are left with the following function (an inverter):
+
+<p/><center><img src="cmos06.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Occasionally you will come across a CMOS circuit where the
+complementary nature of the n-channel pull-downs and p-channel
+pull-ups are not obvious, as in the circuit shown below:
+
+<p/><center><img src="cmos05.gif"/></center>
+
+<q:subquestion>
+Construct a table that gives the on-off status of each transistor in
+the circuit above for all combinations of inputs A and B.
+
+<q:answer>
+<p/><center><img src="cmos07.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Compute the output, Y, for each input combination and describe the
+function of the above circuit.
+
+<q:answer>
+The output Y is connected to four pairs of transistors in series,
+so each of these pairs can affect the output.
+
+<ul>
+<p/>when A=0 and B=0, transistors T4 and T5 are on, so Y=0
+<p/>when A=0 and B=1, transistors T6 and T7 are on, so Y=1
+<p/>when A=1 and B=0, transistors T2 and T3 are on, so Y=1
+<p/>when A=1 and B=1, transistors T8 and T9 are on, so Y=0
+</ul>
+
+<p/>Putting this together, we conclude that Y = XOR(A,B).
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+In lecture there was a brief overview of the
+CMOS fabrication process.
+
+<q:subquestion>
+What keeps the source/drain diffusions of a
+MOSFET from shorting out to the substrate or to
+each other?
+
+<q:answer>
+The source/drain diffusions are embedded in a substrate
+lightly doped to be of the opposite type.  For example,
+NFETs have N-type source/drain diffusions embedded in
+a P-type substrate.  A PN junction forms "automatically"
+where the source/drain diffusions and substrate come
+into contact.  The designer of the circuit connects the
+substrate to the appropriate power supply rail (eg, GND
+or VDD) so as to guarantee that the PN junction is reverse-biased
+at all times.  "Reverse-biased" means that
+V<sub>P</sub>-V<sub>N</sub>&nbsp;&lt;=&nbsp;0V.  When the
+PN junction is reverse-biased, no current will flow across
+the boundary.
+
+<p/>In the case of an NFET, the P-type substrate
+is tied to GND (V<sub>P</sub> = 0), so even though the diffusion voltage
+V<sub>N</sub> may anywhere between OV and VDD, 
+V<sub>P</sub>-V<sub>N</sub>&nbsp;&lt;=&nbsp;0V.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Why does reducing the thickness of the thin oxide
+layer improve the performance of the mosfets?
+
+<q:answer>
+An inversion layer (aka, the "channel") is formed in a FET when
+the gate voltage exceeds the threshold voltage of the device.
+The inverted channel conducts current between the source and
+drain diffusion.  The depth of the channel and the strength of
+the inversion are proportional to the electric field generated
+by charges on the gate terminal -- the electric field is stronger
+if the gate terminal is brought closer to the channel by
+making the thin oxide thinner.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Why is silicon dioxide (SiO<sub>2</sub>) deposited right before
+a new wiring layer is added to the surface of the
+wafer?
+
+<q:answer>
+Silicon dioxide is an insulator, so by depositing it on the
+wafer we ensure that the new wiring layer is electrically
+isolated from the circuitry underneath.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+How are connections between the wiring layers made?
+
+<q:answer>
+Connections are made by etching holes in the insulating silicon
+dioxide layer before depositing and patterning a wiring layer.
+The wire material fills the holes making connections to the
+underlying circuitry.  In most modern processes, the holes are actually
+filled with tungsten, while the interconnect is formed from
+aluminum or copper.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+If one wanted to <i>increase</i> I<sub>DS</sub> for a
+NFET, how should it's dimensions be changed?
+
+<q:answer>
+I<sub>DS</sub> for a NFET is portional to W/L where
+W is its width and L its length.  So to increase I<sub>DS</sub>
+one should increase the NFET's width or decrease its length.
+Except in unusual circumstances, FETs are usually constructed
+using the minimum channel length allowed by the process, so
+decreasing the channel length is not an option.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Suppose there are two mosfets of width W and length L
+connected in parallel, i.e., all their terminal connections
+are identical.  Given that I<sub>DS</sub> of a mosfet
+is proportional to W/L, what would be the appropriate
+dimensions for a <i>single</i> mosfet that would have the
+same I<sub>DS</sub> as the pair connected in parallel?
+
+<q:answer>
+To first order, doubling the width of a mosfet will
+double its I<sub>DS</sub>, so a single mosfet of
+of width 2W and length L would have the same I<sub>DS</sub>
+as the pair connected in parallel.
+</q:answer>
+</q:subquestion>
+</q:question>
+</q:questions>

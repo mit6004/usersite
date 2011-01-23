@@ -1,0 +1,504 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><head><script language="JavaScript1.2" src="tutprobs.js"></script></head><body style="margin-top:5px">
+	<noscript><table width=100%% border="1" cellpadding="8" bgcolor="yellow"><tr><td>
+        You need to have Javascript enabled to view this page
+        properly.  If your browser does not support Javascript
+        or you have chosen not to enable it, please return to
+        the previous page and use the appropriate link to view
+        non-script versions of this tutorial page.
+        </td></tr></table></noscript><h3>Memory hierarchy</h3>
+        <a href="\#" onClick="showall(); return false"><img border="0" src="showall.gif"/></a>
+        &nbsp;
+        <a href="\#" onClick="hideall(); return false"><img border="0" src="hideall.gif"/></a>
+        <p/><img src="star.gif" alt="Discussed in section"/>
+        indicates problems that have been selected for discussion
+        in section, time permitting.
+        
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+The following is a sequence of address references given as
+word addresses:
+<p/><ul>2,3,11,16,21,13,64,48,19,11,3,22,4,27,6,11</ul>
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Show the hits and misses and final cache contents for a fully
+associative cache with one-word blocks and a total size of
+16 words.  Assume LRU replacement.
+<div id="control1A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1A'); return false">
+          <img name="ctl1A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1A" class="answer" style="display:none"><font color="blue">
+2: miss, cache now holds: 2<br>
+3: miss, cache now holds: 3, 2<br>
+11: miss, cache now holds: 11, 3, 2<br>
+16: miss, cache now holds: 16, 11, 3, 2<br>
+21: miss, cache now holds: 21, 16, 11, 3, 2<br>
+13: miss, cache now holds: 13, 21, 16, 11, 3, 2<br>
+64: miss, cache now holds: 64, 13, 21, 16, 11, 3, 2<br>
+48: miss, cache now holds: 48, 64, 13, 21, 16, 11, 3, 2<br>
+19: miss, cache now holds: 19, 48, 64, 13, 21, 16, 11, 3, 2<br>
+11: hit, cache now holds: 11, 19, 48, 64, 13, 21, 16, 3, 2<br>
+3: hit, cache now holds: 3, 11, 19, 48, 64, 13, 21, 16, 2<br>
+22: miss, cache now holds: 22, 3, 11, 19, 48, 64, 13, 21, 16, 2<br>
+4: miss, cache now holds: 4, 22, 3, 11, 19, 48, 64, 13, 21, 16, 2<br>
+27: miss, cache now holds: 27, 4, 22, 3, 11, 19, 48, 64, 13, 21, 16, 2<br>
+6: miss, cache now holds: 6, 27, 4, 22, 3, 11, 19, 48, 64, 13, 21, 16, 2<br>
+11: hit, cache now holds: 11, 6, 27, 4, 22, 3, 19, 48, 64, 13, 21, 16, 2<br>
+</font><div>
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Show the hits and misses and final cache contents for a fully
+associative cache with <i>four</i>-word blocks and a total size of
+16 words.  Assume LRU replacement.
+<div id="control1B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1B'); return false">
+          <img name="ctl1B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1B" class="answer" style="display:none"><font color="blue">
+With a N-word block of data for each cache entry, note that the N
+words in a cache entry will have consecutive memory addresses <i>starting
+with a word address that's a multiple of N</i>.  
+<p/>
+2: miss, cache now holds: 0-3<br>
+3: hit, cache now holds: 0-3<br>
+11: miss, cache now holds: 8-11, 0-3<br>
+16: miss, cache now holds: 16-19, 8-11, 0-3<br>
+21: miss, cache now holds: 20-23, 16-19, 8-11, 0-3<br>
+13: miss, cache now holds: 12-15, 20-23, 16-19, 8-11<br>
+64: miss, cache now holds: 64-67, 12-15, 20-23, 16-19<br>
+48: miss, cache now holds: 48-51, 64-67, 12-15, 20-23<br>
+19: miss, cache now holds: 16-19, 48-51, 64-67, 12-15<br>
+11: miss, cache now holds: 8-11, 16-19, 48-51, 64-67<br>
+3: miss, cache now holds: 0-3, 8-11, 16-19, 48-51<br>
+22: miss, cache now holds: 20-23, 0-3, 8-11, 16-19<br>
+4: miss, cache now holds: 4-7, 20-23, 0-3, 8-11<br>
+27: miss, cache now holds: 24-27, 4-7, 20-23, 0-3<br>
+6: hit, cache now holds: 4-7, 24-27, 20-23, 0-3<br>
+11: miss, cache now holds: 8-11, 4-7, 24-27, 20-23<br>
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+Cache multiple choice:
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If a cache access requires one clock cycle and handling cache
+misses stalls the processor for an additional five cycles, which of
+the following cache hit rates comes closest to achieving an average
+memory access of 2 cycles?<br/><br/>
+(A) 75%<br/>
+(B) 80%<br/>
+(C) 83%<br/>
+(D) 86%<br/>
+(E) 98%<br/>
+
+<div id="control2A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2A'); return false">
+          <img name="ctl2A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2A" class="answer" style="display:none"><font color="blue">
+2 cycle average access = (1 cycle for cache) + (1 - hit rate)(5 cycles stall)<br/>
+=> hit rate = 80%
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+LRU is an effective cache replacement strategy primarily
+because programs<br/><br/>
+
+(A) exhibit locality of reference<br/>
+(B) usually have small working sets<br/>
+(C) read data much more frequently than write data<br/>
+
+<div id="control2B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2B'); return false">
+          <img name="ctl2B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2B" class="answer" style="display:none"><font color="blue">
+(A).  Locality implies that the probability of accessing a location
+decreases as the time since the last access increases.  By choosing to replace
+locations that haven't been used for the longest time, the least-recently-used
+replacement strategy should, in theory, be replacing locations that have the
+lowest probability of being accessed in the future.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+If increasing the block size of a cache improves performance it
+is primarily because programs<br/><br/>
+
+(A) exhibit locality of reference<br/>
+(B) usually have small working sets<br/>
+(C) read data much more frequently than write data<br/>
+
+<div id="control2C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2C'); return false">
+          <img name="ctl2C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2C" class="answer" style="display:none"><font color="blue">
+(A).  Increased block size means that more words are fetched when filling
+a cache line after a miss on a particular location.  If this leads to increased
+performance, then the nearby words in the block must have been accessed by the
+program later on, ie, the program is exhibiting locality.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Consider the following program:
+
+<pre>integer A[1000];
+for i = 1 to 1000
+  for j = 1 to 1000
+    A[i] = A[i] + 1
+</pre>
+
+When the above program is compiled with all compiler optimizations
+turned off and run on a processor with a 1K byte fully-associative write-back
+data cache with 4-word cache blocks, what is the approximate data cache
+miss rate?  (Assume integers are one word long and a word is 4 bytes.)<br/><br/>
+
+(A) 0.0125%<br/>
+(B) 0.05%<br/>
+(C) 0.1%<br/>
+(D) 5%<br/>
+(E) 12.5%<br/>
+
+<div id="control2D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2D'); return false">
+          <img name="ctl2D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2D" class="answer" style="display:none"><font color="blue">
+(A). Considering only the data accesses, the program performs 1,000,000 reads and
+1,000,000 writes.  Since the cache has 4-word blocks, each miss brings 4 words
+of the array into the cache.  So accesses to the next 3 array locations won't
+cause a miss.  Since the cache is write-back, writes happen directly into
+the cache without causing any memory accesses until the word is replaced.
+So altogether there are 250 misses (caused by a read of A[0], A[4], A[8], ...),
+for a miss rate of 250/2,000,000 = 0.0125%
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+In a non-pipelined single-cycle-per-instruction processor with
+an instruction cache, the average instruction cache miss rate is 5%.
+It takes 8 clock cycles to fetch a cache line from the main memory.
+Disregarding data cache misses, what is the approximate average CPI
+(cycles per instruction)?<br/><br/>
+
+(A) 0.45<br/>
+(B) 0.714<br/>
+(C) 1.4<br/>
+(D) 1.8<br/>
+(E) 2.22<br/>
+
+<div id="control2E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2E'); return false">
+          <img name="ctl2E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2E" class="answer" style="display:none"><font color="blue">
+(C).  CPI = (1 inst-per-cycle) + (0.05)(8 cycles/miss) = 1.4
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+A student has miswired the address lines going to the memory of an
+unpipelined BETA. The wires in question carry a 30-bit word address to
+the memory subsystem, and the hapless student has in fact reversed the
+order of all 30 address bits. Much to his surprise, the machine
+continues to work perfectly.
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+Explain why the miswiring doesn't affect the operation of the machine.
+
+<div id="control3A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3A'); return false">
+          <img name="ctl3A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3A" class="answer" style="display:none"><font color="blue">
+Since the Beta reverses the order of the 30 bit address in the same
+manner for each memory access, the Beta will use the same reversed
+address to access a particular memory location for both stores and
+loads.  Thus, the operation of the machine will not be affected.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+The student now replaces the memory in his miswired BETA with a
+supposedly higher performance unit that contains both a fast fully
+associative cache and the same memory as before. The reversed wiring still
+exists between the BETA and this new unit. To his surprise, the new
+unit does not significantly improve the performance of his machine. In
+desperation, the student then fixes the reversal of his address lines
+and the machine's performance improves tremendously. Explain why this
+happens.
+
+<div id="control3B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3B'); return false">
+          <img name="ctl3B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3B" class="answer" style="display:none"><font color="blue">
+Caches take advantage of locality of reference by reading in an entire
+block of related data at one time, thereby reducing main memory
+accesses.  By reversing the order of the 30 bit address,
+locality of the memory addresses is disrupted.  The low-order bits that would
+normally place related data close to one another are instead the
+high-order bits and related data is more spread out through the main
+memory.  This reduction in locality reduces cache performance
+significantly.  When the student fixes the address line reversal
+problem, locality of the memory is restored, and the cache can
+perform as intended.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+For this problem, assume that you have a processor with a cache
+connected to main memory via a bus.  A successful cache access by the
+processor (a hit) takes 1 cycle.  After an unsuccessful cache access
+(a miss), an entire cache block must be fetched from main memory over
+the bus.  The fetch is not initiated until the cycle following the
+miss.  A bus transaction consists of one cycle to send the address to
+memory, four cycles of idle time for main-memory access, and then one
+cycle to transfer each word in the block from main memory to the
+cache.  Assume that the processor continues execution only after the
+last word of the block has arrived.  In other words, if the block size
+is B words (at 32 bits/word), a cache miss will cost 1 + 1 + 4 + B
+cycles.  The following table gives the average cache miss rates of a 1
+Mbyte cache for various block sizes:
+
+<p/><img src="caches06.gif"/>
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Write an expression for the average memory access time for a 1-Mbyte
+cache and a B-word block size (in terms of the miss ratio m and B).
+
+<div id="control4A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4A'); return false">
+          <img name="ctl4A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4A" class="answer" style="display:none"><font color="blue">
+Average access time = (1-m)(1 cycle) + (m)(6 + B cycles) = 1 + (m)(5+B) cycles
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What block size yields the best average memory access time?
+
+<div id="control4B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4B'); return false">
+          <img name="ctl4B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4B" class="answer" style="display:none"><font color="blue">
+<img src="caches07.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+If bus contention adds three cycles to the main-memory access time,
+which block size yields the best average memory access time?
+
+<div id="control4C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4C'); return false">
+          <img name="ctl4C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4C" class="answer" style="display:none"><font color="blue">
+<img src="caches08.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+If bus width is quadrupled to 128 bits, reducing the time spent in the
+transfer portion of a bus transaction to 25% of its previous value,
+what is the optimal block size?  Assume that a minimum one transfer
+cycle is needed and don't include the contention cycles introduced in
+part (C).
+
+<div id="control4D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4D'); return false">
+          <img name="ctl4D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4D" class="answer" style="display:none"><font color="blue">
+<img src="caches09.gif"/>
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+You are designing a controller for a tiny cache that is fully
+associative but has only three words in it. The cache has an LRU
+replacement policy. A reference record module (RRM) monitors
+references to the cache and always outputs the binary value 1, 2, or 3
+on two output signals to indicate the least recently used cache
+entry. The RRM has two signal inputs, which can encode the number 0
+(meaning no cache reference is occurring) or 1, 2, or 3 (indicating a
+reference to the corresponding word in the cache).
+
+<p/><img src="caches01.gif"/>
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+What hit ratio will this cache achieve if faced with a repeating string
+of references to the following addresses: 100, 200, 104, 204, 200?
+
+<div id="control5A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5A'); return false">
+          <img name="ctl5A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5A" class="answer" style="display:none"><font color="blue">
+Here's what happens:
+
+<pre>
+access 100: miss; cache contains 100, ---, ---
+access 200: miss; cache contains 200, 100, ---
+access 104: miss; cache contains 104, 200, 100
+access 204: miss; cache contains 204, 104, 200
+access 200: hit;  cache contains 200, 204, 104
+access 100: miss; cache contains 100, 200, 204
+access 200: hit;  cache contains 200, 100, 204
+access 104: miss; cache contains 104, 200, 100
+access 204: miss; cache contains 204, 104, 200
+access 200: hit;  cache contains 200, 204, 104
+...
+</pre>
+
+So in the steady state, location 200 stays in the cache and all other
+locations get replaced.  So the hit rate is 2/5 or 40%.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+The RRM can be implemented as a finite-state machine.
+How many states does the RRM need to have? Why?
+
+<div id="control5B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5B'); return false">
+          <img name="ctl5B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5B" class="answer" style="display:none"><font color="blue">
+There are 3! = 6 ways to list the three locations in order of use.
+Thus RRM needs 6 states, one state for each possible order.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+How many state bits does the RRM need to have?
+
+<div id="control5C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5C'); return false">
+          <img name="ctl5C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5C" class="answer" style="display:none"><font color="blue">
+We can encode six states using 3 state bits.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+Draw a state-transition diagram for the RRM.
+
+<div id="control5D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5D'); return false">
+          <img name="ctl5D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5D" class="answer" style="display:none"><font color="blue">
+<img src="caches04.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5E" class="question">
+    <ol type="A" start="5"><li>
+    
+Consider building an RRM for a 15-word fully associative cache.
+Write a mathematical expression for the number of bits in the ROM
+required in a ROM-and-register implementation of this RRM. (You need
+not calculate the numerical answer.)
+
+<div id="control5E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5E'); return false">
+          <img name="ctl5E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5E" class="answer" style="display:none"><font color="blue">
+There are 15! possible states, so we would need ceiling(log2(15!)) =
+41 state bits.  Including the four input bits that indicate which
+word is being accessed, the ROM would have 2<sup>45</sup> locations of
+41 bits each, for a total of approximately 1442 trillion bits.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5F" class="question">
+    <ol type="A" start="6"><li>
+    
+Is it feasible to build the 15-word RRM above using
+a ROM and register in today's technology? Explain why or why not.
+
+<div id="control5F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5F'); return false">
+          <img name="ctl5F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5F" class="answer" style="display:none"><font color="blue">
+1442 trillion bits is a bit much even for today's technology.
+In a .09u technology, a single transistor pulldown in a ROM
+might require (.09u x .2u) = .02u<sup>2</sup>, so our ROM would
+require about 29 square meters of silicon!
+</font><div>
+</li></ol></div>
+</div>
+</body></html>

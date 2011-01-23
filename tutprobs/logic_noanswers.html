@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Synthesis of combinational logic</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+A certain function F has the following truth table:
+
+<p/><pre>
+A  B  C | F
+========|===
+0  0  0 | 1
+0  0  1 | 0
+0  1  0 | 0
+0  1  1 | 1
+1  0  0 | 1
+1  0  1 | 1
+1  1  0 | 0
+1  1  1 | 1
+</pre>
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Write a sum-of-products expression for F.
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Write a minimal sum-of-products expression for F.
+Show a combinational circuit that implements F using only
+INV and NAND gates.
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Implement F using one 4-input MUX and inverter.
+
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Write a minimal sum-of-products expression for NOT(F).
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+Give a minimal sum-of-products expression that is equivalent
+to the follow logic expressions:
+
+<pre>
+    _____
+(A) A + B
+
+            _       _ _     _   _     _         _
+(B) A*B*C + A*B*C + A*B*C + A*B*C + A*B*C + A*B*C
+</pre>
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+Multiple choice:
+A Karnaugh map can't represent more than 2 variables along a single
+dimension because
+
+<ol>
+<li>Gray code counts can't go beyond 2 bits.</li>
+<li>Each value v along a dimension must be adjacent to all values that are
+Hamming distance 1 from v.</li>
+<li>Three is not a power of two.</li>
+<li>No reason.</li>
+You can represent 3 variables along a dimension.  You couldn't make
+5-variable K-maps otherwise.
+</ol>
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What is the maximum number of product terms in a minimal
+sum-of-products expressions with three variables?
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+True or false: A boolean function of N variables with greater than
+2<sup>N-1</sup> product terms can <i>always</i> be simplified to an
+expression using fewer product terms.
+
+
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Suppose the stock room is very low on components and
+has only <i>five</i> NAND gates on hand.  Would we be able to
+build an implementation of any arbitary 2-input boolean
+function?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+In the Karnaugh maps below the use of "X" in a cell
+indicates a "don't care" situation where the value of the function for those
+inputs can be chosen to minimize the size of the overall expression.
+
+<p/><img src="logic02.gif"/>
+
+<p/><img src="logic04.gif"/>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+Circle the prime implicants in the Karnaugh maps and write a minimal
+sum-of-products expression for each of the maps.  
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+The following diagram shows the pulldown circuitry for a static CMOS
+logic gate that implements the function F(A,B,C,D):
+
+<p/><img src="logic01.gif"/>
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+Draw a circuit diagram for the pullup circuitry that would complete
+the static CMOS implementation of F(A,B,C,D).
+
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+Assuming the correct pullup circuitry is added to the diagram above,
+give a minimal sum-of-products expression for F(A,B,C,D).
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+Which of the following changes will decrease the propagation time of
+the above circuit?
+
+<ul>
+(A) decreasing the power supply voltage<br/>
+(B) increasing the power supply voltage<br/>
+(C) increasing the operating temperature<br/>
+(D) redefining VOL to provide increased noise margins
+</ul>
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+The following PLA implements H(A,B,C):
+
+<p/><img src="logic03.gif"/>
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Write a minimal sum-of-products expression for H.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+The following diagram shows a ROM implementation of a 3-input Boolean
+function: Give the Boolean function represented at the output, Z.
+
+<p/><img src="logic09.gif"/>
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+For a particular set of input values, how many of the
+horizontal term lines carry a logical <i>one</i>?
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Give the Boolean function represented at the output, Z.
+
+
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Is there an example involving two valid inputs that demonstrates that
+the above device is not lenient?
+
+
+</li></ol></div>
+
+    <div id="question6D" class="question">
+    <ol type="A" start="4"><li>
+    
+Suppose you undertake to reduce the preceding ROM implementation by
+eliminating any components (pulldowns, wires, and inverters) that are
+unused or redundant.  Components are eliminated -- replaced by open
+circuits -- until no further components can be removed without
+changing the function computed by the circuit.  How many word lines
+(horizontal lines that consitute outputs of the original decoder
+section of the ROM) are left after this reduction has been performed?
+
+
+</li></ol></div>
+
+    <div id="question6E" class="question">
+    <ol type="A" start="5"><li>
+    
+Which of the following is the most accurate comparison of the reduced
+ROM circuit with a direct, full-complementary CMOS implementation of
+the same function?
+
+<ol>
+<li>The reduced ROM implementation uses fewer transistors.</li>
+<li>The reduced ROM implementation is faster.</li>
+<li>The reduced ROM implementation has a faster output rise time.</li>
+<li>The reduced ROM implementation is essentially identical to the
+direct CMOS implementation.</li>
+</ol>
+
+
+</li></ol></div>
+</div>
+
+    <div id="question7" class="question">
+    <p/><hr/><p/><u>Problem 7.</u>
+    
+
+
+    <div id="question7A" class="question">
+    <ol type="A" start="1"><li>
+    
+Add the necessary pulldown NFETs to the F and G circuitry in the ROM
+circuit diagram below to implement the indicated logic functions for
+F and G.
+
+<p/><img src="logic17.gif"/>
+
+
+</li></ol></div>
+</div>
+
+    <div id="question8" class="question">
+    <p/><hr/><p/><u>Problem 8.</u>
+    
+A certain 3-input function G(A,B,C) has the following implementation:
+
+<p/><img src="logic10.gif"/>
+
+
+    <div id="question8A" class="question">
+    <ol type="A" start="1"><li>
+    
+Give a minimal sum-of-products expression for G.
+
+
+</li></ol></div>
+
+    <div id="question8B" class="question">
+    <ol type="A" start="2"><li>
+    
+Design a ROM implementation for G.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question9" class="question">
+    <p/><hr/><p/><u>Problem 9.</u>
+    
+Digital Widgets Co. has introduced a new logic IC consisting of two
+comparator cells in a 14-pin package.  A comparator cell, as drawn
+below, has four inputs and two outputs.
+
+<p/><img src="logic05.gif"/>
+
+<p/>The inputs are labeled An, Bn, Gn+1, and Ln+1, and the outputs are
+labeled Gn and Ln.  The G and L signals have the meanings "A greater
+than B" and "A less than B," respectively.  If both G and L are false,
+the meaning is A = B.  G and L are never both true.  Two k-bit numbers
+A and B may be compared using a circuit such as the following:
+
+<p/><img src="logic06.gif"/>
+
+<p/>The most significant bits are supplied as Ak-1 and
+Bk-1, and the least significant bits are A0 and B0.
+
+<p/>The output of a comparison is taken from the G and L outputs of the
+lowest-order cell (G0 and L0).  Gn+1 and Ln+1 of the highest-order
+cell are connected to logical 0 to indicate that the numbers are
+assumed to be equal until some difference is found between a pair of
+bits Ai and Bi.
+
+<p/>If the Gn+1 and Ln+1 inputs indicate that higher-order bits have
+established A &gt; B or A &lt; B, then cell n must propagate that
+result to Gn and Ln.  However, if Gn+1 and Ln+1 indicate that the
+higher-order bits are equal, then cell n must compare its bit of A and
+B to determine if A &gt; B, A &lt; B, or A = B and must signal that
+result appropriately at Gn and Ln.
+
+
+    <div id="question9A" class="question">
+    <ol type="A" start="1"><li>
+    
+Draw a logic diagram for an implementation of the Digital Widgets
+comparator cell.
+
+
+</li></ol></div>
+
+    <div id="question9B" class="question">
+    <ol type="A" start="2"><li>
+    
+Since there is delay associated with the propagation of the G and L
+signals through each cell, we could make the comparator work faster
+by redesigning the basic cell to compare two bits at a time, halving the number
+of stages through which the G and L signals will need to propagate.
+
+<p/><img src="logic07.gif"/>
+
+<p/>Work out expressions for Gn and Ln as functions of Gn+2, Ln+2,
+An+1, Bn+1, An, and Bn.  Express your answers in the form
+
+<p/><img src="logic08.gif"/>
+
+
+</li></ol></div>
+
+    <div id="question9C" class="question">
+    <ol type="A" start="3"><li>
+    
+Given a reasonable implementation of the equations for Gn and Ln
+derived in part B, how does the delay from a change in Gn+2
+and Ln+2 to the appearance of correct outputs at Gn
+and Ln compare with the corresponding delay for a circuit composed
+of a cascade of two of the cells developed in part A?  
+Assume that all A and B inputs remain unchanged throughout.
+
+<p/><font size="1">
+<i>Note:</i> The reason for our interest in the propagation delay of the G and
+L signals, specifically, is that in a chain of N comparators, every
+extra gate delay in the G--L path will penalize total performance by N
+gate delays.  The time it takes for a change in an A or B input to be reflected
+in the corresponding G or L output is also important, but improvements here
+can at best result in decreasing total delay by some constant amount.
+</font>
+
+
+</li></ol></div>
+</div>
+</body></html>

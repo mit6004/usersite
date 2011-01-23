@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Building the Beta</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+Beta quickies:
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+In an unpipelined Beta implementation, when is the signal
+RA2SEL set to "1"?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+In an unpipelined Beta implementation, when executing a
+BR(foo,LP) instruction to call procedure foo, what should WDSEL should
+be set to?
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+The minimum clock period of the unpipelined Beta implementation
+is determined by the propagation delays of the data path elements and
+the amount of time it takes for the control signals to become valid.
+Which of the following select signals should become valid first in
+order to ensure the smallest possible clock period: PCSEL, RA2SEL,
+ASEL, BSEL, WDSEL, WASEL?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+Notta Kalew, a somewhat fumble-fingered lab assistant, has deleted the
+opcode field from the following table describing the control logic of
+an unpipelined Beta processor.
+
+<p/><img src="beta03.gif"/>
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Help Notta out by identifying which Beta instruction is implemented by
+each row of the table.
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Notta notices that WASEL is always zero in this table.  Explain
+briefly under what circumstances WASEL would be non-zero.
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Notta has noticed the following C code fragment appears frequently in the benchmarks:
+
+<pre>   int *p;     /* Pointer to integer array */
+   int i,j;    /* integer variables */
+   ...
+   j = p[i];   /* access ith element of array */
+</pre>
+
+<p/>The pointer variable p contains the address of a dynamically
+allocated array of integers.  The value of p[i] is stored at the
+address Mem[p]+4*Mem[i] where p and i are locations containing the values of
+the corresponding C variables.  On a conventional Beta this code
+fragment is translated to the following instruction sequence:
+
+<pre>   LD(...,R1)     /* R1 contains p, the array base address */
+   LD(...,R2)     /* R2 contains I, the array index */
+   ...
+   SHLC(R2,2,R0)  /* compute byte-addressed offset = 4*i */
+   ADD(R1,R0,R0)  /* address of indexed element */
+   LD(R0,0,R3)    /* fetch p[i] into R3 */
+</pre>
+
+<p/>Notta proposes the addition of an LDX instruction that shortens the
+last three instructions to
+
+<pre>
+   SHLC(R2,2,R0)  /* compute byte-addressed offset = 4*i */
+   LDX(R0,R1,R3)  /* fetch p[i] into R3 */
+</pre>
+
+<p/>Give a register-transfer language description for the LDX
+instruction.  Examples of register-transfer language descriptions can
+be for other Beta instructions in the Beta Documentation handed out in
+lecture.
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Using a table like the one above specify the control signals for the LDX opcode.
+
+
+</li></ol></div>
+
+    <div id="question2E" class="question">
+    <ol type="A" start="5"><li>
+    
+It occurs to Notta that adding an STX instruction would probably be
+useful too.  Using this new instruction, p[i] = j might compile into
+the following instruction sequence:
+
+<pre>   SHLC(R2,2,R0)  /* compute byte-addressed offset = 4*i */
+   STX(R3,R0,R1)  /* R3 contains j, R1 contains p */
+</pre>
+
+<p/>Briefly describe what modifications to the Beta datapath would be
+necessary to be able to execute STX in a single cycle.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+One Beta manufacturer is having quality-control problems with their
+design. In particular, they've had reliability issues with various
+device connections that are circled in the attached diagram.
+
+<p/>Your job is to write some test programs to help determine if a
+machine is fault-free.  Assume that when a device connection is
+"faulty," the indicated bus or signal is always "stuck-at 0" instead
+of the expected value.  For each of the circled connections, write an
+instruction sequence that when executed for a specified number of
+cycles would indicate whether the connection was okay by leaving a "1"
+in R0 and leaves some other value in R0 if the connection was faulty.
+You can assume that all registers are reliably set to 0 before each
+sequence is executed.
+
+<p/>Give your instruction sequence for each of the six indicated faults
+and briefly explain how each sequence detects the fault and produces
+something besides "1" in R0 when the fault is present.
+
+<p/><img src="beta02.gif"/>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Fault A: Input 1 of PCSEL mux stuck at 0.
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Fault B: RA2SEL mux control signal stuck at 0.
+
+
+</li></ol></div>
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Fault C: Z input to control logic stuck at 0.
+
+
+</li></ol></div>
+
+    <div id="question3D" class="question">
+    <ol type="A" start="4"><li>
+    
+Fault D: BSEL mux control signal stuck at 0.
+
+
+</li></ol></div>
+
+    <div id="question3E" class="question">
+    <ol type="A" start="5"><li>
+    
+Fault E: WR memory control signal stuck at 0.
+
+
+</li></ol></div>
+
+    <div id="question3F" class="question">
+    <ol type="A" start="6"><li>
+    
+Fault F: Input 0 of WDSEL mux stuck at 0.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+Flaky Beta's, Inc. has an interesting business plan: they
+buy -- very cheaply -- Beta processors manufactured by other companies
+with slight defects and market them as implementing "variants" of the
+Beta Instruction Set Architecture.  FBI's plan is simply to change the
+documentation of the instructions affected by the manufacturing flaws
+in each machine, presuming that its customers can live with the
+revised machine behavior.
+
+<p/>The FB1 and FB2 are based on a non-pipelined Beta.  They perform
+exactly as a fully functional non- pipelined Beta (see diagrams at the
+end of the quiz), except for the following flaws:
+
+<ul>
+The FB1 has the select input to the ASEL mux stuck at 0, causing the register file to always be selected 
+as the A (left) input to the ALU.
+
+<p/>The FB2 has the select input to the RA2SEL mux stuck at 0, causing
+the Rb field of the instruction to always be selected as the RA2
+(right) address input to the register file.
+</ul>
+
+<p/>Note that, aside from the above flaws, the defective processors
+behave identically to their fully-functional counterparts; control
+signals, for example, are generated as for a working Beta processor.
+
+<p/>FBI tests both the FB1 and FB2 on six Beta instructions: LDR, ST,
+SUBC, BNE, LD and JMP.  They find that each of the flaws affects only
+one of the six instructions.
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+Which Beta instructions does the FB1 flaw affect? Which Beta
+instructions are affected by FB2 flaw?
+ 
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+Of course many programs use all the instructions in the Beta ISA,
+so clients need to know if it is possible to rewrite their programs so
+that they perform the same computation whether they run on an unflawed
+Beta or an FBI processor.  It's okay if the rewritten program takes a
+different number of instructions than the original.  When answering
+the questions below, assume that rewritten programs still fit in the
+available memory.
+
+<p/>Is it possible to rewrite an arbitrary program so that it will
+perform correctly on both an unflawed Beta and an FB1?
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+Is it possible to rewrite an arbitrary program so that it will
+perform correctly on both an unflawed Beta and an FB2?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+A 6.004 student, Pete Coshaver, has suggested the following modified
+Beta design to minimize the critical path in his unpipelined
+implementation.
+ 
+<p/><img src="beta01.gif"/>
+ 
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+Briefly describe the differences between the modified Beta shown
+above and the Beta described in lecture.
+
+
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+Which instructions have their critical path reduced
+as a result of Pete's modifications?
+
+
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+On a given instruction Pete's control logic generates the
+following control signals. What is the most likely opcode of
+instruction being executed?
+
+<pre>PCSEL	0
+RA2SEL	-
+BSEL	1
+ALUFN	+
+Wr	0
+WERF	1
+WASEL	0
+AdrSEL	0
+WDSEL1	1
+WDSEL0	-
+</pre>
+
+
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+What impact does Pete's redesign of the write-data-select
+multiplexer (controlled by the WDSEL0 and WDSEL1 control lines) have
+on the original Beta design?
+
+<ol type="a">
+<li>Pete's old Beta control ROM will not work with his modified Beta design</li>
+<li>It requires the BOOL unit of the ALU to be redesigned.</li>
+<li>It is most likely slower than the 3-input multiplexer used in the original Beta.</li>
+<li>It has no impact; it is functionally identical to the original design.</li>
+<li>Some standard Beta instructions can no longer be implemented with Pete's changes.</li>
+</ol>
+
+
+</li></ol></div>
+
+    <div id="question5E" class="question">
+    <ol type="A" start="5"><li>
+    
+What is the most appropriate setting of the WDSEL0 and WDSEL1
+control lines when executing a BEQ instruction?
+
+
+</li></ol></div>
+
+    <div id="question5F" class="question">
+    <ol type="A" start="6"><li>
+    
+Pete would like to connect the ASEL signal of his old Beta
+design to the AdrSEL signal in his new design. For what Beta
+instruction type is it necessary for Pete to change the contents of
+his control ROM before his modified Beta will behave identical to the
+original version?
+
+
+</li></ol></div>
+
+    <div id="question5G" class="question">
+    <ol type="A" start="7"><li>
+    
+Pete was also able to reduce the size of his control logic by
+merging the functions of two signals into a single output signal. What
+two signals, from the list given below, could he have merged?
+
+<ul>
+a) WDSEL0 and WDSEL1<br/>
+b) WDSEL0 and WERF<br/>
+c) AdrSEL and WASEL<br/>
+d) BSEL and RA2SEL<br/>
+e) AdrSEL and WR<br/>
+</ul>
+
+
+</li></ol></div>
+
+    <div id="question5H" class="question">
+    <ol type="A" start="8"><li>
+    
+The minimum clock period of Pete's unpipelined Beta
+implementation is determined by the propagation delays of the data
+path elements and the amount of time it takes for the control signals
+to become valid. Which select signal(s) should become
+valid first in order to ensure the smallest possible clock period?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+Consider the following potential additions to the Beta Instruction set:
+
+<pre>	// Swap register contents with memory location
+	MSWP (Ra, literal, Rc)
+		PC &lt;- PC + 4
+		EA &lt;- Reg[Ra] + SEXT(literal)
+		tmp &lt;- Mem[EA]
+		Mem[EA] &lt;- Reg[Rc]
+		Reg[Rc] &lt;- tmp
+
+	// Move if zero
+	MVZ (Ra, Rb, Rc)
+		PC &lt;- PC + 4
+		if Reg[Ra] = 0 then Reg[Rc] &lt;- Reg[Rb]
+
+	// Move constant if zero
+	MVZC (Ra, literal, Rc)
+		PC &lt;- PC + 4
+		if Reg[Ra] = 0 then Reg[Rc] &lt;- SEXT(literal)
+</pre>
+		  
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+Specify the control signals configurations needed to execute these
+instructions on an unpipelined Beta.
+
+
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+Explain why the following instructions cannot be added to our Beta
+instruction set without further modifications:
+
+<pre><tt>
+	// Push Rc onto stack pointed to by Ra
+	PUSH(Rc, 4, Ra)
+		PC &lt;- PC + 4
+		Mem[Reg[Ra]] &lt;- Reg[Rc]
+		Reg[Ra] &lt;- Reg[Ra] + 4
+
+	// Store indexed (base + index register)
+	STX(Ra, Rb, Rc)
+		PC &lt;- PC + 4
+		Mem[Reg[Ra] + Reg[Rb]] &lt;- Reg[Rc]
+</tt></pre>
+
+
+</li></ol></div>
+</div>
+</body></html>

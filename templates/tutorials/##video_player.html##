@@ -1,0 +1,120 @@
+
+{% block title %}Set movie topic{% endblock %}
+
+{% block header %}
+
+<script type="text/javascript" src="/site_media/AC_QuickTime.js"></script>
+<script type="text/javascript" src="/site_media/common_quicktime_methods.js"></script>
+
+<script type="text/javascript">
+
+// define the video here
+var qtEmbed = QT_GenerateOBJECTText_XHTML(
+		'{{video.get_absolute_url}}', //'video_placeholder.jpg',
+		'968', // width
+		'764', // height: set this to actual height + 20 (to leave space for controller)
+		'', // required blank field
+		'enablejavascript', 'true',
+		'obj#id', 'movie1',
+		'emb#name', 'movie1',
+		'emb#id', 'movie1_emb',
+		'postdomevents', 'true',
+		'autoplay', 'false',
+		'controller', 'true',
+		'scale', 'aspect'
+)
+
+// called from body.onload to set up listeners that will wait for quicktime
+// movie to send events
+
+function RegisterListeners()
+{
+	// when the movie loads, it will set the end time to the duration of the movie
+	RegisterListener('qt_loadedmetadata', 'movie1', 'movie1_emb', setup_movie);
+}
+
+function setup_movie()
+{
+	set_display_area_to_fit_movie()
+	set_default_end_time();
+}
+
+function set_start_time()
+{
+	document.getElementById('start_time_units').value = playhead_position();
+	document.getElementById('start_time_display').value = format_time( playhead_position() );
+}
+
+function set_end_time(end_time)
+{
+	if(typeof(end_time) == "undefined")
+	{ 
+		end_time = playhead_position();
+	}
+	document.getElementById('end_time_units').value = end_time;
+	document.getElementById('end_time_display').value = format_time( end_time );
+}
+
+function set_default_end_time()
+{
+	set_end_time( document.movie1.GetDuration() );
+}
+
+
+</script>
+{% endblock %}
+
+{% block body_attributes %}onload="RegisterListeners();"{% endblock %}
+
+{% block content %} 
+<form action="" method="post">
+<table>
+<tr>
+<td colspan="4" align="center">
+
+  <div id="movie_div"></div>
+
+  <script type="text/javascript">
+    document.getElementById('movie_div').innerHTML = qtEmbed;
+  </script>
+
+
+</td>
+</tr>
+<tr valign="bottom">
+<td align="center" colspan="2">Start Time</td>
+<td align="center" colspan="2">End Time</td>
+</tr>
+<tr valign="top">
+<td align="right">
+</td>
+<td align="left"><input type="button" onclick="set_start_time();" value="Set to Now" /></td>
+<td align="right">
+	<input type="text" id="end_time_display" value="00:00:00" size="8" />
+	
+	<input type="hidden" id="end_time_units" name="end_time_units" />
+</td>
+<td align="left"><input type="button" onclick="set_end_time();" value="Set to Now" /></td>
+</tr>
+<tr>
+<td colspan="4" align="center">
+<br />
+
+<input type="hidden" id="video_height" name="video_height" value="0" />
+<input type="hidden" id="video_width" name="video_width"  value="0" />
+
+Topic: <select name="topic_name">
+	<option value="">Must choose one...</option>
+	{% for topic in topic_choices %}
+	<!-- first part of the tuple is the topic and second is verbose -->
+	<option value="{{topic.0}}">{{topic.1}}topic</option>
+	{% endfor %}
+</select>
+
+<input type="submit" value="Save" />
+<br />(Start and End time must be set.)</td>
+</tr>
+</table>
+</form>
+
+{% endblock %}

@@ -1,0 +1,748 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><head><script language="JavaScript1.2" src="tutprobs.js"></script></head><body style="margin-top:5px">
+	<noscript><table width=100%% border="1" cellpadding="8" bgcolor="yellow"><tr><td>
+        You need to have Javascript enabled to view this page
+        properly.  If your browser does not support Javascript
+        or you have chosen not to enable it, please return to
+        the previous page and use the appropriate link to view
+        non-script versions of this tutorial page.
+        </td></tr></table></noscript><h3>Finite State Machines</h3>
+        <a href="\#" onClick="showall(); return false"><img border="0" src="showall.gif"/></a>
+        &nbsp;
+        <a href="\#" onClick="hideall(); return false"><img border="0" src="hideall.gif"/></a>
+        <p/><img src="star.gif" alt="Discussed in section"/>
+        indicates problems that have been selected for discussion
+        in section, time permitting.
+        
+
+
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+
+The ACME Company has recently received an order from a Mr. Wiley
+E. Coyote for their all-digital Perfectly Perplexing Padlock.  The P3
+has two buttons ("0" and "1") that when pressed cause the FSM
+controlling the lock to advance to a new state.  In addition to
+advancing the FSM, each button press is encoded on the B signal (B=0
+for button "0", B=1 for button "1").  The padlock unlocks when the FSM
+sets the UNLOCK output signal to 1, which it does whenever the last N
+button presses correspond to the unique N-digit combination.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Unfortunately the design notes for the P3 are incomplete.  Using the
+specification above and clues gleaned from the partially completed
+diagrams below fill in the information that is missing from the state
+transition diagram with its accompanying truth table.  When done
+
+<p/><ul>
+<li>each state in the transition diagram should be assigned a 2-bit
+state name S1S0 (note that in this design the state name is not
+derived from the combination that opens the lock),</li>
+<li>the arcs leaving each state should be mutually exclusive and
+collectively exhaustive,</li>
+<li>the value for UNLOCK should be specified for each state, and </li>
+<li>the truth table should be completed.</li>
+</ul>
+
+<p/><img src="state24.gif"/>
+
+<div id="control1A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1A'); return false">
+          <img name="ctl1A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1A" class="answer" style="display:none"><font color="blue">
+<img src="state25.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+What is the combination for the lock?
+
+<div id="control1B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('1B'); return false">
+          <img name="ctl1B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer1B" class="answer" style="display:none"><font color="blue">
+100
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+Construct a "divisible-by-3" FSM that accepts a binary number
+entered one bit at a time, most significant bit first, and indicates
+with a light if the number entered so far is divisible by 3.
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Draw a state transition diagram for your FSM indicating the
+initial state and for which states the light should be turned on.
+Hint: the FSM has 3 states.
+
+<div id="control2A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2A'); return false">
+          <img name="ctl2A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2A" class="answer" style="display:none"><font color="blue">
+If the value of the number entered so far is N, then after
+the digit b is entered, the value of the new number N' is 2N + b.
+Using this fact:
+
+<p/><ul>
+if N is 0 mod 3 then for some p, N = 3p + 0.  After
+the digit b is entered, N' = 6p + b.  So N' is b mod 3.
+
+<p/>if N is 1 mod 3 then for some p, N = 3p + 1.  After
+the digit b is entered, N' = 6p + 2 + b.  So N' is b+2 mod 3.
+
+<p/>if N is 2 mod 3 then for some p, N = 3p + 2.  After
+the digit b is entered, N' = 6p + 4 + b.  So N' is b+1 mod 3.
+</ul>
+
+<p/>This leads to the following transition diagram where the
+states are labeled with the value of N mod 3.
+
+<p/><img src="state15.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Construct a truth table for the FSM logic.  Inputs include
+the state bits and the next bit of the number; outputs include
+the next state bits and the control for the light.
+
+<div id="control2B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2B'); return false">
+          <img name="ctl2B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2B" class="answer" style="display:none"><font color="blue">
+<pre>
+S1 S0  b | S1' S0' light
+=========|==============
+ 0  0  0 |  0   0    1
+ 0  0  1 |  0   1    1
+ 0  1  0 |  1   0    0
+ 0  1  1 |  0   0    0
+ 1  0  0 |  0   1    0
+ 1  0  1 |  1   0    0
+</pre>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+Draw a logic schematic for the FSM.
+
+<div id="control2C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('2C'); return false">
+          <img name="ctl2C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer2C" class="answer" style="display:none"><font color="blue">
+<pre>
+        __ __
+light = S1*S0
+      __    _      __
+S1' = S1*S0*b + S1*S0*b
+      __ __        __ _
+S0' = S1*S0*b + S1*S0*b
+</pre>
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+An FSM, M, is constructed by connecting the output of a 3-state
+FSM to the inputs of an 9-state FSM.  M is then reimplemented using
+a state register with the minimum number of bits.  What is the
+maximum number of bits that may be needed to reimplement M?
+
+<div id="control3A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3A'); return false">
+          <img name="ctl3A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3A" class="answer" style="display:none"><font color="blue">
+M has 27 states which require a total of 5 bits in the state
+register (not 2 + 4 bits!).
+
+</font><div>
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+You connect M N-state FSMs, each have 1 input and 1 output, in
+series.  What's an upper bound on the number of states in the
+resulting FSM?
+
+<div id="control3B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('3B'); return false">
+          <img name="ctl3B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer3B" class="answer" style="display:none"><font color="blue">
+Each FSM can in theory be in one of its N states, so an upper
+bound on the number of states in the combined machine is N<sup>M</sup>.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+Ben Bitdiddle has designed an electronic lock with three buttons:
+"reset", "0" and "1".  He has provided the following state transition
+diagram showing how the lock responds to a sequence of inputs.
+ 
+<p/><center><img src="state14.gif"/></center>
+
+<p/>The lock makes a transition from its current state to a new state
+whenever one of the three buttons is pressed and released.  It ignores
+its inputs if more than one button is pressed.  Pressing "reset"
+returns the lock to the state marked "R" in the diagram (arcs showing
+the transitions to the reset state have been omitted from the diagram
+to make it easier to read).  Pressing "0" or "1" will cause the lock
+to follow the appropriately labeled transition from its current state.
+The lock opens if it reaches the state marked "U".
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+After pressing the "reset" button what is the length of the
+shortest sequence of button presses that will open the lock?
+
+<div id="control4A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4A'); return false">
+          <img name="ctl4A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4A" class="answer" style="display:none"><font color="blue">
+3 button presses will open the lock: 0, 0, 1.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+After pressing the "reset" button what is the length of the
+longest sequence of button presses that will cause the lock to open
+after the last button in the sequence is pressed but not open any
+earlier in the sequence?
+
+<div id="control4B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4B'); return false">
+          <img name="ctl4B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4B" class="answer" style="display:none"><font color="blue">
+The longest such sequence is unbounded: at least four 0's followed
+by 11 or 1111 will cause the lock to open for the first time.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+After much use, the "reset" button breaks.  Is it still
+possible to open the lock using only the "0" and "1" buttons assuming
+you know nothing about the lock's state (except that its locked!) when
+you start?
+
+<div id="control4C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4C'); return false">
+          <img name="ctl4C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4C" class="answer" style="display:none"><font color="blue">
+Yes.  A sequence of 1's will open the lock.  You have to try the
+lock after each press of "1" since a different number of 1's is
+required depending on the starting state.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+Suppose Ben wanted to design a lock that required exactly 10
+button presses to open after pressing "reset".  Not counting the
+"reset" and "unlock" states, what is the minimum number of state
+his FSM would need need?
+
+<div id="control4D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('4D'); return false">
+          <img name="ctl4D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer4D" class="answer" style="display:none"><font color="blue">
+His FSM would need 9 states in addition to "reset" and "unlock".
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+Stimulated by Tuesday's lecture, you have decided to cover MIT's steep
+tuition costs by selling simple digital locks based on the neat
+six-state FSM used as an example:
+
+<p/><img src="state04.gif"/>
+
+<p/>Recall that this design has three buttons labeled "0", "1", and
+"Start", and generates an unlock signal U=1 when the user presses
+Start followed by the sequence 0,1,1,0.
+
+<p/>Unfortunately your partner, Mark Ting, insists that the 6.004
+design is way too complex for normal users to understand. After asking
+you to help figure out how to make his watch stop beeping ("I never
+could figure out how to operate this damned thing"), Mark questions
+the need for a Start button.  If 0110 is the combination, he argues,
+why can't I just walk up and enter 0,1,1,0 and have the lock open?
+After some reflection, you conclude that he may have a point.
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+Design a FSM whose inputs are simply "0" and "1" buttons, whose output
+is the U (unlock) signal, and which has the property that U=1 if and
+only if the last four button presses correspond to the sequence
+0,1,1,0.  Show the state transition diagram corresponding to your
+design. [HINT: 5 states are sufficient].
+
+<div id="control5A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5A'); return false">
+          <img name="ctl5A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5A" class="answer" style="display:none"><font color="blue">
+<img src="state05.gif"/>
+
+<p/>The name of each state represents how many digits in the sequence
+have been input.  State Sxxxx indicates that the sequences has not begun,
+Sxxx0 indicates that the first 0 has been input, etc.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+Is it possible that an equivalent FSM might be implemented in fewer
+than 5 states?  Explain.
+
+<div id="control5B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5B'); return false">
+          <img name="ctl5B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5B" class="answer" style="display:none"><font color="blue">
+Since 4 transitions are required for 4 button pushes, at least
+5 states are needed to implement the FSM.  Having only 4 states
+would make 3 the mininum number of transitions to the unlock state.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+The flip flops used to hold your FSM state contain random values when
+power is first applied to your lock.  Does this constrain your
+handling of unused states?  Explain.
+
+<div id="control5C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5C'); return false">
+          <img name="ctl5C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5C" class="answer" style="display:none"><font color="blue">
+Since we have 5 states, 3 bits are required to encode the states,
+resulting in 3 unused states.  If during power up it is possible
+to begin in an unknown state, our FSM must include transitions from
+unknown states to known states.  If the machine begins in an unknown
+state and a 0 in input, we should transition to state Sxxx0; if a 1
+is input, we should transition to Sxxxx.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question5D" class="question">
+    <ol type="A" start="4"><li>
+    
+In a table (similar to that shown in lecture), give the contents of a
+ROM that might be used in an implementation of your design. Completely
+specify the ROM contents, including those corresponding to unused
+states.
+
+<div id="control5D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('5D'); return false">
+          <img name="ctl5D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer5D" class="answer" style="display:none"><font color="blue">
+<img src="state06.gif"/>
+
+</font><div>
+</li></ol></div>
+</div>
+
+
+
+
+    <div id="question6" class="question">
+    <p/><hr/><p/><u>Problem 6.</u>
+    
+Ben Bitdiddle has designed an electronic lock with three buttons:
+"Breset", "B0" and "B1".  He has provided the following circuit
+diagram showing how the lock is implemented from a ROM and 3
+flip-flops.
+
+<p/><img src="state19.gif"/>
+ 
+<p/>The button circuitry converts each button press into a single pulse
+guaranteed to be stable the required amount of time before and after
+the rising edge of the clock.  For example, pressing "B0" once
+produces the following waveform:
+
+<p/><img src="state20.gif"/>
+
+<p/>In answering the questions below, assume that the value of the
+UNLOCK output is only a function of the current state.
+
+
+    <div id="question6A" class="question">
+    <ol type="A" start="1"><li>
+    
+What is the total number of bits in the ROM?
+
+<div id="control6A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6A'); return false">
+          <img name="ctl6A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6A" class="answer" style="display:none"><font color="blue">
+256 bits total: 2<sup>6</sup> locations, 4 bits wide.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6B" class="question">
+    <ol type="A" start="2"><li>
+    
+The timing specifications for components are:
+
+<p/><ul>
+  ROM: tCD=3ns, tPD=11ns<br/>
+  D flip-flop:	tCD=2ns, tPD=4ns, tS=3ns, tH=3ns<br/>
+</ul>
+
+<p/>How long before the rising edge of CLK must the button circuitry
+guarantee that the button signals are stable?
+
+<div id="control6B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6B'); return false">
+          <img name="ctl6B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6B" class="answer" style="display:none"><font color="blue">
+tPD,ROM + tS = 14ns.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6C" class="question">
+    <ol type="A" start="3"><li>
+    
+Assume that all combinations start with pressing the "Breset"
+button.  Ben wants to program the lock with the longest possible
+combination.  Not counting the "Breset" button press, what is the
+longest combination Ben can achieve?
+
+<div id="control6C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6C'); return false">
+          <img name="ctl6C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6C" class="answer" style="display:none"><font color="blue">
+7 assuming no looping combinations.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6D" class="question">
+    <ol type="A" start="4"><li>
+    
+If the lock is programmed not to change state if no buttons are
+pressed, what is the next state field of ROM location 48 (i.e., the
+location corresponding to A5,A4,A3,A2,A1,A0 = 110000)?
+
+<div id="control6D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6D'); return false">
+          <img name="ctl6D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6D" class="answer" style="display:none"><font color="blue">
+The current state appears on A5,A4,A3 = 110.  So we want the
+next state field of the ROM (D2,D1,D0) to specify the same state =
+110.
+ 
+</font><div>
+</li></ol></div>
+
+    <div id="question6E" class="question">
+    <ol type="A" start="5"><li>
+    
+The following table shows one possible contents of the first 32
+locations of the ROM; assume that all other locations have the value
+"0010".  The location is listed as A5,A4,A3,A2,A1,A0, the data is listed as
+D3,D2,D1,D0.
+
+<p/><img src="state21.gif"/>
+
+<p/>If the lock is programmed with this ROM data, what happens when
+"B0" and "B1" are pressed at the same time?  Assume that "Breset" is
+not pressed.
+
+<div id="control6E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6E'); return false">
+          <img name="ctl6E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6E" class="answer" style="display:none"><font color="blue">
+State stays the same since all addresses of the form XXX011 transition
+to state XXX.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6F" class="question">
+    <ol type="A" start="6"><li>
+    
+If the lock is programmed with this ROM data, what is the
+shortest combination that opens the lock after "Breset" has been
+pressed?
+
+<div id="control6F" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6F'); return false">
+          <img name="ctl6F" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6F" class="answer" style="display:none"><font color="blue">
+press B0, then B1.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question6G" class="question">
+    <ol type="A" start="7"><li>
+    
+Suppose that the "Breset" button breaks while the lock is
+locked.  Is it still possible to open the lock using a predetermined
+sequence of presses of the "B0" and "B1" buttons?  Assume you know
+nothing about the lock's state (except that it's locked!) when you
+start.
+
+<div id="control6G" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('6G'); return false">
+          <img name="ctl6G" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer6G" class="answer" style="display:none"><font color="blue">
+Yes, you can open the lock.  Noting that the UNLOCK state loops
+to iteself, B1-B0-B1 is one of many sequences that takes us from
+any state to UNLOCK.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question7" class="question">
+    <p/><hr/><p/><u>Problem 7.</u>
+    
+Use the following circuit in answering the questions below.
+
+<p/><img src="state22.gif"/>
+
+<p/>Each of the edge-triggered D flip-flops has a setup time of tS, a
+hold time of tH, a propagation delay of tPD and a contamination delay
+of tCD.  Assume that IN is stable tS before the rising edge of CLK and
+tH after the rising edge of CLK.
+
+
+    <div id="question7A" class="question">
+    <ol type="A" start="1"><li>
+    
+In order for the circuit shown above to operate correctly what
+constraints on tH and tS are necessary?  Express them in terms of
+tCD, tPD and the clock period.
+
+<div id="control7A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7A'); return false">
+          <img name="ctl7A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7A" class="answer" style="display:none"><font color="blue">
+ensure hold time is met at each register: tH &lt;= tCD<br/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7B" class="question">
+    <ol type="A" start="2"><li>
+    
+What is the minimum clock period at which this circuit can be
+clocked and still be guaranteed to work?  Express your answer in terms
+of tH, tS, tCD and tPD.  Assume that timing constraints that do not
+depend on the clock period are met.
+ 
+<div id="control7B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7B'); return false">
+          <img name="ctl7B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7B" class="answer" style="display:none"><font color="blue">
+ensure setup time is met at each register: tPD + tS &lt;= tCLK
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7C" class="question">
+    <ol type="A" start="3"><li>
+    
+For just this question suppose there is skew in the CLK signal
+such that the rising edge of CLK arrives at the flip-flop labeled F1
+1ns before it arrives at the other three flip-flops.  Assume that hold
+times are not violated.  How does this change the minimum clock period
+at which the circuit above can be clocked and still be guaranteed to
+work?
+
+<div id="control7C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7C'); return false">
+          <img name="ctl7C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7C" class="answer" style="display:none"><font color="blue">
+The minimum clock period increases by 1ns, i.e., we have to have
+an extra 1ns between clock edges to ensure that the setup time
+at F1 is met.
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7D" class="question">
+    <ol type="A" start="4"><li>
+    
+Consider following waveform plot for the circuit above.  Assume
+that IN is stable tS before the rising edge of CLK and tH after the
+rising edge of CLK and that time T is more than tPD after the
+preceding rising edge of CLK.
+ 
+<p/><img src="state23.gif"/>
+
+<p/>What is the value of OUT at time T?
+
+<div id="control7D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7D'); return false">
+          <img name="ctl7D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7D" class="answer" style="display:none"><font color="blue">
+At time T, OUT = 0 (ie, the value of IN four clock edges earlier).
+
+</font><div>
+</li></ol></div>
+
+    <div id="question7E" class="question">
+    <ol type="A" start="5"><li>
+    
+View the circuit above as an FSM with one input and one output.
+How many non-equivalent states does it have?
+
+<div id="control7E" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('7E'); return false">
+          <img name="ctl7E" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer7E" class="answer" style="display:none"><font color="blue">
+4 bits of state give us 2<sup>4</sup> = 16 states.
+
+</font><div>
+</li></ol></div>
+</div>
+
+    <div id="question8" class="question">
+    <p/><hr/><p/><u>Problem 8.</u>
+    
+Consider the following FSM state transition diagram: 
+
+<p/><img src="state07.gif"/>
+
+<p/>Let's see if there is an equivalent state machine with fewer states
+by checking to see if any states in the diagram above are equivalent.
+Two states are equivalent if (1) they have identical outputs and (2)
+for each possible combination of inputs they transition to equivalent
+states.
+
+
+    <div id="question8A" class="question">
+    <ol type="A" start="1"><li>
+    
+Start by filling in a "compatibility table" like the one shown below.
+Place an "X" in square (SI,SJ) if SI produces a different output from
+SJ.
+
+<p/><img src="state08.gif"/>
+
+<div id="control8A" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8A'); return false">
+          <img name="ctl8A" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8A" class="answer" style="display:none"><font color="blue">
+<img src="state10.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question8B" class="question">
+    <ol type="A" start="2"><li>
+    
+For each non-X square (SI,SJ) write in pairs of states that have to be
+equivalent in order for SI and SJ to be equivalent.  For example, for
+S2 to be equivalent to S5, then S1 (where S2 goes with a "0" input)
+has to be equivalent to S5 (where S5 goes with a "0" input).
+
+<p/><img src="state09.gif"/>
+
+<div id="control8B" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8B'); return false">
+          <img name="ctl8B" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8B" class="answer" style="display:none"><font color="blue">
+<img src="state11.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question8C" class="question">
+    <ol type="A" start="3"><li>
+    
+Finally, look at an entry (SI,SJ).  If entry is "SM,SN" and if (SM,SN)
+has an "X", put an "X" in square (SI,SJ).  Repeat until no more
+squares can be X'ed out.  The remaining squares indicate equivalent
+states.  Show the final state (no pun intended) of your compatibility
+table.
+
+<div id="control8C" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8C'); return false">
+          <img name="ctl8C" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8C" class="answer" style="display:none"><font color="blue">
+<img src="state12.gif"/>
+
+</font><div>
+</li></ol></div>
+
+    <div id="question8D" class="question">
+    <ol type="A" start="4"><li>
+    
+Draw the state transition diagram for the simplified FSM.
+
+<div id="control8D" class="control" style="padding-top: 8px; padding-bottom: 8px">
+        <a href="#" onClick="toggle('8D'); return false">
+          <img name="ctl8D" class="hideshow" src="show.gif" border="0"/>
+        </a></div> <div id="answer8D" class="answer" style="display:none"><font color="blue">
+Here's the state transition diagram for the simplified FSM (w/o state 3).
+
+<p/><img src="state13.gif"/>
+
+</font><div>
+</li></ol></div>
+</div>
+
+</body></html>

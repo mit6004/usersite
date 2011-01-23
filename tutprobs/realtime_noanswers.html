@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Interrupts and real time</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+A computer system has three devices whose
+characteristics are summarized in the following table:
+
+<p/><center><table border="1" cellspacing="3">
+<tr><th>Device</th><th>Service Time</th><th>Interrupt Frequency</th><th>Allowable Latency</th></tr>
+<tr><td>D1</td><td>400 us</td><td>1/(800us)</td><td>400us</td></tr>
+<tr><td>D2</td><td>250 us</td><td>1/(1000us)</td><td>50us</td></tr>
+<tr><td>D3</td><td>100 us</td><td>1/(800us)</td><td>300us</td></tr>
+</table></center>
+
+<p/>Service time indicates how long it takes to run the interrupt
+handler for each device.  The maximum time allowed to elapse between
+an interrupt request and the start of the interrupt handler is
+indicated by allowable latency.
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+If a program P takes 100 seconds to execute when interrupts are
+disabled, how long will P take to run when interrupts are enabled?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+Can the requirements given in the table above be met using a
+weak priority ordering among the interrupt requests?
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+Can the requirements given in the table above be met using a
+strong priority ordering among the interrupt requests?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+Surreal Time Systems is configuring a Beta for a dedicated application
+involving three I/O devices whose characteristics are summarized below:
+
+<p/><center><table border="1" cellspacing="3">
+<tr><th>Device</th><th>Interrupt Frequency</th><th>Service Time</th></tr>
+<tr><td>A</td><td>1/(1000 us)</td><td>600 us</td></tr>
+<tr><td>B</td><td>1/(500 us)</td><td>100 us</td></tr>
+<tr><td>C</td><td>1/(1000000 us)</td><td>100000 us</td></tr>
+</table></center>
+
+<p/>Each of the three devices causes periodic interrupts as the given
+frequency.  Each interrupt requires the service time specified for
+that device.  When the processor is not servicing any interrupt, it
+runs a compute-bound user-mode (background) task L which composes
+limericks like
+
+<ul><i>There was an old lady from Crewe<br/>
+whose limericks stopped at line two.</i>
+</ul>
+
+<p/>For each of the following questions, assume all devices are
+requesting service at their maximum rate.
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+Assuming no interrupt priorities, what is the approximate worst-case
+latency seen by each device?
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+Now assume that each interrupt handler must complete execution before
+the next request from the same device in order to avoid losing data.  To
+accommodate this real time constraint, the processor is enhanced with a
+4-level strong priority system with priorities 0 (background), 1, 2 and
+3 (highest).  What priorities would you assign to each device?
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+Suppose that, in the absence of interrupts, L composes an average
+of 100 limericks per hour.  What is its rate when all three devices are
+interrupting?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+A computer system is interfaced to four devices: a printer, a disk,
+a keyboard, and a display.  The characteristics of the devices are
+summarized in the following table.
+
+<p/><table border="1" cellspacing="4">
+<tr><td>Device</td><td>Interrupt service time</td><td>Interrupt
+frequency</td><td>response-time requirement</td></tr>
+<tr><td>Printer</td><td>1000 us</td><td>1/(2000 us)</td><td>1000 us</td></tr>
+<tr><td>Disk</td><td>300 us</td><td>1/(1000 us)</td><td>200 us</td></tr>
+<tr><td>Keyboard</td><td>2000 us</td><td>1/(100000 us)</td><td>2000 us</td></tr>
+<tr><td>Display</td><td>100 us</td><td>1/(1000 us)</td><td>200 us</td></tr>
+</table>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+A program P, which performs only computation (no input/output),
+takes 100 s to run when no input/output is being performed.  How long
+will it take for P to run when all of the above devices are
+operating at their maximum speeds?
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+Suppose that the interrupt system enforces a nonpreemptive
+(weak) priority ordering printer &gt; disk &gt; keyboard &gt; display
+among interrupt requests.  Assuming the characteristics given in the
+table above, what is the maximum time that might elapse between a disk
+interrupt request and execution of the first instruction of its
+handler?  Assume that the time taken for state save and context switch
+is negligible.
+
+
+</li></ol></div>
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+Can the requirements given in the table above be met using a
+<i>weak</i> priority ordering among the interrupt requests?  If so,
+give such an ordering; if not, explain.
+
+
+</li></ol></div>
+
+    <div id="question3D" class="question">
+    <ol type="A" start="4"><li>
+    
+Can the requirements given in the table above be met using
+a <i>strong</i> priority ordering among the interrupt requests?  If
+so, give such an ordering; if not, explain.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question4" class="question">
+    <p/><hr/><p/><u>Problem 4.</u>
+    
+A computer must service three devices whose interrupting
+frequencies, service times, and assigned priorities are given in the
+table below.
+
+<p/><table border="1" cellspacing="4">
+<tr><td>Device</td><td>Service time (ms)</td><td>Maximum Frequency (1/ms)
+</td><td>Priority</td></tr>
+<tr><td>D1</td><td>10</td><td>1/100</td><td>3 (highest)</td></tr>
+<tr><td>D2</td><td>50</td><td>1/1000</td><td>2</td></tr>
+<tr><td>D3</td><td>200</td><td>1/5000</td><td>1 (lowest)</td></tr>
+</table>
+
+
+    <div id="question4A" class="question">
+    <ol type="A" start="1"><li>
+    
+Assuming a <i>strong</i> priority system, compute for each
+device the maximum time between service request and the
+<i>completion</i> of service for that device.
+
+
+</li></ol></div>
+
+    <div id="question4B" class="question">
+    <ol type="A" start="2"><li>
+    
+What percentage of the processor's time is devoted to servicing
+D1?
+
+
+</li></ol></div>
+
+    <div id="question4C" class="question">
+    <ol type="A" start="3"><li>
+    
+What percentage of the processor's time is left for
+noninterrupt programs?
+
+
+</li></ol></div>
+
+    <div id="question4D" class="question">
+    <ol type="A" start="4"><li>
+    
+Assume that if a device interrupts again before a pending
+interrupt on that same device has been serviced, the later interrupt
+is ignored (lost).  Will the system outlined in the table above lose
+interrupts using a <i>strong</i> priority scheme (with priorities as
+given)?
+
+
+</li></ol></div>
+
+    <div id="question4E" class="question">
+    <ol type="A" start="5"><li>
+    
+Under the assumption of question (4), will the system outlined
+in the table above lose interrupts using a <i>weak</i> priority scheme
+(with priorities as given)?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question5" class="question">
+    <p/><hr/><p/><u>Problem 5.</u>
+    
+Consider the following priority-interrupt scenario:
+
+<p/><table border="1" cellspacing="4">
+<tr><td>Task</td><td>Service time (ms)</td><td>Maximum allowed latency (ms)</td><td>Maximum Frequency (1/ms)</td></tr>
+<tr><td>A</td><td>30</td><td>500</td><td>1/3000</td></tr>
+<tr><td>B</td><td>20</td><td>70</td><td>1/1000</td></tr>
+<tr><td>C</td><td>50</td><td>25</td><td>1/500</td></tr>
+<tr><td>D</td><td>10</td><td>10</td><td>1/50</td></tr>
+</table>
+
+
+
+    <div id="question5A" class="question">
+    <ol type="A" start="1"><li>
+    
+Can you use a weak priority scheme for the scenario outlined in
+the table aboved?  Explain.
+
+
+</li></ol></div>
+
+    <div id="question5B" class="question">
+    <ol type="A" start="2"><li>
+    
+Assume that all the interrupts listed in the table above occur
+at their maximum frequency. What percent of the processor's time is
+used to handle interrupts?
+
+
+</li></ol></div>
+
+    <div id="question5C" class="question">
+    <ol type="A" start="3"><li>
+    
+Assume a strong priority system in which 3 is the highest
+priority, 0 the lowest.  Assign a unique priority to each task in the
+table above to meet the specifications given.  Show the maximum time
+between interrupt and <i>completion</i> of service for each of the
+tasks if your priority scheme is used.
+
+
+</li></ol></div>
+</div>
+</body></html>

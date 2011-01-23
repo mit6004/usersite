@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html><body style="margin-top:5px"><h3>Operating system issues</h3>
+
+
+    <div id="question1" class="question">
+    <p/><hr/><p/><u>Problem 1.</u>
+    
+The following code outlines a simple timesharing scheduler:
+
+<pre>struct MState {
+  int Regs[31];                /* saved state of user's registers */
+} User;
+
+int N = 42;                    /* number of processes to schedule */
+int Cur = 0;                   /* number of "active" process */
+
+struct PCB {
+  struct MState State;         /* processor state */
+  Context PageMap;             /* VM map for process */
+  int DPYNum;                  /* console/keyboard number */
+} ProcTbl[N];                  /* one per process */
+
+Scheduler() {
+  ProcTbl[Cur].State = User;   /* save current user state */
+  Cur = (Cur + 1)%N;           /* increment modulo N */
+  User = ProcTbl[Cur].State;   /* make another process the current one */
+}
+</pre>
+
+<p/>Suppose that each time the user hits a key on the keyboard, an interrupt
+is generated and the interrupt handler copies the new character into a
+kernel-resident input buffer.  The operating system includes a ReadKey service
+call (SVC) which can be invoked by the user to read the next character from
+the input buffer.  If the input buffer is empty,
+the SVC should "hang" until a character is available.
+
+<p/>The first draft of the ReadKey SVC handler is shown below.  The SVC handler
+routine saves the user's state in the User structure and then call ReadKey_h().
+When ReadKey_h() returns, the SVC handler restores the user's state and then
+does a JMP(XP) to restart the user's program.
+
+<pre>ReadKey_h() {
+  int kdbnum = ProcTbl[Cur].DPYNum;
+  while (BufferEmpty(kdbnum)) {
+    /* busy wait loop */
+  }
+  User.Regs[0] = ReadInputBuffer(kdbnum);
+}
+</pre>
+
+
+    <div id="question1A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+After executing a ReadKey SVC, where will the user program
+find the next character from the input buffer?
+
+
+</li></ol></div>
+
+    <div id="question1B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Explain what's wrong with this proposed implementation.
+
+
+</li></ol></div>
+
+    <div id="question1C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+A second draft of the keyboard handler is shown below:
+
+<pre>ReadKey_h() {
+  int kdbnum = ProcTbl[Cur].DPYNum;
+  <b>if (BufferEmpty(kdbnum))
+    User.Regs[XP] = User.Regs[XP] - 4;
+  else</b>
+    User.Regs[0] = ReadInputBuffer(kdbnum);
+}
+</pre>
+
+Explain how the modifications fix the problems of the initial implementation.
+
+
+</li></ol></div>
+
+    <div id="question1D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+The designers notice that the process just wastes its time slice waiting for
+someone to hit a key.  So they propose the following modifications:
+
+<pre>ReadKey_h() {
+  int kdbnum = ProcTbl[Cur].DPYNum;
+  if (BufferEmpty(kdbnum)) {
+    User.Regs[XP] = User.Regs[XP] - 4;
+    <b>Scheduler();</b>
+  } else
+    User.Regs[0] = ReadInputBuffer(kdbnum);
+}
+</pre>
+
+What would be the most likely effect of removing the line of
+code where User.Regs[XP] is decremented by 4?
+
+
+</li></ol></div>
+
+    <div id="question1E" class="question">
+    <ol type="A" start="5"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+Explain how this modification improves the overall performance of the
+system (assume the decrement by 4 has not been removed).
+
+
+</li></ol></div>
+
+    <div id="question1F" class="question">
+    <ol type="A" start="6"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+This version of the handler still doesn't prevent the process from
+being scheduled each quantum, even though it may just call Scheduler()
+once again if no character has appeared in the input buffer.  Explain
+how the sleep(status) and wakeup(status) kernel routines described in
+lecture can be used to make sure that processes are only scheduled when
+there is something "useful" for them to do.
+
+
+</li></ol></div>
+</div>
+
+    <div id="question2" class="question">
+    <p/><hr/><p/><u>Problem 2.</u>
+    
+The following questions are about the simple timesharing
+kernel used in Lab 8.  Click <A href="os_code.htm" target="_blank">here</A>
+to view the code in a separate window.
+
+
+    <div id="question2A" class="question">
+    <ol type="A" start="1"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+What happens right after reset?
+
+
+</li></ol></div>
+
+    <div id="question2B" class="question">
+    <ol type="A" start="2"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How does the processor get to execute the other user processes?
+
+
+</li></ol></div>
+
+    <div id="question2C" class="question">
+    <ol type="A" start="3"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How do supervisor calls (SVCs) work?
+
+
+</li></ol></div>
+
+    <div id="question2D" class="question">
+    <ol type="A" start="4"><li>
+    
+<img src="star.gif" alt="Discussed in section"/>
+How do characters typed on the keyboard find their way to user-mode
+programs?
+
+
+</li></ol></div>
+</div>
+
+    <div id="question3" class="question">
+    <p/><hr/><p/><u>Problem 3.</u>
+    
+Real Virtuality, Inc markets three different computers, each with its
+own operating system. The systems are:
+
+<ul>
+<b>Model A</b>: A timeshared,multi-user Beta system whose OS kernel is
+uninterruptable.
+
+<p/><b>Model B</b>: A timeshared Beta system which enables device
+interrupts during handling of SVC traps.
+
+<p/><b>Model C</b>: A single-process (not timeshared) system which
+runs dedicated application code.
+</ul>
+
+<p/> Each system runs an operating system that supports concurrent I/O
+on several devices, including an operator's console including a
+keyboard. Les N. Dowd, RVI's newly-hired OS expert, is in a jam: he
+has dropped the shoebox containing the master copies of OS source for
+all three systems. Unfortunately, three disks containing handlers for
+the ReadKey SVC trap, which reads and returns the ASCII code for the
+next key struck on the keyboard, have gotten confused. Of course, they
+are unlabeled, and Les isn't sure which handler goes into the OS for
+which machine. The handler sources are
+
+<pre>
+ReadCh_h() {				/* VERSION R1 */
+  if (BufferEmpty(0))			/* Has a key been typed? */
+    User->Regs[XP] = User->Regs[XP]-4;	/* Nope, wait.	*/
+  else 
+    User->Regs[0] = ReadInputBuffer(0);	/* Yup, return it. */
+}
+
+ReadCh_h() {				/* VERSION R2 */
+  int kbdnum=ProcTbl[Cur].DpyNum;	
+  while (BufferEmpty(kbdnum)) ;		/* Wait for a key to be hit*/
+  User->Regs[0] = ReadInputBuffer(kbdnum);  /*...then return it. */
+}
+
+ReadCh_h() {				/* VERSION R3 */
+  int kbdnum=ProcTbl[Cur].DpyNum;	
+  if (BufferEmpty(kbdnum)) {		/* Has a key been typed? */
+    User->Regs[XP] = User->Regs[XP]-4;	/* Nope, wait. */
+    Scheduler();
+  } else 
+    User->Regs[0] = ReadInputBuffer(kbdnum);	/* Yup, return it. /
+}
+</pre>
+
+
+    <div id="question3A" class="question">
+    <ol type="A" start="1"><li>
+    
+Show that you're cleverer than Les by figuring out which handler goes
+with each OS, i.e., for each operating system (A, B and C) indicate
+the proper handler (R1, R2 or R3).  Briefly explain your choices.
+
+
+</li></ol></div>
+
+    <div id="question3B" class="question">
+    <ol type="A" start="2"><li>
+    
+But Les isn't that clever. In order to figure out which handler code
+goes with each OS version, Les makes copies of each disk and
+distributes them as "updates" to beta-test teams for each OS. Les
+figures that if each handler version is tried by some beta tester in
+each OS, the comments of the testers will allow him to determine the
+proper OS for each handler.
+
+<p/>Les sends out the alleged source code updates, routing each handler
+source to testers for each OS. In response, he gets a barrage of
+complaints from many of the testers. Of course, he's forgotten which
+disk he sent to each tester. He asks your help to figure out which
+combination of system and hander causes each of the complaints.  For
+each complaint below, explain which handler and which OS the
+complainer is trying to use.
+
+<p/>Complaint: "I get linkage errors; Scheduler and ProcTbl are undefined!"
+
+
+</li></ol></div>
+
+    <div id="question3C" class="question">
+    <ol type="A" start="3"><li>
+    
+Complaint: "I can link up the system using the new handler, but the
+system hangs when my application tries to read a key."
+
+
+</li></ol></div>
+
+    <div id="question3D" class="question">
+    <ol type="A" start="4"><li>
+    
+Complaint: "Hey, now the system always reads everybody's input from
+keyboard 0. Besides that, it seems to waste a lot more CPU cycles than
+it used to."
+
+
+</li></ol></div>
+
+    <div id="question3E" class="question">
+    <ol type="A" start="5"><li>
+    
+Complaint: "Neat, the new system seems to work fine. It even seems to
+waste less CPU time than it used to!"
+
+
+</li></ol></div>
+</div>
+</body></html>

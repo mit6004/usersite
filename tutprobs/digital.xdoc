@@ -1,0 +1,791 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<q:questions xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:q="py:tutprobs"
+	     title = "The digital abstraction">
+
+<q:question>
+The behavior of a 1-input, 1-output device is measured by hooking a
+voltage source to its input and measuring the voltage at the output
+for several different input voltages:
+
+<p/><center><img src="digital05.gif"/></center>
+
+<p/>We're interested in whether this device can serve as a legal
+combinational device that obeys the static discipline. For this
+device, obeying the static discipline means that
+
+<ul>
+	if V<sub>IN</sub> &lt;= V<sub>IL</sub> then V<sub>OUT</sub> &gt;= V<sub>OH</sub>, and<br/>
+	if V<sub>IN</sub> &gt;= V<sub>IH</sub> then V<sub>OUT</sub> &lt;= V<sub>OL</sub>.
+</ul>
+
+<p/>When answering the questions below, assume that all voltages are
+constrained to be in the range 0V to 5V.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Can one chose a V<sub>OL</sub> of 0V for this device?  Explain. 
+
+<q:answer>
+No, since the static discipline requires that V<sub>OUT</sub> &lt;= V<sub>OL</sub>
+for a valid "0" output and V<sub>OUT</sub> for this device never falls
+below 0.5V.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+What's the smallest V<sub>OL</sub> one can choose and still have the device obey
+the static discipline?  Explain.
+
+<q:answer>
+The smallest V<sub>OL</sub> one can choose is 0.5V, the lowest output voltage
+produced by the device.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Assuming that we want to have 0.5V noise margins for both "0" and "1"
+values, what are appropriate voltage levels for V<sub>OL</sub>,
+V<sub>IL</sub>, V<sub>IH</sub>, and V<sub>OH</sub> so that the device
+obeys the static discipline. Hint: there are many possible choices,
+just choose one that obeys the constraints listed above.
+	
+<q:answer>
+Here are the rules of operation imposed on us by the static discipline:
+
+<ol>
+<li>V<sub>IN</sub> &gt;= V<sub>IH</sub> implies V<sub>OUT</sub> &lt;= V<sub>OL</sub></li>
+<li>V<sub>IN</sub> &lt;= V<sub>IL</sub> implies V<sub>OUT</sub> &gt;= V<sub>OH</sub></li>
+<li>V<sub>OL</sub> + noise margin = V<sub>IL</sub></li>
+<li>V<sub>OH</sub> - noise margin = V<sub>IH</sub></li>
+</ol>
+
+<p/>So if V<sub>OL</sub> = 0.5V and assuming 0.5V noise margins, then
+<ul>
+applying rule 3: V<sub>IL</sub> = 1V<br/>
+applying rule 2 and looking at the VTC: V<sub>OH</sub> = 4V<br/>
+applying rule 4: V<sub>IH</sub> = 3.5V
+</ul>
+and finally we can check that rule 1 is obeyed by these choices.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Assuming that we want to have 0.5V noise margins for both "0" and "1"
+values, what is the largest possible voltage level for V<sub>OL</sub> that still
+results in a device that obeys the static discipline?
+
+<q:answer>
+To determine our maximum V<sub>OL</sub>, let's set it equal to N.  Then
+<ul>
+V<sub>IL</sub> = N + 0.5V
+</ul>
+which is simply the noise margin added to V<sub>OL</sub>.  If we let M be
+the size of the forbidden region in volts,
+<ul>
+V<sub>IH</sub> = V<sub>IL</sub> + M = N + 0.5 + M.
+</ul>
+Finally,
+<ul>
+V<sub>OH</sub> = V<sub>IH</sub> + 0.5 = N + M + 1.
+</ul>
+
+<p/>We'll use the function VTC(v) as the name of the function
+represented graphically by the voltage transfer characteristic.  So,
+we want to find N and M such that V<sub>OH</sub> = VTC(V<sub>IL</sub>)
+and V<sub>OL</sub> = VTC(V<sub>IH</sub>).
+If we assume that V<sub>IL</sub> and V<sub>IH</sub> lie in the range [1,2.5] (we'll check
+that assumption in a minute) then
+<ul>
+V<sub>OH</sub> = VTC(V<sub>IL</sub>) implies N + M + 1 = VTC(N + 0.5) = 6 -  2*(N + 0.5)<br/>
+V<sub>OL</sub> = VTC(V<sub>IH</sub>) implies N = VTC(N + 0.5 + M) = 6 - 2*(N + M + 0.5)
+</ul>
+
+<p/>Solving the two equations we get N =1 and M = 1 giving us
+V<sub>OL</sub> = 1, V<sub>IL</sub> = 1.5, V<sub>IH</sub> = 2.5, V<sub>OH</sub> = 3.
+V<sub>IL</sub> and V<sub>IH</sub> lie in the range we assumed above, so we're all set.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Assuming that we want to have equal noise margins for both "0" and "1"
+values, what is the largest noise margin we can achieve with this
+device and still obey the static discipline?
+
+<q:answer>
+It's clear that to maximize our noise margins, V<sub>OL</sub> should
+be as small as possible and V<sub>OH</sub> should be as large as
+possible.  By inspecting the VTC we see that V<sub>OL</sub> = 0.5V is
+the best we can do.  From earlier parts we know we can achieve a noise
+margin N of at least 0.5V.
+
+<p/>We can use the following construction to figure out the largest
+noise margin N.  Consider two of these devices hooked in series:
+
+<p/><center><img src="digital06.gif"/></center>
+
+<p/>The letters "A" through "E" mark points of interest where we'll
+want to determine the voltage.  Assume we apply 0.5V at point "A".
+Then:
+
+<p/><ul>
+at point "B", the largest voltage we'll measure is 0.5 + N, i.e.,
+the voltage we applied to the other end of the wire and the worst-case
+noise perturbation.
+
+<p/>referring to the VTC, with 0.5+N on the input we'll measure a voltage
+of 4 - 2(N + .5 - 1) = 5 - 2N at the output (point "C").
+
+<p/>at point "D", the smallest voltage we'll measure is 5 - 3N, i.e.,
+the voltage we applied to the other end of the wire and the worst-case
+noise perturbation.
+
+<p/>finally at point "E" we'd want to measure 0.5V, i.e., a valid "0"
+voltage level.
+</ul>
+
+<p/>In order to get 0.5V at point "E", the VTC tells us that the input
+voltage (voltage at "D") must be greater than or equal to 3V.  So
+5 - 3N &gt;= 3 which we achieve if N &lt;= 2/3.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Inverter madness.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+The following graph plots the voltage transfer characteristic
+for a device with one input and one output.
+
+<p/><center><img src="digital07.gif"/></center>
+
+Can this device be used as a combinational device in a logic
+family with 0.75V noise margins?
+
+<q:answer>
+No.  The device doesn't have any region in which its gain is
+greater than 1, so there are no choices for V<sub>IL</sub>,
+V<sub>OL</sub>, V<sub>IH</sub>, V<sub>OH</sub> which provide
+for non-zero noise margins.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+You are designing a new logic family and trying to decide on values
+of the four parameters V<sub>IL</sub>, V<sub>OL</sub>, V<sub>IH</sub>,
+V<sub>OH</sub> that lead to non-zero noise margins for various
+possible inverter designs.  Four proposed inverter designs exhibit the
+voltage transfer characteristics shown in the diagrams below.  For
+each design, either (1) specify suitable values of V<sub>IL</sub>,
+V<sub>OL</sub>, V<sub>IH</sub>, V<sub>OH</sub>. or (2) explain why no
+values for these parameters satisfy the static discipline.
+
+<p/><center><img src="digital08.gif"/></center>
+
+<q:answer>
+Device A: V<sub>OL</sub> = 1V, V<sub>IL</sub> = 3.5V, V<sub>IH</sub> = 5V, V<sub>OH</sub> = 6V
+<p/>Device B: no values exist, the gain is never greater than one
+<p/>Device C: no values exist, the gain is never greater than one
+<p/>Device D: V<sub>OL</sub> = .5V, V<sub>IL</sub> = 1V, V<sub>IH</sub> = 3.5V, V<sub>OH</sub> = 6V
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Static discipline.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Consider a combinational <i>buffer</i> with one input and one output.
+Suppose we set its input to some voltage (V<sub>IN</sub>), wait for
+the device to reach a steady state, then measure the voltage on its
+output (V<sub>OUT</sub>) and find V<SUB>OUT</SUB> &lt; V<sub>OL</sub>.
+What can we say about V<sub>IN</sub>?
+
+<q:answer>
+A combinational device guarantees that valid inputs lead to valid outputs
+if we wait longer than the propagation delay.  But the opposite inference
+isn't true: a valid output doesn't imply a valid input -- for example,
+the buffer is allowed a valid "1" before the input has crossed V<sub>IH</sub>.
+
+<p/>So the only statement that we can make is that V<sub>IN</sub> &lt; V<sub>IH</sub>
+since if V<sub>IN</sub> &gt;= V<sub>IH</sub> the buffer is required
+to produce V<sub>OUT</sub> &gt;= V<sub>OH</sub>.
+
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Now consider an inverter.  Suppose we set its inputs to some voltage
+(V<sub>IN</sub>), wait for the device to reach a steady state, then
+measure the voltage on its output (V<sub>OUT</sub>) and find
+V<sub>OUT</sub> &gt; V<sub>OH</sub>.  What can we say about
+V<sub>IN</sub>?
+
+<q:answer>
+Using the same argument as above, the only statement we can make
+is that V<sub>IN</sub> &lt; V<sub>IH</sub>.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Ternary Logic.
+
+<p/>Ternary is a term referring to the number system in base 3.
+Consider a convention in which a ternary digit is presented as an
+electric voltage between 0 and 10 V.  Let 0-1 V represent a valid "0"
+output, 4-6 V a valid "1" output and 9-10 V a valid "2" output.
+
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Assuming noise margins 1 V wide, show the mapping of logic levels to
+voltages for this ternary system.  Include valid logic-level outputs,
+noise margins and forbidden zones.  Your chart should resemble the
+following diagram, except of course it will incorporate 3 valid signal
+levels:
+
+<p/><center><img src="digital13.gif"/></center>
+
+<q:answer>
+<img src="digital16.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+<img src="star.gif" alt="Discussed in section"/>
+Graph the transfer characteristic for a device capable of acting as a
+ternary logic buffer, i.e., a device that produces at its output the
+same logic level present at its input, as shown below:
+
+<p/><center><img src="digital14.gif"/></center>
+
+<q:answer>
+We need three stable regions, one for each valid output, and a high
+gain between valid levels to help restore poor inputs to an output
+valid level.
+
+<p/><img src="digital17.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Can a device with the following transfer characteristic be used as
+a ternary logic buffer?  Why or why not?
+
+<p/><center><img src="digital15.gif"/></center>
+
+<q:answer>
+No, it can't be used as a ternary logic buffer. The device has only
+two stable regions.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+How many bits of information are carried in a ternary signal on a single wire?
+
+<q:answer>
+log<sub>2</sub>(3) = 1.585 bits
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+How many different combinations of valid logic levels can be encoded
+on three ternary wires?  How many bits of information does this
+represent?  How many wires would be needed to carry this same amount
+of information in binary?
+
+<q:answer>
+27 different combinations can be encoded. This corresponds to
+log<sub>2</sub>(27) = 4.75 bits of information. Each binary wire
+carries one bit, so we would need 5 wires.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+What is the information flow in bits/second for three ternary wires if
+a new set of values is sent every 10 ms?  What is the information flow
+in bits/second for three binary wires if a new set of values is sent
+every 10 ms?
+
+<q:answer>
+Trinary: 4.75bits/packet * 1 packet/10ms = 475 bits/second<br/>
+Binary: 3 bits/packet * 1 packet/10ms = 300 bits/second
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+<i>Barracks logic</i> is built out of sleeping soldiers covered by
+electric blankets. Each blanket has a control switch with discrete
+control settings ranging in 5-degree (Fahrenheit) intervals from 0 to 50
+degrees. The temperature of a soldier covered by one or more electric blankets
+will be the sum of the ambient temperature in the barracks
+plus the setting on the controller for each blanket.
+
+<p/>Each soldier has a preferred sleeping temperature, which varies from
+individual to individual but is always within the range of 60 to 80
+degrees, inclusive. If a soldier's temperature departs from
+her preferred temperature, the soldier will wake up once
+every minute and adjust the control by one 5-degree increment in the
+appropriate direction (if the solider is cold, the solider will
+increase the setting on the control, and vice versa).  The soldier will
+continue these adjustments by 5-degree increments until she once again reaches
+her preferred temperature (and goes to sleep) or runs out of settings (in
+which case she grumbles angrily in bed).
+
+<p/>If soldiers are allowed to control their own blankets, each will
+soon reach their preferred temperature and slide into nocturnal bliss
+(assuming a suitable ambient temperature).  The interesting aspects
+of barracks logic result from switching the controls of the various
+blankets to different soldiers.  Inputs to the system are
+accomplished by placing a few controls in the hands of outsiders, and
+outputs are read from the control settings of certain soldiers
+designated by the logic designer.
+
+<q:subquestion>
+Draw the graph of output control setting vs. input control
+setting for a typical soldier in steady state.  Assume an ambient
+temperature of 40 degrees.  Suggest good choices of the
+valid regions for the two logical values, the forbidden zone, and the
+noise margins.  Let logical 0 be when a control is completely off
+and logical 1 be when the control is completely on (or at the highest
+setting).
+
+<q:answer>
+The soldiers have infinite gain since they continue to adjust their
+blanket as long as their temperature differs even slightly from
+their preferred temperature.  (Actually given the control works only
+in 5-degree increments, it's unlikely than any solider will sleep
+unless the difference between the ambient temperature and her preferred
+temperature is exactly 5 degrees.)  So the typical soldier's graph
+looks like:
+
+<p/><center><img src="digital18.gif"/></center>
+
+<p/>where the vertical part of the curve for a particular soldier
+would be located anywhere between 60 and 80 degrees.
+
+<p/>Examining the curve we see that it's possible to achieve a
+20-degree noise margin for low values and a 10-degree noise margin
+at high values:
+
+<ul>
+T<sub>OL</sub> = 0 degrees<br/>
+T<sub>IL</sub> = 20 degrees<br/>
+T<sub>IH</sub> = 40 degrees<br/>
+T<sub>OH</sub> = 50 degrees
+</ul>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+List some sources of noise that justify the need for noise margins.
+
+<q:answer>
+Noise appears as a difference in temperature between the setting of
+the input control and what the solider actually feels.  Sources
+of noise: changes in ambient temperature caused by drafts, changes
+in blanket operature due to line voltage variations, etc.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Even though it is the middle of February, a sudden warm spell raises
+the ambient temperature in our barracks logic system to 55 degrees.
+Sketch a new graph of output control setting vs. input control setting
+in the warmer barracks.
+
+<q:answer>
+Since the solider works the same, the whole graph shifts to the left
+since the input settings would be lower to achieve the same
+temperature at the soldier:
+
+<p/><center><img src="digital19.gif"/></center>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Over what range of ambient temperatures will barracks logic function
+reliably?
+
+<q:answer>
+"Reliable" in this example means that all soldiers can produce both
+outputs (i.e., output control set to 0 and 50).  Let N be the desired
+noise margin in degrees.  If the temperature rises above 60-N degrees,
+soldiers with a preferred temperature of 60 will always have
+their output control set to 0 regardless of the setting of their
+input control.  Similarly if the temperature falls below 30+N degrees
+soldiers with a preferred temperature of 80 will always have
+their output control set to 50 regardless of the setting of their
+input control.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Does the following arrangement perform a useful function?  What is it?
+
+<p/><center><img src="digital09.gif"/></center>
+
+<q:answer>
+The soldier functions as an inverter.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+To create a system with multiple inputs, we allow several blankets to be
+placed over a single soldier.  What is the maximum fanin possible in
+barracks logic if 170 degrees is the highest temperature a soldier
+can tolerate without his characteristics being permanently altered?
+
+<q:answer>
+If each soldier can tolerate 170 degrees then 170-ambient is the
+number of degrees that can be added to a soldier's environment
+by blankets.  Each blanket can add up to 50 degrees, so
+(170-ambient)/50 is the limit on the number of blankets that can
+be piled on one soldier.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+Bread and Circuits, Inc. has discovered an interesting electronic
+device (a Z-module) which is made using a single yeast cell, a speck
+of flour, and a grain of salt.  The Z-module has two inputs carrying
+voltages VA and VB and a single output carrying VC.  The output VC
+settles, after a 10ns period of stable input voltages, to the product
+of the input voltages restricted to range of 0V to 2V.  In other
+words,
+
+<p/><table cellpadding="4">
+<tr>
+  <td valign="center" rowspan="2">V<sub>C</sub> =</td>
+  <td>V<sub>A</sub> * V<sub>B</sub> when 0 &lt;= V<sub>A</sub> * V<sub>B</sub> &lt;= 2</td>
+</tr><tr>
+  <td>2 when V<sub>A</sub> * V<sub>B</sub> &gt; 2</td>
+</tr></table>
+
+<p/>Assume that the Z-module treats negative input voltages as if they were 0.
+
+<p/>B&amp;C is trying to make a logic family using Z-modules.  As a
+starting point, they claim that
+
+<p/><center><img src="digital11.gif"/></center> 
+
+<p/>constitutes a valid combinational buffer under the proper
+voltage-to-logic representation conventions and will yield reasonable
+noise margins.
+
+<q:subquestion>
+Which, if any, of the following proposed voltage thresholds yields a
+valid buffer with positive noise margins?
+
+<pre>
+A. VOL = 1.5V  VIL = 1.6V  VIH = 1.7V  VOH = 1.8V
+B. VOL = 0.7V  VIL = 0.9V  VIH = 1.1V  VOH = 1.3V
+C. VOL = 0.1V  VIL = 0.3V  VIH = 1.7V  VOH = 1.9V
+D. VOL = 0.5V  VIL = 0.5V  VIH = 1.5V  VOH = 1.5V
+</pre>
+
+<q:answer>
+Choice A would allow two "low" inputs (e.g., 1.6V) to generate a "high" output
+(1.6 * 1.6 = 2.56 which is above VOH) => not okay.
+
+<p/>Choice B would allow two "high" inputs (e.g., 1.1V) to generate an underdetermined
+output (1.1 * 1.1 = 1.21 which is above VOL but below VOH)
+ => not okay.
+
+<p/>Choice C has positive noise margins and the allowed input voltages
+result in the desired behavior => okay
+
+<p/>Choice D doesn't have positive noise margins => not okay.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Determine the voltage thresholds that maximize the noise margins of
+B&amp;C's buffer.  If the noise margins are not independent, maximize the
+smaller of the two.
+
+<q:answer>
+To maximize the noise margins of the buffer, we consider the voltage
+transfer characteristic of the Z-module. Since VIN<sup>2</sup> &gt;= 2 will result in
+a VOH of 2, then we have VIH &gt;= sqrt(2).  Thus, VIH = sqrt(2), and VOH = 2.
+
+<p/>Since VOUT = VIN<sup>2</sup> in the lower region of the voltage transfer
+characteristic, then let us represent VIN with "x" and VOUT with "x<sup>2</sup>".
+Then the lower noise margin is represented by the function
+f(x)&nbsp;=&nbsp;x&nbsp;-&nbsp;x<sup>2</sup>.
+
+<p/>To maximize the noise margin, we take the first derivative of f(x)
+and set it to zero: f'(x)&nbsp;=&nbsp;1&nbsp;-&nbsp;2x&nbsp;=&nbsp;0.
+Solving for x gives 0.5. Thus, VIL = x = 0.5V, and VOL = x<sup>2</sup> = 0.25V.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Ivan Idea, chief logician at B&amp;C, is exploring the use of a single
+Z-module as a two-input logic gate, again with positive noise margins.
+He suspects that a Z-module, under the appropriate logic conventions,
+can be used for an AND or OR gate which obeys the static discipline.
+Ivan's been at it for several weeks and needs your help.
+
+<p/>Can you find a way to use a Z-module for an AND or OR combinational
+device?  If so, give the appropriate input and output voltage
+thresholds and the function performed.  If not, carefully explain why
+the Z-module can't be used as AND or OR.
+
+<q:answer>
+No, the Z-module can't be used as either an AND gate or an OR gate.
+
+<p/>In order to implement an OR gate, we must have the behavior that a
+logic "1" input and a logic "0" input produces a logic "1" output.  In
+the case of a single Z-module, if we had 2V as the first input and 0V
+as the second input (noiseless, perfect input voltages) the output is
+0V, instead of a logic "1" voltage.
+
+<p/>In order to implement an AND gate, we must have the behavior that a
+logic "1" input and a logic "0" input produces a logic "0" output.
+According to the static discipline, a "0" output means VOUT should be
+less than equal to VOL.  If we
+substitute 2V for the logic "1" input and consider the "0"
+input, we have VOUT = VIL * 2 &lt;= VOL.  But we can't have VOL &gt;
+VIL, so the Z-module can't function as an AND gate.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Ivan sidesteps the previous enigma by allowing himself the use of
+several Z-modules as components of a single logic gate.  He assumes
+(and you may too) that noise enters the system only between logic
+gates, not between the components of a single gate.  He notes that
+each of B&amp;C's proposed buffers (using one Z-module) is an amplifier
+with gain greater than one.  Ivan reasons that by cascading many such
+devices (as shown below), he can achieve arbitrarily high gain and
+hence excellent noise margins.
+
+<p/><center><img src="digital12.gif"/></center> 
+ 
+<p/>His plan is to use such a high-gain cascade on the output of a
+Z-module to restore the validity of marginal signal levels.  Describe
+the voltage transfer characteristic (i.e, VIN vs. VOUT) of a cascade
+of a large number of Z-modules (via an expression or sketch).
+
+<q:answer>
+For N cascaded Z-modules, the voltage transfer characteristic is:
+
+<p/><center><img src="digital20.gif"/></center> 
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Is there any way by which many Z-modules can be used to build a
+2-input AND gate whose noise margins are both greater than 0.75V?  If
+so, sketch an approach (giving a diagram and calculating the noise
+margins).  If not, give a brief but convincing explanation.
+
+<q:answer>
+It is possible to build an AND gate whose noise margins greater than
+0.75V.  Our strategy is to clean up both input signals independently
+before computing the logic function.  A cascade of 5 Z-modules is
+enough to restore marginal signals, and the last Z-module on the right
+performs the AND function.  The diagram looks like this:
+
+<p/><center><img src="digital21.gif"/></center> 
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+<b>Combinational construction rules</b>
+
+<p/>In lecture, we learned two basic principles regarding the class of
+combinational devices.  The first allows us to build a combinational
+device from, e.g., electronic components:
+
+<ul>
+<li>A <i>combinational device</i> is a circuit element that has
+<ul>
+<li>one or more digital <i>inputs</i></li>
+<li>one or more digital <i>outputs</i></li>
+<li>a <i>functional specification</i> that details the value of each
+output for every possible combination of valid input values</li>
+<li>a <i>timing specification</i> consisting (at minimum) of an upper
+bound t<sub>pd</sub> on the required time for the device to compute
+the specified output values from an arbitrary set of stable, valid
+input values.</li>
+</ul></li>
+</ul>
+
+<p/>while the second allows us to construct complex combinational
+devices from acyclic circuits containing simpler ones:
+
+<ul>
+<li>A set of interconnected elements is a combinational device if
+<ul>
+<li>each circuit element is combinational</li>
+<li>every input is connected to exactly one output or to some vast
+supply of 0's and 1's</li>
+<li>the circuit contains no directed cycles</li>
+</ul></li>
+</ul>
+
+<p/>In this problem, we ask you to think carefully about why these rules
+work - in particular, why an acyclic circuit of combinational devices,
+constructed according to the second principle, is itself a
+combinational device as defined by the first.  You may assume for the
+following that every input and output is a logical 0 or 1.
+
+<p/>Consider the following 2-input acyclic circuit whose two
+components, A and B, are each combinational devices:
+
+<p/><center><img src="digital01.gif"/></center>
+
+<p/>The propagation delay - the upper bound on the output settling time
+- for each device is specified in nanoseconds.  The functional
+specifications for each component are given as truth tables detailing
+output values for each combination of inputs:
+
+<p/><center><img src="digital02.gif"/></center>
+
+<q:subquestion>
+Give a truth table for the acyclic circuit, i.e. a table that
+specifies the value of z for each of the possible combinations of
+input values on x and y.
+
+<q:answer>
+<img src="digital03.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Describe a general procedure by which a truth table can be computed
+for each output of an arbitrary acyclic circuit containing only
+combinational components.  [HINT: construct a functional specification to
+each circuit node].
+
+<q:answer>
+Since each circuit node is connected to an output of some
+combinational element, the functional specification for each circuit
+node is given by the functional specification for the combinational
+element which drives it.  If we start with components that are only
+connected to inputs to the overall circuit, we can build truth tables
+for their outputs that only involve those inputs.  We can then work on
+the next tier of components and build truth tables for their outputs
+that only involve overall circuit inputs.  Continuing in this manner,
+we'll eventually reach components that drive the overall circuit
+outputs and be able to construct truth tables for each output that
+only involves overall circuit inputs.
+
+<p/>In our example, we'd first build a truth table for the output of the
+A module and then use that table to build a table for Z:
+
+<p/><img src="digital04.gif"/>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Specify a propagation delay (the upper bound required for each
+combinational device) for the circuit.
+
+<q:answer>
+The propagation delay for Z is 5ns.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Describe a general procedure by which a propagation delay can be
+computed for an arbitrary acyclic circuit containing only
+combinational components.  [HINT: add a timing specification to each
+circuit node].
+
+<q:answer>
+<ol>
+<li>Label each INPUT to the circuit with tpd=0.
+<li>Repeatedly</li>
+<ul>
+<li>Find a circuit element E whose input nodes are each labeled
+with a prop delay but whose output nodes are not.</li>
+<li>Label each output node of E with the delay M, where M is the
+prop delay of E plus the MAXIMUM of the times on the input nodes.</li>
+<li>When you can't find an unlabeled output node, stop.</li>
+</ul></li>
+<li>The prop delay spec for the device is the MAX of the prop delay
+labels on the output nodes.</li>
+</ol>
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Do your general procedures for computing functional specifications and
+propagation delays work if the restriction to acyclic circuits is
+relaxed?  Explain.
+
+<q:answer>
+No.  Without cycles, you're guaranteed to be able to find a new output
+node to label (i.e., the output of some element E whose inputs are
+already labeled) until the entire circuit is labeled.  If you have
+cycles, the algorithm breaks down.  You can be left with a cycle of
+elements whose outputs are unlabeled and some of whose inputs are
+unlabeled.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+<q:question>
+If you are given the following 2-input and 2-output combinational
+block:
+
+<p/><center><img src="digital10.gif"/></center>
+
+<p/>with the following functional description: The output X is the the
+logical complement of the input A, and the output Y is the the logical
+complement of the input B. And valid ouputs are guaranteed after
+valid inputs have been established for 1 second.
+
+<q:subquestion>
+Does this device adhere to the static disipline?
+
+<q:answer>
+Yes: there's an unambiguous functional specification for each output
+and a maximum propagation delay has been specified.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Suppose that the output X is connected to the input B, what
+output would you expect?
+
+<q:answer>
+If you assume that the circuit was composed of two inverters
+(one with A as its input, the other with B as its input) then
+we would expect Y = A after 2 second propagation delay.
+
+<p/>However, there are other implementations that have the
+same functional specification.  In particular, X might be
+implemented with logic that uses both A and B as inputs.
+In this case, connecting X to B would create a cycle and
+the value of Y might be undetermined.
+
+</q:answer>
+</q:subquestion>
+<q:subquestion>
+Suppose the functional description was changed to the
+following: The ouput X is a 1 if both A and B are "0", and
+Y is a 1 if either A or B but not both are "1".
+Does this change the answer the previous question?
+
+<q:answer>
+No.  Since X and Y are functions of both A and B, it's
+more obvious that a cycle would be created when X was connected
+to B.
+
+</q:answer>
+</q:subquestion>
+</q:question>
+</q:questions>
