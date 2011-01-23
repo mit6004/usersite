@@ -236,13 +236,21 @@ def tutorial_by_id(request, topic, linked_problem_id):
 ## testing jquery ##
 ## server side handler function 
 def post_handler(request):
-    print "In post_handler"
-    iform_start = request.POST['iform_start']
-    print "iform_start : %s \n" %(iform_start)
-    iform_end = request.POST['iform_end']
-    print "iform_end : %s \n" %(iform_end)
-    return HttpResponse("{'response_text': 'recieved.'}", 
-                                   mimetype="application/json")
+    print "In post_handler \n"
+    
+    message = 'failure'
+    if request.is_ajax():
+        print "request in post handler is ajax \n"
+        if request.method == 'POST':
+            "method is a POST method \n"
+            iform_start = request.POST['iform_start']
+            print "iform_start : %s \n" %(iform_start)
+            iform_end = request.POST['iform_end']
+            print "iform_end : %s \n" %(iform_end)
+            message = 'success'
+    return_dict = {'response_text': message }
+    json = simplejson.dumps( return_dict )
+    return HttpResponse(json, mimetype="application/x-javascript")
 
     
 def post_test(request):

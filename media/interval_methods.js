@@ -104,8 +104,9 @@ function check_and_send()
 		    type:'POST',
 		    url: "/post_test/",
 		    data: { iform_start : last_start_time,
-			    iform_end: last_pause },
-		    success: function(responseData) {alert(responseData.response_test);},
+			    iform_end : last_pause },
+		    success: function(responseData) 
+			{alert(responseData.response_text);},
 			dataType: "json"
 			});
 
