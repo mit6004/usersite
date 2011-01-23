@@ -28,19 +28,13 @@ function increment_start_timer()
     document.getElementById('start_timer').value = timer_value;
 }
 
-function set_start_timer_id_display()
-{
-    var timer_id = document.getElementById('start_timer_id').value;
-    document.getElementById('start_timer_id_display').value = timer_id;
-}
-
 function begin_start_timer()
 {
     document.getElementById('debug').value = "begin_Start_timer";
     var last_start_time = document.getElementById('start_timer').value;
     var timer_id = setInterval("increment_start_timer()", 1000);
     document.getElementById('start_timer_id').value = timer_id;
-    set_start_timer_id_display();
+    increment_start_timer();
 }
 
 function set_start_seconds()
@@ -101,31 +95,38 @@ function check_and_send()
     if ( last_pause < skipped_to )
 	{
 	    document.getElementById('debug2').value = "last_start_time < current";
-	    //createNewFormElement(form, "start_time", last_start_time);
 	    document.getElementById('iform_start_time').value = last_start_time;
 	    document.getElementById('iform_end_time').value = last_pause;
 	    document.getElementById('debug2').value = 
 		"added start time as " + document.getElementById('iform_start_time').value;
+	    
+	    $.ajax({
+		    type:'POST',
+		    url: "/post_test/",
+		    data: { iform_start : last_start_time,
+			    iform_end: last_pause },
+		    success: function(responseData) {alert(responseData.response_test);},
+			dataType: "json"
+			});
+
 	    /*
 	    $.post("/post_test/", 
 		   { iform_start_time : last_start_time, iform_end_time : last_pause } );
-	    */
-	    $('#iform').submit(function(event){
-		    event.preventDefault();
-		    var iform = this;
-		    var data = {};
-		    data.iform_start = $(iform).find('input[@name = iform_start_time]').val();
-		    data.iform_end = $(iform).find('input[@name = iform_end_time]').val();
-		    
-		    $.post("/post_test/",
-			   data,
-			   function(responseData) {
-			       alert(responseData.response_text);
-			   },			
-			   "json"
-			   );
+	    
+	    $(document).ready(function() {
+		    $('#iform').submit(function(event){
+			    event.preventDefault();
+			    var iform = this;
+			    var data = {};
+			    data.iform_start = $(iform).find('input[@name = iform_start_time]').val();
+			    data.iform_end = $(iform).find('input[@name = iform_end_time]').val();
+			    
+			    $.post("/post_test/", data,
+				   function(responseData) { 
+				       alert(responseData.response_text); }, "json");
+			});
 		});
-	    $('#iform').submit();
+	    */
 	}
 }
 

@@ -241,7 +241,7 @@ def post_handler(request):
     print "iform_start : %s \n" %(iform_start)
     iform_end = request.POST['iform_end']
     print "iform_end : %s \n" %(iform_end)
-    return HttpResponse("{'response_text: recieved.'}", 
+    return HttpResponse("{'response_text': 'recieved.'}", 
                                    mimetype="application/json")
 
     
