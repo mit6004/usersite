@@ -166,6 +166,9 @@ def student_portal(request, topic_snippet_id="1", show='Favorites', query_string
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/public/")
 
+    if request.user.is_staff:
+        return HttpResponseRedirect("/view_history/")
+
     public_ta_dict = get_public_videos(request)
     favorite_dict = get_student_favorites(request)
     fave_tas_by_topic = get_fave_tas_by_topic(request)

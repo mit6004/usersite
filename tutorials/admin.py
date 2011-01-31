@@ -14,6 +14,10 @@ class PublicVideoAdmin(admin.ModelAdmin):
     pass
 
 
+class ViewIntervalAdmin(admin.ModelAdmin):
+    list_display=('user', 'ta', 'time', 'range')
+    list_filter=('user', 'ta', 'time')
+
 class TopicAssignmentAdmin(admin.ModelAdmin):
     list_display=('topic', 'video')
     list_filter=('topic', 'video')
@@ -35,5 +39,6 @@ admin.site.register(TopicAssignment, TopicAssignmentAdmin)
 #admin.site.register(OldQuizVideo, OldQuizVideoAdmin)
 #admin.site.register(LabHintVideo, LabHintVideoAdmin)
 admin.site.register(Comment)
+admin.site.register(ViewInterval, ViewIntervalAdmin)
 admin.site.register(LinkedWebPage, LinkedWebPageAdmin)
 admin.site.register(Favorite, FavoriteAdmin)

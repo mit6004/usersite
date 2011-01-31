@@ -81,6 +81,13 @@ function set_interval_start()
     //begin_start_timer();
 }
 
+function set_graph(ta_id)
+{
+    var url = "/view_history/" + parseInt(ta_id) + "/";
+    $('#view_graph').load(url);
+
+}
+
 
 // form to send interval to server
 function check_and_send()
@@ -121,6 +128,8 @@ function check_and_send()
 			    },
 			success: function(responseData) 
 			{
+			    // added to modify graph
+			    $('.view_graph_div').replaceWith(responseData);
 			    console.log(responseData);
 			    //alert(responseData);
 			},

@@ -1,0 +1,34 @@
+<table>
+  <tr>
+    <td>
+      <input type="hidden" id="interval_start_units" name="interval_start_units"/>
+      <input type="hidden" id="interval_start_display" name="interval_start_display" value="0"/>
+      <input type="hidden" id="interval_pause_units" name="interval_pause_units"/>
+      <input type="hidden" id="interval_pause_display" name="interval_pause_display" value="0"/>
+      <input type="hidden" id="interval_skip_units" name="interval_skip_units"/>
+      <input type="hidden" id="interval_skip_display" name="interval_skip_display" value="0"/>
+      <input type="hidden" id="play_timer" name="play_timer" value="?"/>
+      <input type="hidden" id="play_timer_id" name="play_timer_id" value="?"/>
+      <input type="hidden" id="start_seconds_display" name="start_seconds_display" value="?"/>
+      <input type="hidden" id="pause_seconds_display" name="pause_seconds_display" value="?"/>
+      <input type="hidden" id="skip_seconds_display" name="skip_seconds_display" value="?"/>
+      
+      <input type="hidden" id="start_timer" name="start_timer" value="0"/>
+      <input type="hidden" id="start_timer_id" name="start_timer_id"/>
+    </td>
+  </tr>
+</table>
+      
+<input type="hidden" id="timescale" name="timescale" value="?"/>
+<form id="iform" method="post">
+  <input type="hidden" id="ta_id" name="ta_id" value="{{selected_ta.id}}"/>
+  <input type="hidden" id="user" name="user" value="{{user}}"/>
+  <input type="hidden" id="iform_start_time" name="iform_start_time" value="0"/>
+  <input type="hidden" id="iform_end_time" name="iform_end_time" value="0"/>
+</form>
+
+<tr>
+  <td>
+    {% include "comment_view.html" %}	
+  </td>
+</tr>

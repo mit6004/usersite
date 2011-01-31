@@ -4,7 +4,7 @@
 
 {% block header %}
 
-{% include "movie_header.html" %}
+{% include "staff_movie_header.html" %}
 
 {% endblock header %}
 
@@ -15,6 +15,8 @@
 
 
 <table border="0">
+
+
   <tr>
     <td>
       <div id="movie_div" style="float:left;align:left"></div>
@@ -25,21 +27,22 @@
     </td>
   </tr>
 
-{% if debug %}
-{% include "log_debug_rows.html" %}
-{% endif %}
+  <!-- 800 by 300 graph in same table -->
+    <tr>
+    <td>
+      <div id="view_graph_div" class="view_graph_div" style="float:left;align:left">
+      <img id="view_graph" name="view_graph" src="{{img_url}}" />
+      </div>
+    </td>
+  </tr>
+  
+{% include "timing_fields.html" %}
 
 </table>
 
-<!--
-<form id="post_form" method="post">
-  URL: <input type="text" name="our_text" />
-  <input type="submit" value="Add" />
-</form>
--->
-
-
 {% endblock main_column%}
+
+<!--
 {% block sidebar %}
 
 {% include "similar_video_bar.html" %}
@@ -47,4 +50,4 @@
 
 
 {% endblock sidebar %}
-
+-->

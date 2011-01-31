@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from tutorials.models import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
 from tutorials.forms import PublicVideoForm
 
 
@@ -28,8 +29,6 @@ def preview_and_set_topic(request, video_id):
     if request.method=="POST":
         # We have an upload submission from movie_preview.html
         print "post!"
-
-
 
         if 'start_time_units' in request.POST.keys():
             # then the button, with input type "onclick" triggers the event listener 
@@ -67,7 +66,7 @@ def preview_and_set_topic(request, video_id):
 
 @login_required
 def upload_video(request):
-
+ 
     # makes sure that the user is staff before rendering the page
     check_staff(request)
 
@@ -92,4 +91,89 @@ def upload_video(request):
         }
     template = 'upload_video.html'
     return render_to_response(template, dict)
+
+
+def display_interval_list(request):
+    topic_assignments = TopicAssignment.objects.all()
+    title_string = "List of Topic-Assigned Clips"
+    header_string = "Click one of the links to check the view history"
+    dict = {
+        'title_string' : title_string,
+        'header_string' : header_string,
+        'ta_query_set' : topic_assignments
+        }
+    template = "view_history_list.html"
+    return render_to_response(template, dict)
+
+
+
+def get_img_url(ta_id):
+    id=int(ta_id)
+    ta = TopicAssignment.objects.get(pk=id)
+    print "(display_interval_views) ta = %s" %(ta)
+    intervals = ta.viewinterval_set.all()
+    number = intervals.count()
+    interval_stop_times = intervals.values_list('stop_time', flat=True).order_by('-stop_time')
+    if not (interval_stop_times.count() == 0):
+        intervals_max = int(interval_stop_times[0])
+    else:
+        intervals_max = 100
+    print "intervals_max = " + str(intervals_max)
+    print "(display_interval_views) there are %d intervals for this topic assignment." %(number)
+    view_vector = [0]
+    for i in range(intervals_max):
+        #print "in outer for loop with index = " + str(i)
+        view_vector.append(0)
+        # initialize array value for this index to zero
+        for interval in intervals:
+            if interval.has_second(i):
+                #print "view_vector["+str(i)+"] = " + str(view_vector[i])
+                view_vector[i] = view_vector[i] + 1
+
+    for i in range (intervals_max):
+        print "-- view_vector["+str(i)+"] = " + str(view_vector[i])
+    max_views = max(view_vector)
+    if (max_views == 0):
+        max_views = 1
+
+    print "max_views = " + str(max_views)
+    img_url = "http://chart.googleapis.com/chart?"
+    # to make a line chart
+    img_url = img_url + "cht=lc&"
+    # make a graph that is 800x300 (default)
+    img_url = img_url + "&chs=600x300"
+    # add the data values
+    img_url = img_url + "&chd=t:" + str(view_vector[0]*100/max_views)
+    for i in range (1, intervals_max):
+        img_url = img_url + ","+ str(view_vector[i]*100/max_views)
+    # format the axis scale and color, respectively
+    img_url = img_url + "&chxt=x,y&chxr=0,0," + str(intervals_max) + ",5|1,0,"+str(max_views)+",1"
+    img_url = img_url + "&chxs=0,2244FF,12,0,lt|1,0055FF,10,1,lt"
+
+    return img_url
+
+
+# want to count all of the people viewing at each time unit to determine 
+# popular parts of a video. this one just counts all views, without regard to user
+@login_required
+def display_interval_views(request, ta_id):
+    user = AnonymousUser()
+    if request.user.is_authenticated():
+        user = request.user
+    id=int(ta_id)
+    ta = TopicAssignment.objects.get(pk=id)
+
+    img_url = get_img_url(ta_id)
+    print "img_url = " + img_url
+    context = {
+        "ta_start" : ta.start_time,
+        "ta_id":ta_id,
+        "user":user,
+        "ta_stop" : ta.stop_time,
+        "selected_ta" : ta,
+        "img_url" : img_url
+        }
+    template = "display_interval_views.html"
+    return render_to_response(template, context)
+
 

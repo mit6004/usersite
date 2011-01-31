@@ -1,7 +1,8 @@
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from records.models import *
-from tutorials.models import TopicAssignment
+from tutorials.models import TopicAssignment, ViewInterval
+from staff_views import get_img_url
 
 from tutorials.filters import TopicAssignmentFilterSet
 from django.contrib.auth.decorators import login_required
@@ -9,6 +10,10 @@ from django.contrib.auth.models import AnonymousUser
 from django.template import RequestContext
 from django.db.models import Q
 from django.conf import settings
+
+from django.utils import simplejson
+from django.core import serializers
+
 import datetime, os, re
     
 
@@ -239,18 +244,41 @@ def post_handler(request):
     print "In post_handler \n"
     
     message = 'failure'
+    interval = ViewInterval()
     if request.is_ajax():
         print "request in post handler is ajax \n"
         if request.method == 'POST':
-            "method is a POST method \n"
+            
             iform_start = request.POST['iform_start']
-            print "iform_start : %s \n" %(iform_start)
+            print "iform_start : %s" %(iform_start)
             iform_end = request.POST['iform_end']
-            print "iform_end : %s \n" %(iform_end)
-            message = 'success'
-    return_dict = {'response_text': message }
-    json = simplejson.dumps( return_dict )
-    return HttpResponse(json, mimetype="application/x-javascript")
+            print "iform_end : %s" %(iform_end)
+            username = request.POST['user']
+            user = User.objects.get(username=username)
+            print "user : %s" %(user)
+            ta_id = int(request.POST['ta_id'])
+            print "ta_id : %s" %(ta_id)
+            ta = TopicAssignment.objects.get(pk=ta_id)
+            print "ta : %s" %(ta)
+            img_url = get_img_url(ta_id)
+            img_div = "<div id=\"view_graph_div\" class=\"view_graph_div\" style=\"float:left;align:left\">"
+            img_div = img_div + "<img id=\"view_graph\" name=\"view_graph\" src=\"" + img_url + "\" />"
+            img_div = img_div + "</div>"
+            message = img_div
+            ##interval = ViewInterval(ta=ta, user=user, start_time=iform_start, end_time=iform_end)
+            interval = ViewInterval()
+            print "made an interval"
+            interval.ta = ta
+            interval.user=user
+            interval.start_time = iform_start
+            interval.stop_time = iform_end
+            interval.save()
+            
+            #print "about to run serializer"
+            #data_dict = serializers.serialize("json", interval)
+    #print "about to return http response: %s  \n" %(data_dict)
+    print "saved interval"
+    return HttpResponse(message, mimetype="text/html")
 
     
 def post_test(request):
@@ -265,13 +293,12 @@ def post_test(request):
     comments=Comment.objects.none()
 #    comments=ta.comments.all()
 
-   # empty query set
+   # empty query set   
     if student_info['is_authenticated']:
         student=student_info['student']
         student_faves = get_student_favorites(request)
-        comments = ta.comments.filter(
-            Q(permissions='students') 
-            | ( Q(permissions='staff') & Q(user=student) ) )
+        comments = ta.comments.filter( Q(permissions='students') 
+                                       | ( Q(permissions='staff') & Q(user=student) ) )
         if student.is_staff:
             comments=ta.comments.all()
         if student_faves['faves'].filter(pk=ta_id).count():

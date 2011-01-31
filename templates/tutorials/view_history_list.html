@@ -1,0 +1,51 @@
+{% extends "two_column.html" %}
+
+{% block title %} {{title_string}} {% endblock %}
+
+
+{% block page_top %}
+{{header_string}}
+{% endblock page_top %}
+
+{% block main_column %}
+<table border="1">
+  <tr>
+    <th>
+      Video
+    </th>
+    <th>
+      # of Staff Faves
+    </th>
+    <th>
+      # of Student Faves
+    </th>
+  </tr>
+
+  {% for ta in ta_query_set %}
+  <tr>
+    <td>
+      <a href="/view_history/{{ta.id}}/">
+      {% if ta.video.title %}
+      {{ta.video.title}} 
+      {% else %}
+      {{ta.video.file_name}}
+      {% endif %}
+      </a>
+    </td>
+    <td>
+      {{ta.get_num_staff_favorites}}
+    </td>
+    <td>
+      {{ta.get_num_student_favorites}}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock main_column %}      
+{% block sidebar %}
+
+<p class="sidebar_header" align="center">
+  <a href="/accounts/profile/">
+    Return to Media Browser</a></p>
+
+{% endblock sidebar %}

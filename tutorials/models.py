@@ -219,14 +219,25 @@ class TopicAssignment(models.Model):
         print "to %d\n" %(self.num_student_favorites)
 
 class ViewInterval(models.Model):
-    ta = models.ForeignKey(TopicAssignment, related_name='intervals')
+    ta = models.ForeignKey(TopicAssignment)
     user = models.ForeignKey(User)
     start_time = models.FloatField(default=0.0)
     stop_time = models.FloatField(default=0.0)
+    time = models.DateTimeField(auto_now=True, auto_now_add=True)
+
+    class Meta:
+        unique_together = (('ta', 'user', 'time'))
     
     def __unicode__(self):
-        return u'(Viewer: %s) (Video: %s) (Range: %d - %d)' %(self.user, self.ta, self.start_time, self.end_time)
+        return u'(Viewer: %s) (Video: %s) (Range: %d - %d)' %(self.user, self.ta, self.start_time, self.stop_time)
 
+    def _get_range(self):
+        return "( %d, %d )" %(self.start_time, self.stop_time)
+    range=property(_get_range)
+
+    def has_second(self, second):
+        return ( (second <= self.stop_time) and (second >= self.start_time) )
+    
 
 
 class Comment(models.Model):

@@ -54,6 +54,11 @@ urlpatterns = patterns('',
                        (r'^topic_assign/(?P<video_id>\d+)/$', staff_views.preview_and_set_topic),
                        (r'^upload_video/$', staff_views.upload_video),
 
+
+                       # view number of views by timeline
+                       (r'^view_history/$', staff_views.display_interval_list),
+                       (r'^view_history/(?P<ta_id>\d+)/$', staff_views.display_interval_views),
+                       
                        (r'^landing/$', views.landing),
                        
                        # web of links
