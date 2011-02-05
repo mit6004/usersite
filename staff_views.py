@@ -107,7 +107,8 @@ def display_interval_list(request):
 
 
 
-def get_img_url(ta_id):
+def get_img_url(ta_id, x_length="0"):
+    print "(get_img_url)"
     id=int(ta_id)
     ta = TopicAssignment.objects.get(pk=id)
     print "(display_interval_views) ta = %s" %(ta)
@@ -118,6 +119,12 @@ def get_img_url(ta_id):
         intervals_max = int(interval_stop_times[0])
     else:
         intervals_max = 100
+    
+    x_length = int(x_length)
+    if (x_length == 0):
+        x_length = intervals_max
+    
+    print "x_length = " + str(x_length)
     print "intervals_max = " + str(intervals_max)
     print "(display_interval_views) there are %d intervals for this topic assignment." %(number)
     view_vector = [0]
@@ -130,8 +137,8 @@ def get_img_url(ta_id):
                 #print "view_vector["+str(i)+"] = " + str(view_vector[i])
                 view_vector[i] = view_vector[i] + 1
 
-    for i in range (intervals_max):
-        print "-- view_vector["+str(i)+"] = " + str(view_vector[i])
+    #for i in range (intervals_max):
+    #    print "-- view_vector["+str(i)+"] = " + str(view_vector[i])
     max_views = max(view_vector)
     if (max_views == 0):
         max_views = 1
@@ -147,7 +154,7 @@ def get_img_url(ta_id):
     for i in range (1, intervals_max):
         img_url = img_url + ","+ str(view_vector[i]*100/max_views)
     # format the axis scale and color, respectively
-    img_url = img_url + "&chxt=x,y&chxr=0,0," + str(intervals_max) + ",5|1,0,"+str(max_views)+",1"
+    img_url = img_url + "&chxt=x,y&chxr=0,0," + str(x_length) + "," + str(x_length/10) +"|1,0,"+str(max_views)+",1"
     img_url = img_url + "&chxs=0,2244FF,12,0,lt|1,0055FF,10,1,lt"
 
     return img_url

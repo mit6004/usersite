@@ -170,7 +170,7 @@ class TopicAssignment(models.Model):
     ## the 6.004 website. 
     
     def __unicode__(self):
-        return u'%s: %s' %(self.video, self.topic)
+        return u'(%d) %s: %s' %(self.id, self.video, self.topic)
 
     def _get_video_author(self):
         return self.video.author

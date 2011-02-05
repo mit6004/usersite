@@ -36,7 +36,7 @@ urlpatterns = patterns('',
                        #(r'^students/$', views.student_list),
 
                        ## jquery testing - server side data handler 
-                       (r'^post_test/$', views.post_handler),
+                       (r'^post_interval/$', views.post_interval_handler),
                        (r'^post_test/page/$', views.post_test),
 
                        # admin portal

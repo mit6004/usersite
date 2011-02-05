@@ -16,11 +16,12 @@ class PublicVideoAdmin(admin.ModelAdmin):
 
 class ViewIntervalAdmin(admin.ModelAdmin):
     list_display=('user', 'ta', 'time', 'range')
-    list_filter=('user', 'ta', 'time')
+    list_filter=('user', 'ta', 'time',)
+
 
 class TopicAssignmentAdmin(admin.ModelAdmin):
-    list_display=('topic', 'video')
-    list_filter=('topic', 'video')
+    list_display=('topic', 'video', 'id')
+    list_filter=('topic', 'video', 'id')
 
 class LinkedWebPageAdmin(admin.ModelAdmin):
     list_display=('name', 'url', 'pointer_on_page', 'topic_assignment')

@@ -10,8 +10,8 @@
   // define the video here
   var qtEmbed = QT_GenerateOBJECTText_XHTML(
   		'{{selected_ta.video.get_absolute_url}}', //'video_placeholder.jpg',
-  		'800', // width
-  		'500', // height: set this to actual height + 20 (to leave space for controller)
+  		'600', // width
+  		'475', // height: set this to actual height + 20 (to leave space for controller)
   		'', // required blank field
   		'enablejavascript', 'true',
   		'obj#id', 'movie1',
@@ -45,7 +45,7 @@
   // amended 1/25
   RegisterListener('qt_load', 'movie1', 'movie1_emb', setup_seconds);
   RegisterListener('qt_play', 'movie1', 'movie1_emb', check_and_send);
-  //RegisterListener('qt_timechanged', 'movie1', 'movie1_emb', check_and_send);
+  RegisterListener('qt_timechanged', 'movie1', 'movie1_emb', pause_and_start);
   RegisterListener('qt_stop', 'movie1', 'movie1_emb', set_interval_pause);
   RegisterListener('qt_pause', 'movie1', 'movie1_emb', set_interval_pause);
 
@@ -65,7 +65,14 @@
     {
       end_time = document.movie1.GetDuration();
     } 
-        
+  
+  if(end_time == 0)
+  {
+  var length =  document.movie1.GetDuration();
+  console.log("setting end_time to " + length);
+  end_time = length;
+  }
+     
     set_start_and_end_times(start_time, end_time);
     //document.movie1.Play();
   }

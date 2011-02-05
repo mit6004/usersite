@@ -240,9 +240,12 @@ def tutorial_by_id(request, topic, linked_problem_id):
 
 ## testing jquery ##
 ## server side handler function 
-def post_handler(request):
+def post_interval_handler(request):
     print "In post_handler \n"
     
+    dict = { "img_div" : '',
+             "x_axis_max" : '' }
+
     message = 'failure'
     interval = ViewInterval()
     if request.is_ajax():
@@ -260,12 +263,6 @@ def post_handler(request):
             print "ta_id : %s" %(ta_id)
             ta = TopicAssignment.objects.get(pk=ta_id)
             print "ta : %s" %(ta)
-            img_url = get_img_url(ta_id)
-            img_div = "<div id=\"view_graph_div\" class=\"view_graph_div\" style=\"float:left;align:left\">"
-            img_div = img_div + "<img id=\"view_graph\" name=\"view_graph\" src=\"" + img_url + "\" />"
-            img_div = img_div + "</div>"
-            message = img_div
-            ##interval = ViewInterval(ta=ta, user=user, start_time=iform_start, end_time=iform_end)
             interval = ViewInterval()
             print "made an interval"
             interval.ta = ta
@@ -273,13 +270,26 @@ def post_handler(request):
             interval.start_time = iform_start
             interval.stop_time = iform_end
             interval.save()
+            # make the interval
+            x_length =  request.POST['ta_length']
+            print "x_length = %s" %(x_length)
+            img_url = get_img_url(ta_id, x_length)
+            img_div = "<div id=\"view_graph_div\" class=\"view_graph_div\" style=\"float:left;align:left\">"
+            img_div = img_div + "<img id=\"view_graph\" name=\"view_graph\" src=\"" + img_url + "\" />"
+            img_div = img_div + "</div>"
+            message = img_div
+            dict["img_div"] = img_div
+            dict["x_axis_max"] = request.POST['ta_length']
+            print "dict[img_div] : %s" %(dict["img_div"])
+            print "dict[x_axis_max] : %s" %(dict["x_axis_max"])
+            ##interval = ViewInterval(ta=ta, user=user, start_time=iform_start, end_time=iform_end)
             
             #print "about to run serializer"
             #data_dict = serializers.serialize("json", interval)
     #print "about to return http response: %s  \n" %(data_dict)
     print "saved interval"
-    return HttpResponse(message, mimetype="text/html")
-
+    #return HttpResponse(message, mimetype="text/html")
+    return HttpResponse(simplejson.dumps(dict), mimetype="application/javascript")
     
 def post_test(request):
     template = "js_test.html"

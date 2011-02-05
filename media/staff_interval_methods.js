@@ -88,63 +88,10 @@ function set_graph(ta_id)
 
 }
 
-
-// form to send interval to server
-function check_and_send()
+function pause_and_start()
 {
-    var last_start_time = parseInt(document.getElementById('start_seconds_display').value);
-    var interval_length = parseInt(document.getElementById('start_timer').value);
-    var last_pause = document.getElementById('pause_seconds_display').value;
-
-    /* 
-       Note: it's necessary to use parseInt because of the string addition
-       that will happen if we dont' convert them to ints first 
-    */
-
-    var current_position = playhead_position();
-    var timescale = document.getElementById('timescale').value;
-    var current_second = Math.floor(current_position/timescale);
-
-    console.log("(check_and_send) last_start_time = " + last_start_time);
-    console.log("(check_and_send) interval_length = " + interval_length);
-    var last_watched_second = last_start_time + interval_length;
-    console.log("(check_and_send) laast_watched_second = " + last_watched_second);
-    console.log("(check_and_send) with current_second = " + current_second);        
-
-    // if the latter is true, we need to package 
-    // up a new interval and send a message to server
-    if ( (last_start_time + interval_length) < current_second) 
-	{
-	    console.log("passed the if statement....");
-	    console.log("--last_start_time = " + last_start_time);
-	    console.log("--interval_length = " + interval_length);
-	    $.ajax({
-		    type:'POST',
-			url: "/post_test/",
-			data: { iform_start : last_start_time,
-			    iform_end : last_pause, 
-			    user : document.getElementById('user').value,
-			    ta_id : document.getElementById('ta_id').value,
-			    },
-			success: function(responseData) 
-			{
-			    // added to modify graph
-			    $('.view_graph_div').replaceWith(responseData);
-			    console.log(responseData);
-			    //alert(responseData);
-			},
-			dataType: "text"			
-			});
-	    set_interval_start();
-	    begin_start_timer(0);
-	}
-    else {
-	var last_start = document.getElementById('start_timer').value;
-	console.log("in check and send, starting the timer again at "+ last_start);
-	begin_start_timer(last_start);
-    }
-    //set_interval_start();
-    // start the timers again
+    stop_start_timer();
+    set_interval_start();
 }
 
 
@@ -162,6 +109,104 @@ function set_interval_pause()
     document.getElementById('pause_seconds_display').value = pause_seconds;
     stop_start_timer();
 }
+
+
+function units_to_seconds(units)
+{
+    var timescale = parseInt(document.getelementById('timescale').value);
+    return Math.floor(units/timescale);
+}
+
+function update_graph()
+{
+    
+}
+
+// form to send interval to server
+function check_and_send()
+{
+    var last_start_time = parseInt(document.getElementById('start_seconds_display').value);
+    var interval_length = parseInt(document.getElementById('start_timer').value);
+    var last_pause = document.getElementById('pause_seconds_display').value;
+
+    /* 
+       Note: it's necessary to use parseInt because of the string addition
+       that will happen if we dont' convert them to ints first 
+    */
+
+    var current_position = playhead_position();
+    var timescale = document.getElementById('timescale').value;
+    var current_second = Math.floor(current_position/timescale);
+    
+    //console.log("(check_and_send) played = " + played);
+    var last_watched_second = last_start_time + interval_length;
+    console.log("(check_and_send) last_start_time + interval_length = last_watched_second ("
+		+last_start_time+" + "+interval_length+" = "+last_watched_second+")");
+    //console.log("(check_and_send) interval_length = " + interval_length);
+    //console.log("(check_and_send) laast_watched_second = " + last_watched_second);
+    console.log("(check_and_send) current_second = " + current_second);        
+    console.log("-----");
+    // if the latter is true, we need to package 
+    // up a new interval and send a message to server
+    var epsilon = 2;
+    var min_interval = 2;
+    var skipped_forward = ( (last_start_time + interval_length) > (current_second + epsilon) );
+    var skipped_backward =  ( (last_start_time + interval_length) < (current_second - epsilon) );
+    var skipped = skipped_forward || skipped_backward;
+    var long_enough = interval_length > min_interval;
+    var interval_complete = ( skipped && long_enough );
+    if (interval_complete)
+	{
+	    console.log("passed the if statement....");
+	    //console.log("--last_start_time = " + last_start_time);
+	    //console.log("--interval_length = " + interval_length);
+	    var x_length =  document.movie1.GetDuration();
+	    //x_length = units_to_seconds(x_length);
+	    console.log("x_length = " + x_length);
+	    $.ajax({
+		    type:'POST',
+		    url: "/post_interval/",
+		    data: { iform_start : last_start_time,
+			    iform_end : last_watched_second, 
+			    user : document.getElementById('user').value,
+			    ta_id : document.getElementById('ta_id').value,
+			    ta_length : x_length,
+			// we want the length field for best setting the 
+			// axes in the graph for the staff view.
+			// we can throw this information away, otherwise.
+		    },
+		    success: function(responseData) 
+		    {
+			// added to modify graph
+			var img_html = responseData.img_div;
+			var x_max = responseData.x_axis_max;
+			console.log("(success_function) responseData.img_div = " 
+				    + img_html);
+			console.log("(success_function) responseData.x_axis_max = "
+				    + x_max);
+			$('.view_graph_div').replaceWith(responseData.img_div);
+			console.log(responseData);
+			//alert(responseData);
+		    },
+		    //dataType: "text"			
+		    dataType: "json",
+		});
+	    console.log("made an interval, setting new start time to current_second = " + current_second);
+	    set_interval_start();
+	    begin_start_timer(0);
+	}
+    else {
+	//if (played){
+	var last_start = document.getElementById('start_timer').value;
+	console.log("in check and send, starting the timer again at "+ last_start);
+	begin_start_timer(last_start);
+	    //}
+    }
+    //set_interval_start();
+    // start the timers again
+}
+
+
 
 
 /*
