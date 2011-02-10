@@ -157,6 +157,17 @@ function check_and_send()
     var interval_complete = ( skipped && long_enough );
     if (interval_complete)
 	{
+	    url = document.URL;
+	    pattern = /view_history/gi;
+	    url_match = url.match(pattern)[0];
+	    
+	    /*if (url_match)
+		{
+		    console.log("url match!");
+		}
+	    console.log("url is = " + document.URL);
+	    */
+	    console.log("url pattern is " + url_match);
 	    console.log("passed the if statement....");
 	    //console.log("--last_start_time = " + last_start_time);
 	    //console.log("--interval_length = " + interval_length);
@@ -171,6 +182,9 @@ function check_and_send()
 			    user : document.getElementById('user').value,
 			    ta_id : document.getElementById('ta_id').value,
 			    ta_length : x_length,
+			    url_match : url_match,
+			    // we want the url_match to see if we should 
+			    // send graph dat aback on the server side
 			// we want the length field for best setting the 
 			// axes in the graph for the staff view.
 			// we can throw this information away, otherwise.
@@ -184,7 +198,11 @@ function check_and_send()
 				    + img_html);
 			console.log("(success_function) responseData.x_axis_max = "
 				    + x_max);
-			$('.view_graph_div').replaceWith(responseData.img_div);
+			// if this is from view_history, then we want to get the graph back
+			if (url_match)
+			    {
+				$('.view_graph_div').replaceWith(responseData.img_div);
+			    }
 			console.log(responseData);
 			//alert(responseData);
 		    },

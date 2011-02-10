@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from records.models import *
 from tutorials.models import *
 
+from django.contrib.auth.models import AnonymousUser
 from tutorials.filters import TopicAssignmentFilterSet
 from django.contrib.auth.decorators import login_required
 
@@ -227,6 +228,10 @@ def browse(request, topic_snippet_id=1, is_favorite=False, query_string=''):
     selected_video = all_videos.get(pk=v_id)
     print "vid is %d" %(v_id)
 
+    student = AnonymousUser()
+    if request.user.is_authenticated():
+        student = request.user
+
     if 'QUERY_STRING' in request.META.keys():
         if not request.META['QUERY_STRING'] =='':
             query_string='?'+request.META['QUERY_STRING']   
@@ -240,6 +245,7 @@ def browse(request, topic_snippet_id=1, is_favorite=False, query_string=''):
         'all_videos':all_videos,
         'all_topic_assignments':filterset,
         'selected_ta':selected_ta,
+        'user': student,
         }
 
     template="browse.html"

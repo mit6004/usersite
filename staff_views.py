@@ -64,6 +64,30 @@ def preview_and_set_topic(request, video_id):
     return render_to_response(template, dict)
 
 
+
+@login_required
+def select_video_for_assignment(request):
+    check_staff(request)
+
+    if request.method=="POST":
+        v_id = request.POST['selected_video']
+        print "selected video # %s chosen for topic assignment \n" %(v_id)
+        vid = int(vid)
+        video = PublicVideo.objects.get(pk=vid)
+        topic_choices = [ [topic[0], topic[1]] for topic in TOPIC_CHOICES]
+        template = "movie_preview.html"
+        dict = { 'video': video, 'topic_choices': topic_choices, }
+        return render_to_response(template, dict)
+
+    videos = PublicVideo.objects.all()
+    dict = { 'videos': videos }
+    template = "select_video_for_assignment.html"
+    return render_to_response(template, dict)
+
+
+
+
+
 @login_required
 def upload_video(request):
  
@@ -111,7 +135,7 @@ def get_img_url(ta_id, x_length="0"):
     print "(get_img_url)"
     id=int(ta_id)
     ta = TopicAssignment.objects.get(pk=id)
-    print "(display_interval_views) ta = %s" %(ta)
+    #print "(display_interval_views) ta = %s" %(ta)
     intervals = ta.viewinterval_set.all()
     number = intervals.count()
     interval_stop_times = intervals.values_list('stop_time', flat=True).order_by('-stop_time')
@@ -124,9 +148,9 @@ def get_img_url(ta_id, x_length="0"):
     if (x_length == 0):
         x_length = intervals_max
     
-    print "x_length = " + str(x_length)
-    print "intervals_max = " + str(intervals_max)
-    print "(display_interval_views) there are %d intervals for this topic assignment." %(number)
+    #print "x_length = " + str(x_length)
+    #print "intervals_max = " + str(intervals_max)
+    #print "(display_interval_views) there are %d intervals for this topic assignment." %(number)
     view_vector = [0]
     for i in range(intervals_max):
         #print "in outer for loop with index = " + str(i)
@@ -143,7 +167,7 @@ def get_img_url(ta_id, x_length="0"):
     if (max_views == 0):
         max_views = 1
 
-    print "max_views = " + str(max_views)
+    #print "max_views = " + str(max_views)
     img_url = "http://chart.googleapis.com/chart?"
     # to make a line chart
     img_url = img_url + "cht=lc&"

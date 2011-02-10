@@ -17,6 +17,8 @@ STAFF_CHOICES = (
 
 SEMESTER_CHOICES = (
     ('', '--All Terms--'), 
+    ('S11', 'Spring 2011'),
+    ('F10', 'Fall 2010'),
     ('S10', 'Spring 2010'),
     ('F09', 'Fall 2009'),
     ('S09', 'Spring 2009'),

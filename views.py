@@ -57,7 +57,6 @@ def render_with_student_context(request, template, dict):
                               RequestContext(request, processors=[get_student_favorites]))
 
 
-
 def show_by_topic(request, topic):
     topic_assignments = TopicAssignment.objects.filter(topic=topic)
     title_string='List of Snippets About %s' %(topic)
@@ -103,7 +102,7 @@ def show_by_type(request, type):
     template="topic_assignment_list.html"
     return render_with_student_context(request, template, dict)
 
-
+## deprecated - changed to ajax
 def make_comment(request, user, topic_assignment):
     permissions='students'
     if 'permissions' in request.POST.keys():
@@ -119,7 +118,7 @@ def make_comment(request, user, topic_assignment):
         comment.save()
         print "saved comment %s by %s \n" %(comment.text, comment.user.username)
 
-
+## deprecated - changed to ajax
 def add_favorite(request, profile, ta):
     # ADDED LINE TO CONSTRUCT FAVORITE MODEL INSTANCE 9/8/10
     favorite=Favorite()
@@ -130,6 +129,40 @@ def add_favorite(request, profile, ta):
 def rm_favorite(request, profile, ta):
     f = Favorite.objects.filter(ta=ta).filter(profile=profile)
     f.all().delete()
+
+def favorite_post(request):
+    dict = { "is_favorite": '', "new_button_text": '' }
+    print "in favorite_post"
+    if request.is_ajax():
+        if request.method=='POST':
+            username = request.POST['username']
+            ta_id = request.POST['ta_id']
+            button_value = request.POST['button_value']
+            ta = TopicAssignment.objects.get(pk=ta_id)
+            user = User.objects.get(username=username)
+            profile = UserProfile.objects.get(user=user)        
+            button_next = "Error"
+
+            print "button_value " + button_value
+            if button_value == "Add Favorite":
+                button_next = "Remove Favorite"
+                print "isn't a fave and adding"
+                ## Making a favorite
+                favorite=Favorite()
+                print "made a blank favorite"
+                favorite.profile=profile
+                favorite.ta=ta
+                print "saving favorite"
+                favorite.save()
+            else:
+                print "is a fave and deleting"
+                f = Favorite.objects.filter(ta=ta).filter(profile=profile)
+                f.all().delete()
+                button_next = "Add Favorite"
+            print "new button text " + button_next
+            dict["new_button_text"] = button_next
+    return HttpResponse(simplejson.dumps(dict), mimetype="application/javascript")
+
 
 
 # main page for displaying a single movie with comment and favorite options
@@ -271,19 +304,28 @@ def post_interval_handler(request):
             interval.stop_time = iform_end
             interval.save()
             # make the interval
-            x_length =  request.POST['ta_length']
-            print "x_length = %s" %(x_length)
-            img_url = get_img_url(ta_id, x_length)
-            img_div = "<div id=\"view_graph_div\" class=\"view_graph_div\" style=\"float:left;align:left\">"
-            img_div = img_div + "<img id=\"view_graph\" name=\"view_graph\" src=\"" + img_url + "\" />"
-            img_div = img_div + "</div>"
-            message = img_div
-            dict["img_div"] = img_div
-            dict["x_axis_max"] = request.POST['ta_length']
-            print "dict[img_div] : %s" %(dict["img_div"])
-            print "dict[x_axis_max] : %s" %(dict["x_axis_max"])
-            ##interval = ViewInterval(ta=ta, user=user, start_time=iform_start, end_time=iform_end)
             
+            # construct the graph to send back
+            # but only if it came from the staff view page
+            print "url_matched as %s" %(request.POST['url_match'])
+            if request.POST['url_match']:
+                print "url_matched as %s" %(request.POST['url_match'])
+                  
+                x_length =  request.POST['ta_length']
+                print "x_length = %s" %(x_length)
+                img_url = get_img_url(ta_id, x_length)
+                img_div = "<div id=\"view_graph_div\" class=\"view_graph_div\" style=\"float:left;align:left\">"
+                img_div = img_div + "<img id=\"view_graph\" name=\"view_graph\" src=\"" + img_url + "\" />"
+                img_div = img_div + "</div>"
+                message = img_div
+                dict["img_div"] = img_div
+                dict["x_axis_max"] = request.POST['ta_length']
+                #print "dict[img_div] : %s" %(dict["img_div"])
+                #print "dict[x_axis_max] : %s" %(dict["x_axis_max"])
+                ##interval = ViewInterval(ta=ta, user=user, start_time=iform_start, end_time=iform_end)
+            else :
+                dict = {}
+
             #print "about to run serializer"
             #data_dict = serializers.serialize("json", interval)
     #print "about to return http response: %s  \n" %(data_dict)
@@ -334,3 +376,32 @@ def post_test(request):
         'permissions': ['staff','student'],
         }
     return render_with_student_context(request, template, dict)
+
+def comment_update(request):
+    print "updating comment"
+
+    dict = {"username": '', "text": '', "permissions": '', "ta_id": ''}
+    
+    if request.is_ajax():
+        print "request in comment_update is ajax"
+        if request.method =='POST':
+            username = request.POST['username']
+            text = request.POST['text']
+            permissions = request.POST['permissions']
+            ta_id = request.POST['ta_id']
+            user = User.objects.get(username=username)
+            ta = TopicAssignment.objects.get(pk=ta_id)
+            comment = Comment()
+            comment.clip = ta
+            comment.user = user
+            comment.text = text
+            comment.permissions = permissions
+            comment.save()
+            
+            print "permissions are %s" %(permissions)
+            
+            dict["username"] = str(username)
+            dict["ta_id"] = str(ta_id)
+            dict["text"] = str(text)
+            dict["time"] = str(comment.time)
+        return HttpResponse(simplejson.dumps(dict), mimetype="application/javascript")

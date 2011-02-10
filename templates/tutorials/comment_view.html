@@ -1,9 +1,9 @@
 <table border="0" align="center">
 	{% if user.is_authenticated %}
-	<form action="" method="post">
+	<form id="comment_form" name="comment_form" action="" method="post">
 	    <tr>
 	      <td colspan="2">
-	      <textarea rows="5" cols="60" name="text">Write your comment here....</textarea>
+		<textarea rows="5" cols="60" name="text">Write comment here....</textarea>
 	      </td>
 	    </tr>
 
@@ -16,12 +16,15 @@
 		</select>
 	      </td>
 	      <td style="text-align:right">
-		<input type="submit" name="submit_comment" value="Submit Comment" />
+		<input type="hidden" name="username" id="username" value="{{user.username}}" />
+		<input type="hidden" name="ta_id" id="ta_id" value="{{selected_ta.id}}" />
+		<input type="submit" name="submit" id="submit" value="Submit Comment" />
 	      </td>
 	    </tr>
 	</form>
 	{% endif %}
-
+</table>
+<table id="comment_display" class="comment_display">
 	{% if comments.count %}
 	<tr>
 	  <td colspan="2" class="sidebar_header">
@@ -38,8 +41,28 @@
 	  </td>
 	</tr>
 	{% endfor %}
-
 </table>
-	
+<script type="text/javascript" src="/site_media/comment_submission.js"></script>
+<script type="text/javascript" src="/site_media/jquery.js"></script>
+<script type="text/javascript">
+<!-- make sure Jquery is loaded somewhere else, like in interval_movie header.html or movie_header.html -->
+$('#comment_form').submit( 
+  function() { 
+    submit_comment(); 
+    return false;
+  } 
+);
+
+</script>
+
+<!--$(document).ready(
+function()
+{
+$('#submit').click(function(){
+submit_comment();
+console.log("submitting a comment");
+});
+});
+-->
 
 

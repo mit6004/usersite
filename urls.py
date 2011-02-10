@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.views.generic import list_detail
 from django.contrib import databrowse
 #from usersite.templates import list_detail 
-from django.contrib.auth.views import login, logout, logout_then_login
+from django.contrib.auth.views import login, logout, logout_then_login, password_change, password_change_done
 from usersite.records.models import *
 from usersite import views, student_views, staff_views
 
@@ -46,15 +46,19 @@ urlpatterns = patterns('',
                        
                        (r'^accounts/login/$', login),
                        (r'^accounts/logout/$', logout_then_login),
-                       
+                       (r'^accounts/changepw/$', password_change),
+                       (r'^accounts/changepwdone/$', password_change_done),
                        # template: /templates/tutorials/browse.html
                        (r'^accounts/profile/$', student_views.student_portal),
+
+                       # handler for uploading comments
+                       (r'^comment_update/$', views.comment_update),
+                       (r'^add_favorite/$', views.favorite_post),
 
                        # staff editing and topic assigning page
                        (r'^topic_assign/(?P<video_id>\d+)/$', staff_views.preview_and_set_topic),
                        (r'^upload_video/$', staff_views.upload_video),
-
-
+                       (r'^select_video_for_assignment/$', staff_views.select_video_for_assignment),
                        # view number of views by timeline
                        (r'^view_history/$', staff_views.display_interval_list),
                        (r'^view_history/(?P<ta_id>\d+)/$', staff_views.display_interval_views),

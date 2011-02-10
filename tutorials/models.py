@@ -192,29 +192,25 @@ class TopicAssignment(models.Model):
         
     def inc_num_staff_favorites(self):
         print "incrementing number of staff favorites for %s from %d " %(self, self.num_staff_favorites)
-        temp = self.num_student_favorites
-        self.num_student_favorites = temp+1
+        self.num_staff_favorites +=1
         self.save()
         print "to %d\n" %(self.num_staff_favorites)
 
     def dec_num_staff_favorites(self):
         print "decrementing number of staff favorites for %s from %d " %(self, self.num_staff_favorites)
-        temp = self.num_student_favorites
-        self.num_student_favorites = temp-1
+        self.num_staff_favorites -=1
         self.save()
         print "to %d\n" %(self.num_staff_favorites)
 
     def inc_num_student_favorites(self):
         print "incrementing number of student favorites for %s from %d " %(self, self.num_student_favorites)
-        temp = self.num_student_favorites
-        self.num_student_favorites = temp+1
+        self.num_student_favorites +=1
         self.save()
         print "to %d\n" %(self.num_student_favorites)
 
     def dec_num_student_favorites(self):
         print "decrementing number of student favorites for %s from %d " %(self, self.num_student_favorites)
-        temp = self.num_student_favorites
-        self.num_student_favorites = temp-1
+        self.num_student_favorites -=1
         self.save()
         print "to %d\n" %(self.num_student_favorites)
 
@@ -292,6 +288,22 @@ class Favorite(models.Model):
     def __unicode__(self):
         return u'\"%s\" favorited by: %s' %(self.ta.video.title, self.profile.user.get_full_name())
 
+    def save(self, *args, **kwargs):
+        print "overriding favorite object save"
+        super(Favorite, self).save(*args, **kwargs)
+        if self.profile.user.is_staff:
+            self.ta.inc_num_staff_favorites()
+        else:
+            self.ta.inc_num_student_favorites()
+
+
+    def delete(self, *args, **kwargs):
+        print "overriding favorite object delete"
+        super(Favorite, self).delete(*args, **kwargs)
+        if self.profile.user.is_staff:
+            self.ta.dec_num_staff_favorites()
+        else:
+            self.ta.dec_num_student_favorites()
 
 
 ## -- SIGNAL UTILS -- ##
@@ -318,18 +330,22 @@ def make_profile(sender, instance, **kwargs):
 def databrowse_register(sender, **kwargs):
     databrowse.site.register(sender)
 
-
 def admin_register(sender, **kwargs):
     admin.site.register(sender)
 
-
 def inc_favorites(sender, instance, **kwargs):
+    print "in inc_favorites from signal for favorite (" + str(instance.id) + ")"
+    print "instance.ta.num_student_favorites = " + str(instance.ta.num_student_favorites)
+    print "instance.ta.num_staff_favorites = " + str(instance.ta.num_staff_favorites)
     if instance.profile.user.is_staff:
         instance.ta.inc_num_staff_favorites()
     else:
         instance.ta.inc_num_student_favorites()
 
 def dec_favorites(sender, instance, **kwargs):
+    print "in dec_favorites from signal for favorite (" + str(instance.id) + ")"
+    print "instance.ta.num_student_favorites = " + str(instance.ta.num_student_favorites)
+    print "instance.ta.num_staff_favorites = " + str(instance.ta.num_staff_favorites)
     if instance.profile.user.is_staff:
         instance.ta.dec_num_staff_favorites()
     else:
@@ -337,8 +353,8 @@ def dec_favorites(sender, instance, **kwargs):
 
 # --- SIGNALS --- ##
 models.signals.post_save.connect(make_profile, sender=User)
-models.signals.post_save.connect(inc_favorites, sender=Favorite)
-models.signals.pre_delete.connect(dec_favorites, sender=Favorite)
+#models.signals.post_save.connect(inc_favorites, sender=Favorite)
+#models.signals.pre_delete.connect(dec_favorites, sender=Favorite)
 models.signals.class_prepared.connect(databrowse_register)
 
 

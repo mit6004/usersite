@@ -18,17 +18,15 @@
     </td>
   </tr>
 </table>
-      
-<input type="hidden" id="timescale" name="timescale" value="?"/>
-<form id="iform" method="post">
-  <input type="hidden" id="ta_id" name="ta_id" value="{{selected_ta.id}}"/>
-  <input type="hidden" id="user" name="user" value="{{user}}"/>
-  <input type="hidden" id="iform_start_time" name="iform_start_time" value="0"/>
-  <input type="hidden" id="iform_end_time" name="iform_end_time" value="0"/>
-</form>
 
-<tr>
-  <td>
-    {% include "comment_view.html" %}	
-  </td>
-</tr>
+<table>      
+  <input type="hidden" id="timescale" name="timescale" value="?"/>
+  <form id="iform" method="post">
+    <input type="hidden" id="ta_id" name="ta_id" value="{{selected_ta.id}}"/>
+    <input type="hidden" id="user" name="user" value="{{user}}"/>
+    <input type="hidden" id="iform_start_time" name="iform_start_time" value="0"/>
+    <input type="hidden" id="iform_end_time" name="iform_end_time" value="0"/>
+  </form>
+  
+
+</table>

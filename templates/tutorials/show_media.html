@@ -4,7 +4,8 @@
 
 {% block header %}
 
-{% include "movie_header.html" %}
+{% include "interval_movie_header.html" %}
+<!-- saves the intervals as opposed to regular one -->
 
 {% endblock header %}
 
@@ -25,9 +26,10 @@
     </td>
   </tr>
 
-  {% if debug %}
-  {% include "log_debug_rows.html" %}
-  {% endif %}
+  {% include "comment_view.html" %}
+
+  {% include "timing_fields.html" %}
+
 
 </table>
 

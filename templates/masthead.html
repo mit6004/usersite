@@ -1,6 +1,8 @@
 <div id="masthead">
   <div id="home_nav">
-      <a class="mast_link" href="/accounts/profile/"> Media Browser </a>
+      <a class="mast_link" href="/public/"> Media Browser </a>
+
+      <a class="mast_link" href="/accounts/profile/"> My Profile </a>
 
       <a class="mast_link" href="http://6004.csail.mit.edu/"> 6.004 Homepage </a>
 
@@ -12,8 +14,10 @@
 
     {% if user.is_authenticated %}
 
-    Logged in as {{ user.get_full_name }}. 
+    Logged in as <b>{{ user.get_full_name }}. </b>
       <a class="mast_link" href="/accounts/logout/">Sign Out</a>.
+
+      <a class="mast_link" href="/accounts/changepw/">Change Password</a>.
     {% else %}
 
     Welcome. Please 

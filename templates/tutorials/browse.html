@@ -4,14 +4,14 @@
 
 <!-- movie stuff -->
 {% block header %}
-{% include "movie_header.html" %}
+{% include "interval_movie_header.html" %}
 {% endblock header %}
 {% block body_attributes %}onload="RegisterListeners();"{% endblock %}
 <!-- end movie stuff -->
 
 {% block browse_sidebar %}
-  {% include "student_browse.html" %}
-{% include dashbooard.html %}
+{% include "student_browse.html" %}
+<!-- {% include "dashboard.html" %} -->
 {% endblock browse_sidebar %}
 
 

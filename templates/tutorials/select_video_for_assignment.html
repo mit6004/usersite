@@ -1,0 +1,19 @@
+{% extends "two_column.html" %}
+
+{% block main_column %}
+
+<form id="video_select_form" name="video_select_form" action="" method="POST">
+  Please select a video to use for assigning a topic range:
+  <br>
+  <select id="selected_video" name="selected_video">
+
+    {% for video in videos %}
+    <option value="{{video.id}}">{{video.upload_location}}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Proceed to topic assignment ->" />
+
+</form
+
+
+{% endblock main_column %}
